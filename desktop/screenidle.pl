@@ -2,6 +2,8 @@
 use DateTime;
 use POSIX qw(setsid);
 $x=`ps -A | grep screenidle.pl`;
+$url= "%%URL%%";
+$hash= "%%HASH%%";
 
 @lines = split("\n", $x);
 $lines =@lines;
@@ -22,9 +24,10 @@ setsid;
 
 $dt = DateTime->now();
 print "[".$dt->datetime()."] *** starting ***\n";
-open (LOGFILE, '>>/var/log/screensaver.log');
-print LOGFILE "#[".$dt->datetime()."] *** starting ***\n";
-close (LOGFILE); 
+#open (LOGFILE, '>>/var/log/screensaver.log');
+#print LOGFILE "#[".$dt->datetime()."] *** starting ***\n";
+#close (LOGFILE); 
+system('curl "'.$url.'?h='.$hash.'&d=starting"');
 
 my $cmd = "dbus-monitor --session \"type='signal',interface='org.gnome.ScreenSaver',member='ActiveChanged'\"";
 
@@ -32,15 +35,17 @@ open (IN, "$cmd |");
 
 while (<IN>) {
 	$dt = DateTime->now();
-	open (LOGFILE, '>>/var/log/screensaver.log');
+	#open (LOGFILE, '>>/var/log/screensaver.log');
 	
 	if (m/^\s+boolean true/) {
-		print LOGFILE "-[".$dt->datetime()."] *** Locked Screen ***\n";
+		system('curl "'.$url.'?h='.$hash.'&d=out"');
+		#print LOGFILE "-[".$dt->datetime()."] *** Locked Screen ***\n";
 		system("/usr/bin/killall pidgin");
 	} elsif (m/^\s+boolean false/) {
-		print LOGFILE "+[".$dt->datetime()."] *** Unlocked Screen ***\n";
+		system('curl "'.$url.'?h='.$hash.'&d=in"');
+		#print LOGFILE "+[".$dt->datetime()."] *** Unlocked Screen ***\n";
 		system("/usr/bin/nohup /usr/local/bin/pidgin &");
 	}
 	
-	close (LOGFILE); 
+	#close (LOGFILE); 
 }

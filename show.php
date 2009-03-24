@@ -38,6 +38,7 @@ function formatmonth($m) {
 	$pausestart=0;
 	$f=fopen($fpath, 'r');
 	while ($line=fgets($f)) {
+		if ($line=="\n") continue;
 		if (substr($line,0,1)=="#") continue;
 		$coming=(substr($line,0,1)=="+");
 		
@@ -313,7 +314,7 @@ Korrigierte Differenz:
 		</div>
 	<?php else:?>
 		<div id="day_diff" class="negative">
-			<span class="diff_label">Differenz:</span><br>
+			<span class="diff_label">Differenz heute:</span><br>
 			-<?php echo gmdate("G:i:s", $day['diff']*-1) ?>
 		</div>
 	<?php endif; ?>
