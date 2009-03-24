@@ -424,7 +424,8 @@ Korrigierte Differenz:
 </div>
 <div>
 <strong>Hash:</strong> <?php echo $hash ?><br />
-<a href="download.php?h=<?php echo $hash ?>">Daemon downloaden</a>
+<a href="download.php?h=<?php echo $hash ?>">Daemon downloaden</a><br>
+<a href="index.php">Ausloggen</a>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
 <script type="text/javascript">
