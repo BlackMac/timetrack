@@ -8,6 +8,7 @@ function formatmonth($m) {
 	session_start();
 	$loggedin=false;
 	$fpath="";
+	$hash="";
 	
 	if (isset($_POST['u']) && isset($_POST['p'])) {
 		$hash=md5($_POST['u']."uphashseed".$_POST['p']);
@@ -19,10 +20,15 @@ function formatmonth($m) {
 	if (file_exists($fpath)) $loggedin=true;
 		
 	if (!$loggedin) {
-		//echo $hash;
-		unset($_SESSION['userhash']);
-		header("Location: index.php?e=1");
-		exit;
+		if ($hash!="") {
+			unset($_SESSION['userhash']);
+			header("Location: download.php?h=".$hash);
+			exit;
+		} else {
+			unset($_SESSION['userhash']);
+			header("Location: index.php?e=1");
+			exit;
+		}
 	}
 	
 	$_SESSION['userhash']=$hash;
@@ -416,7 +422,10 @@ Korrigierte Differenz:
 <img src="http://chart.apis.google.com/chart?chtt=Differenz+zum+Soll&chs=450x180&chxt=y,x&chxl=0:|-3:00|-1:30|0:00|+1:30|+3:00|1:|<?php echo (join('|', $daynames)) ?>&chco=6694E3&cht=bvs&chp=0.5&chds=-3,3&chd=t:<?php echo join(',',$valsdif) ?>">
 </div>
 </div>
-
+<div>
+<strong>Hash:</strong> <?php echo $hash ?><br />
+<a href="download.php?h=<?php echo $hash ?>">Daemon downloaden</a>
+</div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
 <script type="text/javascript">
 $('correct_action_link').addEvent('click', function() {
