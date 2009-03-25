@@ -63,18 +63,42 @@
 	<h1>
 	  <?php echo date('d.m.Y'); ?>
 	</h1>
+	
+	<?php 
+	$allLines = file($fpath);
+	$line = '';
+	for($i = count($allLines)-1; $i >= 0; $i--) {
+		if(substr($allLines[$i], 0, 1) == '#') continue;
+		$line = trim($allLines[$i]);
+		break;
+	}
+	if(!empty($line)) {
+	$coming=(substr($line,0,1)=="+");
+	
+	$datetime=strtotime(substr($line,2,19))+60*60;
+	$date=date("d.m.Y h:i:s",$datetime);
+	
+	echo '<p>Letzer Status: '.($coming ? 'GEKOMMEN' : 'GEGANGEN').' um '.$date.'</p>';
+	}
+	?>
 
-	<form>
-	  <button class="come" name="d" value="in">
-	    GEKOMMEN
-	  </button>
-	  <button class="go" name="d" value="out">
-	    GEGANGEN
-	  </button>
-	  <input type="hidden" name="h" value="<?php echo $hash; ?>">
+	<form class="expressform">
+		<?php if(!$coming) : ?>
+		<button class="come" name="d" value="in">
+			GEKOMMEN
+		</button>
+		<?php else: ?>
+		<button class="go" name="d" value="out">
+			GEGANGEN
+		</button>
+		<?php endif; ?>
+		<input type="hidden" name="h" value="<?php echo $hash; ?>">
 	</form>
 	
 <?php endif; ?>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
+<script type="text/javascript" src="mobile.js"></script>
 
 </body>
 </html>
