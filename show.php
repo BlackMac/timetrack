@@ -110,7 +110,7 @@ function formatmonth($m) {
 	<title>Zeittabelle - wann komme ich, wann gehe ich?</title>
 	<meta name="generator" content="TextMate http://macromates.com/">
 	<meta name="author" content="">
-	<link href="style.css" media="screen" rel="stylesheet" type="text/css">
+	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div id="month_navigator">
@@ -273,12 +273,7 @@ Korrigierte Differenz:
 <a href="index.php">Ausloggen</a>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
-<script type="text/javascript">
-$('correct_action_link').addEvent('click', function() {
-		$('correct_widow').toggleClass('visible');
-		$('correction_value').focus();
-});
-</script>
+<script type="text/javascript" src="js/show.js"></script>
 </body>
 </html>
 
