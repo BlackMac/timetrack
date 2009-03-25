@@ -1,0 +1,22 @@
+body {
+	text-align: center;
+  font-family: Verdana, Arial, sans-serif;
+}
+
+button {
+	border: 1px solid #000;
+	background: #eee;
+	width: 90%;
+	height: 100px;
+	margin-bottom: 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+button.come {
+	background: #00c000;
+}
+
+button.go {
+	background: #c00000;
+}
