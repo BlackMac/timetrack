@@ -131,6 +131,18 @@ span.negative_value
 	font-weight:bold;
 }
 
+#changeuserdata_widow
+{
+	position:absolute;
+	right:0;
+	background-color:#cccccc;
+	color:white;
+	border:1px solid #aaaaaa;
+	padding:10px;
+	display:none;
+	color:#444444;
+}
+
 #correct_widow
 {
 	position:absolute;

@@ -11,6 +11,19 @@
 <body>
 <div id="month_navigator">
 <div id="action_menu">
+<a href="#" id="changeuserdata_action_link">Logindaten ändern</a>
+<div id="changeuserdata_widow">
+<form action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" method="get">
+Username:<br>
+<input type="text" id="changeuserdata_user" name="changeuserdata_user"><br>
+Passwort:<br>
+<input type="text" id="changeuserdata_pass" name="changeuserdata_pass">
+
+<input type="submit">
+</form>
+</div>
+
+&bull;
 <a href="#" id="correct_action_link">Korrigieren</a>
 <div id="correct_widow">
 <form action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" method="get">
