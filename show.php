@@ -180,32 +180,20 @@ Korrigierte Differenz:
 <div style="overflow:hidden" id="content_wrapper">
 <div style="float:left">
 <table>
-<thead>
-<tr>
-<th>
-	Datum
-</th>
-<th>
-	Anwesenheit
-</th>
-<th>
-	Länge
-</th>
-<th>
-	Pause
-</th>
-<th>
-	Diff.
-</th>
-<th>
-	Gesamt
-</th>
-</tr>
-</thead>
-<tbody>
+	<thead>
+		<tr>
+			<th>Datum</th>
+			<th>Anwesenheit</th>
+			<th>Länge</th>
+			<th>Pause</th>
+			<th>Diff.</th>
+			<th>Gesamt</th>
+		</tr>
+	</thead>
+	<tbody>
 <?php foreach ($days as $cday): ?>
 <?php if ($curmonth==$cday['month']): ?>
-<?php 
+<?php
 	$bc=gmdate("i",$cday['worktime']-$cday['pause']);
 	$part=$bc/60;
 	$floattime=gmdate("G",$cday['worktime']-$cday['pause'])+$part;
@@ -227,35 +215,35 @@ Korrigierte Differenz:
 	$valsdif[]=$floattime;
 ?>
 
-<tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
-	<td>
-		<strong><?php echo date("d.m.Y",$cday['datestamp'])?></strong>
-	</td>
-	<td>
-		<?php echo date("G:i",$cday['startstamp'])?> -<?php echo date("G:i",$cday['endstamp'])?>
-	</td>
-	<td>
-		<?php echo gmdate("G:i",$cday['worktime']) ?>
-	</td>
-	<td>
-	<?php echo gmdate("G:i",$cday['pause']) ?>
-	</td>
-	<td>
-		<?php if ($cday['diff']>=0): ?>
-		+<?php echo gmdate("G:i",$cday['diff']) ?>
-		<?php else: ?>
-		<span class="negative_value">-<?php echo gmdate("G:i",$cday['diff']*-1) ?></span>
-		<?php endif; ?>
-	</td>
-	<td>
-	<?php if ($cday['monthdiff']>=0): ?>
-		+<?php echo gmdate("G:i",$cday['monthdiff']) ?>
-	<?php else: ?>
-		<span class="negative_value">-<?php echo gmdate("G:i",$cday['monthdiff']*-1) ?></span>
-	<?php endif; ?>
-		
-	</td>
-</tr>
+		<tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
+			<td>
+				<strong><?php echo date("d.m.Y",$cday['datestamp'])?></strong>
+			</td>
+			<td>
+				<?php echo date("G:i",$cday['startstamp'])?> - <?php echo date("G:i",$cday['endstamp'])?>
+			</td>
+			<td>
+				<?php echo gmdate("G:i",$cday['worktime']) ?>
+			</td>
+			<td>
+			<?php echo gmdate("G:i",$cday['pause']) ?>
+			</td>
+			<td>
+				<?php if ($cday['diff']>=0): ?>
+				+<?php echo gmdate("G:i",$cday['diff']) ?>
+				<?php else: ?>
+				<span class="negative_value">-<?php echo gmdate("G:i",$cday['diff']*-1) ?></span>
+				<?php endif; ?>
+			</td>
+			<td>
+			<?php if ($cday['monthdiff']>=0): ?>
+				+<?php echo gmdate("G:i",$cday['monthdiff']) ?>
+			<?php else: ?>
+				<span class="negative_value">-<?php echo gmdate("G:i",$cday['monthdiff']*-1) ?></span>
+			<?php endif; ?>
+				
+			</td>
+		</tr>
 <?php endif; ?>
 <?php endforeach; ?>
 </tbody>
