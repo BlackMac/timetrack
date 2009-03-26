@@ -38,7 +38,7 @@ $months=array();
 $pausestart=0;
 $f=fopen($fpath, 'r');
 while ($line=fgets($f)) {
-	if ($line=="\n") continue;
+	if (trim($line)=="") continue;
 	if (substr($line,0,1)=="#") continue;
 	$coming=(substr($line,0,1)=="+");
 	
@@ -66,7 +66,7 @@ while ($line=fgets($f)) {
 		$days[$date]['pause']+=($datetime-$pausestart);
 	}
 	
-	if ($date==date("Y-m-d")) $datetime=time();
+	if ($coming && $date==date("Y-m-d")) $datetime=time();
 	
 	$days[$date]['end']=substr($line,13, 8);
 	$days[$date]['endstamp']=$datetime;
@@ -80,7 +80,7 @@ while ($line=fgets($f)) {
 }
 fclose($f);
 
-$days[$date]['endstamp']=$datetime;
+//$days[$date]['endstamp']=$datetime;
 
 //unset($days[$date]);
 
@@ -120,7 +120,6 @@ foreach ($days as &$day) {
 		}
 		$valsdif[]=$floattime;
 	}
-	//$day['worktime']=$day['worktime']-$day['diff'];
 }
 
 include "views/show.phtml";
