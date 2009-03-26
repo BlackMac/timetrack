@@ -1,50 +1,81 @@
 <?php
-session_start();
 
-if (!isset($_POST) || count($_POST) <= 0) {
-	echo "Wrong method";
-	exit;
-}
+class TT_Action {
 
-if (!isset($_POST['action']) || empty($_POST['action'])) {
-	echo "No action specified";
-	exit;
-}
+	private $post;
+	private $session;
+	private $hash;
 
-if (isset($_SESSION['userhash'])) {
-	$hash = $_SESSION['userhash'];
-} else {
-	echo "No Hash in session given";
-	exit;
-}
-
-switch($_POST['action']) {
-	case 'changeuserdata':
-		changeUserData($hash);
-		break;
-	default:
-		echo "Wrong action specified";
-		break;
-}
-exit;
-
-function changeUserData($hash) {
-	if (!isset($_POST['changeuserdata_user'], $_POST['changeuserdata_pass'])) {
-		echo 'changeUserData: Required fields are missing';
-		return;
+	function __construct() {
+		$this->post = $_POST;
+		
+		$this->startSession();
+		$this->dispatch();
 	}
-
-	$fpath=realpath('logs/'.$hash.'.log');
 	
-	$newhash = md5($_POST['changeuserdata_user']."uphashseed".$_POST['changeuserdata_pass']);
-	$fnewpath= dirname($fpath) . '/'.$newhash.'.log';
-
-	$result = rename($fpath, $fnewpath);
-	if($result) {
-		$_SESSION['userhash'] = $newhash;
-		header("Location: show.php");
-	} else {
-		echo "changeUserData: Error occurred during renaming.";
+	private function startSession() {
+		session_start();
+		$this->session = $_SESSION;
+		
+		if (isset($this->session['userhash'])) {
+			$this->hash = $this->session['userhash'];
+		} else {
+			echo "No Hash in session given";
+			exit;
+		}
+		
+	}
+	
+	private function dispatch()
+	{
+		if (!isset($this->post) || count($this->post) <= 0) {
+			echo "Wrong method";
+			return;
+		}
+		
+		if (!isset($this->post['action']) || empty($this->post['action'])) {
+			echo "No action specified";
+			return;
+		}
+		
+		$method = $this->post['action'] . 'Action';
+		if(method_exists($this, $method)) {
+			$this->$method();
+		} else {
+			echo "Wrong action specified";
+			return;
+		}
 		return;
+	
+	}
+
+	private function changeuserdataAction()
+	{
+		if (!isset($this->post['changeuserdata_user'], $this->post['changeuserdata_pass'])) {
+			echo __METHOD__ . ': Required fields are missing';
+			return;
+		}
+		
+		$newhash = md5($this->post['changeuserdata_user']."uphashseed".$this->post['changeuserdata_pass']);
+
+		$foldpath = realpath('logs/'.$this->hash.'.log');
+		$fnewpath = dirname($foldpath) . '/'.$newhash.'.log';
+
+		$result = rename($foldpath, $fnewpath);
+		if($result) {
+			$_SESSION['userhash'] = $newhash;
+			$this->redirect('show.php');
+		} else {
+			echo __METHOD__ . ': Error occurred during renaming.';
+			return;
+		}	
+	}
+	
+	private function redirect($whereTo)
+	{
+		header("Location: " . dirname($_SERVER['SCRIPT_NAME']) . '/' . $whereTo);
 	}
 }
+
+$action = new TT_Action();
+
