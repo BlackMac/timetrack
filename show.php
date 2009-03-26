@@ -60,6 +60,10 @@ while ($line=fgets($f)) {
 			'startstamp'=>$datetime,
 			'pause'=>0,
 		);
+	} elseif (substr($line,0,1)=="C") {
+		echo "C".$days[$date]['start'];
+		$days[$date]['startstamp']-=substr($line,22);
+		continue;
 	} elseif (!$coming) {
 		$pausestart=$datetime;
 	} else {
