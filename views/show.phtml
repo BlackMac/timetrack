@@ -57,7 +57,7 @@ Korrigierte Differenz:
 	
 	<div id="day_diff" class="">
 		<span class="diff_label">Feierabend:</span><br>
-		<?php echo date("G:i:s", $day['startstamp']-$day['pause']+60*60*8.75) ?>
+		<?php echo date("G:i:s", $day['startstamp']+$day['pause']+60*60*8.75) ?>
 	</div>
 	
 	<?php if ($day['diff']>0): ?>
