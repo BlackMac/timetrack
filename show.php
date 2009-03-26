@@ -31,6 +31,11 @@ if (!$loggedin) {
 	}
 }
 
+if (isset($_POST['u'])) {
+	$_SESSION['username'] = $_POST['u'];
+}
+
+$username = $_SESSION['username'];
 $_SESSION['userhash']=$hash;
 
 $days=array();

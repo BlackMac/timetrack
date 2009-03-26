@@ -13,14 +13,21 @@
 <div id="action_menu">
 <a href="#" id="changeuserdata_action_link">Logindaten ändern</a>
 <div id="changeuserdata_widow">
-<form action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" method="get">
-Username:<br>
-<input type="text" id="changeuserdata_user" name="changeuserdata_user"><br>
-Passwort:<br>
-<input type="text" id="changeuserdata_pass" name="changeuserdata_pass">
+	<form action="<?php echo dirname($_SERVER["SCRIPT_NAME"]) ?>/action.php" method="POST" autocomplete="off">
+		<input type="hidden" name="action"  value="changeuserdata">
+		Username:<br>
+		<?php if(isset($username)) : ?>
+			<strong><?php echo $username; ?></strong>
+			<input type="hidden"id="changeuserdata_user" name="changeuserdata_user"  value="<?php echo $username; ?>">
+		<?php else : ?>
+			<input type="text" id="changeuserdata_user" name="changeuserdata_user" value="">
+		<?php endif; ?>
+		<br>
+		Passwort:<br>
+		<input type="password" id="changeuserdata_pass" name="changeuserdata_pass">
 
-<input type="submit">
-</form>
+		<input type="submit">
+	</form>
 </div>
 
 &bull;
