@@ -61,10 +61,6 @@
 		</p>
 	</form>
 <?php else : ?>
-
-	<h1>
-	  <?php echo date('d.m.Y'); ?>
-	</h1>
 	
 	<?php 
 	$allLines = file($fpath);
@@ -80,24 +76,29 @@
 	$datetime=strtotime(substr($line,2,19))+60*60;
 	$date=date("d.m.Y",$datetime);
 	$time=date("h:i",$datetime);
-	
-	echo '<p>Letzer Status: '.($coming ? 'GEKOMMEN' : 'GEGANGEN').' am '.$date.' um '.$time.'</p>';
 	}
 	?>
 
 	<form class="expressform">
 		<?php if(!$coming) : ?>
 		<button class="come" name="d" value="in">
-			GEKOMMEN
+
 		</button>
 		<?php else: ?>
 		<button class="go" name="d" value="out">
-			GEGANGEN
+
 		</button>
 		<?php endif; ?>
 		<input type="hidden" name="h" value="<?php echo $hash; ?>">
 	</form>
-	
+	<div id="infosection">
+		<h1>
+		  <?php echo date('d.m.Y'); ?>
+		</h1>
+		<?php
+		echo '<p>am '.$date.' um '.$time.'<br><strong>'.($coming ? 'GEKOMMEN' : 'GEGANGEN').'</strong></p>';
+		?>
+	</div>
 <?php endif; ?>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>

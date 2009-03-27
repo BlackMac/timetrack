@@ -1,24 +1,38 @@
 body {
+  margin:0;
+  padding:0;
 	text-align: center;
-  font-family: Verdana, Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#414e55 url(../img/mobile/topgradient.png) repeat-x;
 }
 
 button {
-	border: 1px solid #000;
-	background: #eee;
-	width: 90%;
-	height: 150px;
-	width:150px;
-	-webkit-border-radius:75px;
-	margin-bottom: 10px;
-	font-size: 20px;
-	font-weight: bold;
+	background: url(../img/mobile/button_green.png);
+	height: 176px;
+	width:296px;
+	border:none;
+	margin:20px 0 0 0;
 }
 
 button.come {
-	background: #00c000;
+	background: url(../img/mobile/button_green.png);
 }
 
 button.go {
 	background: #c00000;
+}
+
+#infosection
+{
+  margin:10px auto;
+  background: url(../img/mobile/infogradient.png);
+  height:130px;
+  padding:55px;
+  color:#444444;
+  line-height:1.45em;
+}
+
+#infosection h1
+{
+  color:#999999;
 }
