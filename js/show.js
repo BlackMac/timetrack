@@ -5,5 +5,5 @@ $('correct_action_link').addEvent('click', function() {
 
 $('changeuserdata_action_link').addEvent('click', function() {
 		$('changeuserdata_widow').toggleClass('visible');
-		$('changeuserdata_user').focus();
+		$('changeuserdata_pass').focus();
 });

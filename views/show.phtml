@@ -13,14 +13,21 @@
 <div id="action_menu">
 <a href="#" id="changeuserdata_action_link">Logindaten ändern</a>
 <div id="changeuserdata_widow">
-<form action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" method="get">
-Username:<br>
-<input type="text" id="changeuserdata_user" name="changeuserdata_user"><br>
-Passwort:<br>
-<input type="text" id="changeuserdata_pass" name="changeuserdata_pass">
+	<form action="<?php echo dirname($_SERVER["SCRIPT_NAME"]) ?>/action.php" method="POST" autocomplete="off">
+		<input type="hidden" name="action"  value="changeuserdata">
+		Username:<br>
+		<?php if(isset($username)) : ?>
+			<strong><?php echo $username; ?></strong>
+			<input type="hidden"id="changeuserdata_user" name="changeuserdata_user"  value="<?php echo $username; ?>">
+		<?php else : ?>
+			<input type="text" id="changeuserdata_user" name="changeuserdata_user" value="">
+		<?php endif; ?>
+		<br>
+		Passwort:<br>
+		<input type="password" id="changeuserdata_pass" name="changeuserdata_pass">
 
-<input type="submit">
-</form>
+		<input type="submit">
+	</form>
 </div>
 
 &bull;
@@ -139,7 +146,7 @@ Korrigierte Differenz:
 <div style="float:left;margin:0 0 0 20px;">
 <img src="http://chart.apis.google.com/chart?chtt=Anwesenheit+in+Stunden&chs=450x180&chxt=y,x&chxl=0:|6:15|8:45|11:15|1:|<?php echo (join('|', $daynames)) ?>&chco=7097AE&cht=lc&chm=r,CAE8EA,0,0.49,0.51&chds=6.25,11.25&chd=t:<?php echo join(',',$vals) ?>">
 <br>
-<img src="http://chart.apis.google.com/chart?chtt=Differenz+zum+Soll&chs=450x180&chxt=y,x&chxl=0:|-3:00|-1:30|0:00|+1:30|+3:00|1:|<?php echo (join('|', $daynames)) ?>&chco=6694E3&cht=bvs&chp=0.5&chds=-3,3&chd=t:<?php echo join(',',$valsdif) ?>">
+<img src="http://chart.apis.google.com/chart?chtt=Differenz+zum+Soll&chs=450x180&chxt=y,x&chxl=0:|-3:00|-1:30|0:00|+1:30|+3:00|1:|<?php echo (join('|', $daynames)) ?>&chbh=a&chco=6694E3&cht=bvs&chp=0.5&chds=-3,3&chd=t:<?php echo join(',',$valsdif) ?>">
 </div>
 </div>
 <div>
