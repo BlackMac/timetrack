@@ -28,7 +28,9 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-  <title>Zeittabelle MOBILE - wann komme ich, wann gehe ich?</title>
+	<link rel="apple-touch-icon" href="/img/favicon.png"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>time@work</title>
   <link href="style.css" media="screen" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -76,9 +78,10 @@
 	$coming=(substr($line,0,1)=="+");
 	
 	$datetime=strtotime(substr($line,2,19))+60*60;
-	$date=date("d.m.Y h:i:s",$datetime);
+	$date=date("d.m.Y",$datetime);
+	$time=date("h:i",$datetime);
 	
-	echo '<p>Letzer Status: '.($coming ? 'GEKOMMEN' : 'GEGANGEN').' um '.$date.'</p>';
+	echo '<p>Letzer Status: '.($coming ? 'GEKOMMEN' : 'GEGANGEN').' am '.$date.' um '.$time.'</p>';
 	}
 	?>
 
