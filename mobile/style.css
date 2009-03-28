@@ -19,7 +19,7 @@ button.come {
 }
 
 button.go {
-	background: #c00000;
+	background: url(../img/mobile/button_red.png);
 }
 
 #infosection

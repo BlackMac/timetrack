@@ -75,7 +75,7 @@
 	
 	$datetime=strtotime(substr($line,2,19))+60*60;
 	$date=date("d.m.Y",$datetime);
-	$time=date("h:i",$datetime);
+	$time=date("H:i",$datetime);
 	}
 	?>
 
