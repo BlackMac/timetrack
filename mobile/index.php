@@ -80,22 +80,23 @@
 
 	<form class="expressform">
 		<?php if(!$coming) : ?>
-		<button class="come" name="d" value="in">
+		<button class="come" name="d" value="in" id="change_button">
 
 		</button>
 		<?php else: ?>
-		<button class="go" name="d" value="out">
+		<button class="go" name="d" value="out" id="change_button">
 
 		</button>
 		<?php endif; ?>
 		<input type="hidden" name="h" value="<?php echo $hash; ?>">
 	</form>
 	<div id="infosection">
-		<h1>
+		<h1 class="now_date">
 		  <?php echo date('d.m.Y'); ?>
 		</h1>
 		<?php
-		echo '<p>am '.$date.' um '.$time.'<br><strong>'.($coming ? 'GEKOMMEN' : 'GEGANGEN').'</strong></p>';
+		echo '<p>am <span class="last_date">'.$date.'</span> um <span class="last_time">'.$time.'</span>';
+		echo '<br><strong class="direction_action">'.($coming ? 'GEKOMMEN' : 'GEGANGEN').'</strong></p>';
 		?>
 	</div>
 <?php endif; ?>
