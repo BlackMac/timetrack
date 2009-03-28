@@ -21,10 +21,9 @@
 	}
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" manifest="cache-manifest.php">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
@@ -101,7 +100,7 @@
 	</div>
 <?php endif; ?>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
+<script type="text/javascript" src="mootools-yui-compressed.js"></script>
 <script type="text/javascript" src="mobile.js"></script>
 
 </body>

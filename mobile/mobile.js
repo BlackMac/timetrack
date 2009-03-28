@@ -1,4 +1,4 @@
-var wait_div=new Element('div', {'class':'wait_div'});
+var wait_div=new Element('div', {'class':'wait_div','text':'Übertragen...'});
 
 $$('.expressform').addEvent('submit', function(evnt) {
 	wait_div.injectTop(document.body);
