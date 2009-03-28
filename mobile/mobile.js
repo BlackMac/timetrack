@@ -47,6 +47,10 @@ $$('.expressform').addEvent('submit', function(evnt) {
 	} }).get(ajaxparams);
 }.bindWithEvent());
 
+window.addEvent('unload', function() {
+	wait_div.injectTop(document.body);
+});
+
 document.addEventListener("touchmove", function(e){e.preventDefault()}, false);
 
 /* preload spinner */
