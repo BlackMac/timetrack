@@ -7,6 +7,10 @@
 	<meta name="generator" content="TextMate http://macromates.com/">
 	<meta name="author" content="">
 	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
+	<?php if($mobiledevice) : ?>
+		<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+		<link href="css/style.handheld.css" rel="stylesheet" type="text/css">		
+	<?php endif; ?>	
 </head>
 <body>
 <div id="month_navigator">
@@ -98,63 +102,67 @@ Korrigierte Differenz:
 
 
 <div style="overflow:hidden" id="content_wrapper">
-<div style="float:left">
-<table>
-	<thead>
-		<tr>
-			<th>Datum</th>
-			<th>Anwesenheit</th>
-			<th>Länge</th>
-			<th>Pause</th>
-			<th>Diff.</th>
-			<th>Gesamt</th>
-		</tr>
-	</thead>
-	<tbody>
-<?php foreach ($days as $cday): ?>
-	<?php if ($curmonth==$cday['month']): ?>
-		<tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
-			<td>
-				<strong><?php echo date("d.m.Y",$cday['datestamp'])?></strong>
-			</td>
-			<td>
-				<?php echo date("G:i",$cday['startstamp'])?> - <?php echo date("G:i",$cday['endstamp'])?>
-			</td>
-			<td>
-				<?php echo gmdate("G:i",$cday['worktime']) ?>
-			</td>
-			<td>
-			<?php echo gmdate("G:i",$cday['pause']) ?>
-			</td>
-			<td>
-				<?php if ($cday['diff']>=0): ?>
-				+<?php echo gmdate("G:i",$cday['diff']) ?>
+	<div class="leftColumn">
+	<table>
+		<thead>
+			<tr>
+				<th>Datum</th>
+				<th>Anwesenheit</th>
+				<th>Länge</th>
+				<th>Pause</th>
+				<th>Diff.</th>
+				<th>Gesamt</th>
+			</tr>
+		</thead>
+		<tbody>
+	<?php foreach ($days as $cday): ?>
+		<?php if ($curmonth==$cday['month']): ?>
+			<tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
+				<td>
+					<strong><?php echo date("d.m.Y",$cday['datestamp'])?></strong>
+				</td>
+				<td>
+					<?php echo date("G:i",$cday['startstamp'])?> - <?php echo date("G:i",$cday['endstamp'])?>
+				</td>
+				<td>
+					<?php echo gmdate("G:i",$cday['worktime']) ?>
+				</td>
+				<td>
+				<?php echo gmdate("G:i",$cday['pause']) ?>
+				</td>
+				<td>
+					<?php if ($cday['diff']>=0): ?>
+					+<?php echo gmdate("G:i",$cday['diff']) ?>
+					<?php else: ?>
+					<span class="negative_value">-<?php echo gmdate("G:i",$cday['diff']*-1) ?></span>
+					<?php endif; ?>
+				</td>
+				<td>
+				<?php if ($cday['monthdiff']>=0): ?>
+					+<?php echo gmdate("G:i",$cday['monthdiff']) ?>
 				<?php else: ?>
-				<span class="negative_value">-<?php echo gmdate("G:i",$cday['diff']*-1) ?></span>
+					<span class="negative_value">-<?php echo gmdate("G:i",$cday['monthdiff']*-1) ?></span>
 				<?php endif; ?>
-			</td>
-			<td>
-			<?php if ($cday['monthdiff']>=0): ?>
-				+<?php echo gmdate("G:i",$cday['monthdiff']) ?>
-			<?php else: ?>
-				<span class="negative_value">-<?php echo gmdate("G:i",$cday['monthdiff']*-1) ?></span>
-			<?php endif; ?>
-				
-			</td>
-		</tr>
-	<?php endif; ?>
-<?php endforeach; ?>
-</tbody>
-</table>
-</div>
-<div style="float:left;margin:0 0 0 20px;">
-<img src="http://chart.apis.google.com/chart?chtt=Anwesenheit+in+Stunden&chs=450x180&chxt=y,x&chxl=0:|6:15|8:45|11:15|1:|<?php echo (join('|', $daynames)) ?>&chco=7097AE&cht=lc&chm=r,CAE8EA,0,0.49,0.51&chds=6.25,11.25&chd=t:<?php echo join(',',$vals) ?>">
-<br>
-<img src="http://chart.apis.google.com/chart?chtt=Differenz+zum+Soll&chs=450x180&chxt=y,x&chxl=0:|-3:00|-1:30|0:00|+1:30|+3:00|1:|<?php echo (join('|', $daynames)) ?>&chbh=a&chco=6694E3&cht=bvs&chp=0.5&chds=-3,3&chd=t:<?php echo join(',',$valsdif) ?>">
-<br>
-<strong>Hash:</strong> <?php echo $hash ?><br />
-<img src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $hash ?>&choe=UTF-8">
-</div>
+					
+				</td>
+			</tr>
+		<?php endif; ?>
+	<?php endforeach; ?>
+	</tbody>
+	</table>
+	</div>
+
+	<div class="rightColumn">
+		<img src="http://chart.apis.google.com/chart?chtt=Anwesenheit+in+Stunden&chs=450x180&chxt=y,x&chxl=0:|6:15|8:45|11:15|1:|<?php echo (join('|', $daynames)) ?>&chco=7097AE&cht=lc&chm=r,CAE8EA,0,0.49,0.51&chds=6.25,11.25&chd=t:<?php echo join(',',$vals) ?>">
+		<br>
+		
+		<img src="http://chart.apis.google.com/chart?chtt=Differenz+zum+Soll&chs=450x180&chxt=y,x&chxl=0:|-3:00|-1:30|0:00|+1:30|+3:00|1:|<?php echo (join('|', $daynames)) ?>&chbh=a&chco=6694E3&cht=bvs&chp=0.5&chds=-3,3&chd=t:<?php echo join(',',$valsdif) ?>">
+		<br>
+		
+		<strong>Hash:</strong> <?php echo $hash ?><br />
+		<img src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $hash ?>&choe=UTF-8">
+	</div>
+
 </div>
 <div>
 </div>

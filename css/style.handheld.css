@@ -1,0 +1,60 @@
+body
+{
+	background: #414E55 url(../img/mobile/topgradient.png) repeat-x;
+	color: #fff;
+}
+
+form.login
+{
+	background: transparent url(../img/mobile/infogradient.png) repeat-x;
+	padding: 10px;
+	color: #444444;
+}
+
+form.login br {
+	display: none;
+}
+
+form.login input[type=submit] {
+	border: 1px solid #fff;
+	background: #414E55;
+	color: #fff;
+	font-weight: bold;
+	width: 150px;
+	height: 30px;
+	margin: 0px auto;
+}
+
+#overview {
+	width: auto;
+	background-color: transparent;
+	border: 1px solid #fff;
+}
+
+#month_diff, #day_diff {
+	/* float: none; */
+	width: 44%;
+	padding: 0 0 0 5%;
+	border: 0;
+	border: 0px;
+}
+
+#action_field {
+	display: none;
+	visibility: hidden;
+}
+
+#content_wrapper {
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+.leftColumn, .rightColumn {
+	float: none;
+	margin: 0;
+}
+
+.leftColumn table {
+	width: 100% !important;
+}
