@@ -106,6 +106,22 @@ span.negative_value
 	margin:0;
 }
 
+#action_field
+{
+	float:right;
+	padding:4px 10px;
+	margin:0;
+	font-size:12px;
+	line-height:22px;
+	text-align:right;
+}
+
+#action_field a
+{
+	color:#666666;
+	font-weight:bold;
+}
+
 #month_diff.negative,
 #day_diff.negative
 {

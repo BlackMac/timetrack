@@ -1,2 +1,3 @@
 logs/*.log
-
+*.marks
+.DS_Store

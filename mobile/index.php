@@ -21,14 +21,15 @@
 	}
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" manifest="cache-manifest.php">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-  <title>Zeittabelle MOBILE - wann komme ich, wann gehe ich?</title>
+	<link rel="apple-touch-icon" href="/img/favicon.png"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>time@work</title>
   <link href="style.css" media="screen" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -59,10 +60,6 @@
 		</p>
 	</form>
 <?php else : ?>
-
-	<h1>
-	  <?php echo date('d.m.Y'); ?>
-	</h1>
 	
 	<?php 
 	$allLines = file($fpath);
@@ -76,28 +73,35 @@
 	$coming=(substr($line,0,1)=="+");
 	
 	$datetime=strtotime(substr($line,2,19))+60*60;
-	$date=date("d.m.Y h:i:s",$datetime);
-	
-	echo '<p>Letzer Status: '.($coming ? 'GEKOMMEN' : 'GEGANGEN').' um '.$date.'</p>';
+	$date=date("d.m.Y",$datetime);
+	$time=date("H:i",$datetime);
 	}
 	?>
 
 	<form class="expressform">
 		<?php if(!$coming) : ?>
-		<button class="come" name="d" value="in">
-			GEKOMMEN
+		<button class="come" name="d" value="in" id="change_button">
+
 		</button>
 		<?php else: ?>
-		<button class="go" name="d" value="out">
-			GEGANGEN
+		<button class="go" name="d" value="out" id="change_button">
+
 		</button>
 		<?php endif; ?>
 		<input type="hidden" name="h" value="<?php echo $hash; ?>">
 	</form>
-	
+	<div id="infosection">
+		<h1 class="now_date">
+		  <?php echo date('d.m.Y'); ?>
+		</h1>
+		<?php
+		echo '<p>am <span class="last_date">'.$date.'</span> um <span class="last_time">'.$time.'</span>';
+		echo '<br><strong class="direction_action">'.($coming ? 'GEKOMMEN' : 'GEGANGEN').'</strong></p>';
+		?>
+	</div>
 <?php endif; ?>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
+<script type="text/javascript" src="mootools-yui-compressed.js"></script>
 <script type="text/javascript" src="mobile.js"></script>
 
 </body>
