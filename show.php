@@ -47,7 +47,7 @@ while ($line=fgets($f)) {
 	if (substr($line,0,1)=="#") continue;
 	$coming=(substr($line,0,1)=="+");
 	
-	$datetime=strtotime(substr($line,2,19))+60*60;
+	$datetime=strtotime(substr($line,2,19));
 	$monthy=date("Ym",$datetime);
 	
 	if (!isset($months[$monthy])) {

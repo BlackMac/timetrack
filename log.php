@@ -4,7 +4,7 @@ if (!isset($_GET['h'])) {
 	exit;
 }
 
-$logtime=gmdate("Y-m-d\TH:i:s");
+$logtime=date("Y-m-d\TH:i:s");
 $action="#";
 
 if ($_GET['d']=="in") $action="+";
