@@ -5,6 +5,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>TimeTrack</title>
 	<meta name="author" content="Stefan Lange-Hegermann">
+	<link href="css/style.css" rel="stylesheet" type="text/css">		
+	<?php if($mobiledevice) : ?>
+		<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+		<link href="css/style.handheld.css" rel="stylesheet" type="text/css">		
+	<?php endif; ?>
 </head>
 <body>
 	<?php if (isset($error)): ?>
@@ -12,8 +17,10 @@
 		<strong><?php echo $error ?></strong>
 	</div>
 	<?php endif; ?>
-	Benutzername und Passwort angeben um die Logs einzusehen:
-	<form action="show.php" method="post">
+	<p>
+		Benutzername und Passwort angeben um die Logs einzusehen:
+	</p>
+	<form class="login" action="show.php" method="post">
 	<p>
 	<label for="name">Username:</label><br>
 		<input type="text" name="u" id="name" />

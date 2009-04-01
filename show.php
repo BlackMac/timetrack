@@ -1,14 +1,11 @@
 <?php
-function formatmonth($m) {
-	$d=mktime(12,0,0,substr($m, 4, 2),1,substr($m, 0, 4));
-	$strdate=gmdate("M Y",$d);
-	return $strdate;
-}
+include "functions_GRML.php";
 	
 session_start();
 $loggedin=false;
 $fpath="";
 $hash="";
+$mobiledevice = detectMobileDevices();
 
 if (isset($_POST['u']) && isset($_POST['p'])) {
 	$hash=md5($_POST['u']."uphashseed".$_POST['p']);

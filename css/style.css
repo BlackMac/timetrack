@@ -59,9 +59,9 @@ span.negative_value
 
 #month_navigator
 {
+	background: #bbb url(../images/navigator_background.gif) repeat-x;
 	font: 16px Arial, Helvetica, sans-serif;
 	padding:15px;
-	background-color:#cccccc;
 	color:white;
 	border-bottom:1px solid #aaaaaa;
 	margin:0 0 10px 0;
@@ -180,4 +180,13 @@ span.negative_value
 {
 	font-size:10px;
 	color:black;
+}
+
+.leftColumn {
+	float: left;
+}
+
+.rightColumn {
+	float:left;
+	margin:0 0 0 20px;
 }
