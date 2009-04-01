@@ -14,45 +14,54 @@
 </head>
 <body>
 <div id="month_navigator">
-<div id="action_menu">
-<a href="#" id="changeuserdata_action_link">Logindaten ändern</a>
-<div id="changeuserdata_widow">
-	<form action="<?php echo dirname($_SERVER["SCRIPT_NAME"]) ?>/action.php" method="POST" autocomplete="off">
-		<input type="hidden" name="action"  value="changeuserdata">
-		Username:<br>
-		<?php if(isset($username)) : ?>
-			<strong><?php echo $username; ?></strong>
-			<input type="hidden"id="changeuserdata_user" name="changeuserdata_user"  value="<?php echo $username; ?>">
-		<?php else : ?>
-			<input type="text" id="changeuserdata_user" name="changeuserdata_user" value="">
-		<?php endif; ?>
-		<br>
-		Passwort:<br>
-		<input type="password" id="changeuserdata_pass" name="changeuserdata_pass">
+	<div id="action_menu">
+		<ul>
+		<li>
+		<a href="#" id="changeuserdata_action_link">Logindaten ändern</a>
+		<div id="changeuserdata_widow" class="settings_popdown">
+			<form action="<?php echo dirname($_SERVER["SCRIPT_NAME"]) ?>/action.php" method="POST" autocomplete="off">
+				<input type="hidden" name="action"  value="changeuserdata">
+				Username:<br>
+				<?php if(isset($username)) : ?>
+					<strong><?php echo $username; ?></strong>
+					<input type="hidden"id="changeuserdata_user" name="changeuserdata_user"  value="<?php echo $username; ?>">
+				<?php else : ?>
+					<input type="text" id="changeuserdata_user" name="changeuserdata_user" value="">
+				<?php endif; ?>
+				<br>
+				Passwort:<br>
+				<input type="password" id="changeuserdata_pass" name="changeuserdata_pass">
 
-		<input type="submit">
-	</form>
-</div>
+				<input type="submit">
+			</form>
+		</div>
+		</li>
 
-&bull;
-<a href="#" id="correct_action_link">Korrigieren</a>
-<div id="correct_widow">
-<form action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" method="get">
-Korrektur in Minuten:
-<input type="text" id="correction_value" name="correction_value">
-Korrigierte Differenz:
-<input type="text" id="correction_absolute" name="correction_absolute">
+		<li>
+		<a href="#" id="correct_action_link">Korrigieren</a>
+		<div id="correct_widow" class="settings_popdown">
+			<form action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" method="get">
+			Korrektur in Minuten:
+			<input type="text" id="correction_value" name="correction_value">
+			Korrigierte Differenz:
+			<input type="text" id="correction_absolute" name="correction_absolute">
 
-<input type="submit">
-</form>
-</div>
-</div>
-<div>
-&bull;
-<?php foreach($months as $month=>$time): ?>
-<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a> &bull;
-<?php endforeach; ?>
-</div>
+			<input type="submit">
+			</form>
+		</div>
+		</li>
+		</ul>
+	</div>
+	
+	<div id="months">
+		<ul>
+		<?php foreach($months as $month=>$time): ?>
+			<li>
+				<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
+			</li>
+		<?php endforeach; ?>
+		</ul>
+	</div>
 </div>
 
 <div id="overview">

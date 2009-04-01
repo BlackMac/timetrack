@@ -59,12 +59,13 @@ span.negative_value
 
 #month_navigator
 {
-	background: #bbb url(../images/navigator_background.gif) repeat-x;
+	background: #92b361 url(../images/navigator_background.gif) repeat-x;
 	font: 16px Arial, Helvetica, sans-serif;
-	padding:15px;
 	color:white;
 	border-bottom:1px solid #aaaaaa;
+	padding: 0 15px;
 	margin:0 0 10px 0;
+	height: 49px;
 }
 
 #month_navigator a
@@ -75,7 +76,43 @@ span.negative_value
 #month_navigator a.active
 {
 	font-weight:bold;
-	color:#444444;
+	color:#eee;
+}
+
+#action_menu,
+#months {
+	padding-top: 6px;
+}
+
+#month_navigator ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#month_navigator ul li {
+	background: #92b361 url(../images/navigator_buttons.gif) no-repeat left top;
+	float: left;
+	color: #fff;
+	padding-left: 10px;
+}
+
+#month_navigator ul li  a {
+	background: #92b361 url(../images/navigator_buttons.gif) no-repeat right top;
+	padding-right: 10px;
+	float: left;
+	color: #ddd;
+	font-size: 12px;
+	text-decoration: none;
+	line-height: 36px;
+}
+
+#month_navigator ul li:hover {
+	background-position: left bottom;
+}
+
+#month_navigator ul li:hover a {
+	background-position: right bottom;
 }
 
 #content_wrapper
@@ -149,23 +186,19 @@ span.negative_value
 
 #changeuserdata_widow
 {
-	position:absolute;
-	right:0;
-	background-color:#cccccc;
-	color:white;
-	border:1px solid #aaaaaa;
-	padding:10px;
-	display:none;
-	color:#444444;
 }
 
 #correct_widow
 {
+}
+
+.settings_popdown {
 	position:absolute;
 	right:0;
-	background-color:#cccccc;
+	top: 41px;
+	background-color:#92b361;
 	color:white;
-	border:1px solid #aaaaaa;
+	border:1px solid #3f5e00;
 	padding:10px;
 	display:none;
 	color:#444444;
