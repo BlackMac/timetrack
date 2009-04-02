@@ -1,21 +1,12 @@
 <?php
 	session_start();
-	$hash = null;
-	if (isset($_GET['h'])) {
-		$hash = $_GET['h'];
-	} elseif (isset($_SESSION['userhash'])) {
-		$hash=$_SESSION['userhash'];
-	} elseif (isset($_POST['u']) && isset($_POST['p'])) {
-		$hash=md5($_POST['u']."uphashseed".$_POST['p']);
-	}
+	include "../TimeTrack.class.php";
+	$timetrack = new TimeTrack();
+	
+	$loggedin = $timetrack->login($_POST['u'], $_POST['p'], $_GET['h']);
+	$hash = $timetrack->hash;
 
-	$loggedin = false;
-	$fpath=realpath('../logs/'.$hash.'.log');
-	if (file_exists($fpath)) $loggedin=true;
-
-	if($loggedin) {
-		$_SESSION['userhash']=$hash;
-	} else {
+	if(!$loggedin) {
 		unset($hash);
 		unset($_SESSION['userhash']);
 	}
@@ -45,7 +36,7 @@
 	<?php endif; ?>
 <?php endif; ?>
 
-<?php if(!isset($hash)) : ?>
+<?php if(!$loggedin) : ?>
 	<form method="POST">
 		<p>
 		<label for="name">User:</label><br>
@@ -62,20 +53,19 @@
 <?php else : ?>
 	
 	<?php 
-	$allLines = file($fpath);
-	$line = '';
-	for($i = count($allLines)-1; $i >= 0; $i--) {
-		if(substr($allLines[$i], 0, 1) == '#') continue;
-		$line = trim($allLines[$i]);
-		break;
-	}
-	if(!empty($line)) {
-	$coming=(substr($line,0,1)=="+");
+	$timetrack->parseData();
+	$lastEntry = $timetrack->getLastDay();
 	
-	$datetime=strtotime(substr($line,2,19))+60*60;
-	$date=date("d.m.Y",$datetime);
-	$time=date("H:i",$datetime);
+	$coming = $lastEntry['laststateIn'];
+
+	if($coming) {
+		$date=date("d.m.Y", $lastEntry['startstamp']);
+		$time=date("H:i",  $lastEntry['startstamp']);
+	} else {
+		$date=date("d.m.Y", $lastEntry['endstamp']);
+		$time=date("H:i",  $lastEntry['endstamp']);
 	}
+	
 	?>
 
 	<form class="expressform">

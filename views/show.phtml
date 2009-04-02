@@ -55,7 +55,7 @@
 	
 	<div id="months">
 		<ul>
-		<?php foreach($months as $month=>$time): ?>
+		<?php foreach($data['months'] as $month=>$time): ?>
 			<li>
 				<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
 			</li>
@@ -92,15 +92,15 @@
 		</div>
 	<?php endif; ?>
 	
-	<?php if ($months[$curmonth]>0): ?>
+	<?php if ($data['months'][$curmonth]>0): ?>
 		<div id="month_diff">
 			<span class="diff_label"><?php echo formatmonth($curmonth) ?>:</span><br>
-			<?php echo gmdate("G:i:s", $months[$curmonth]) ?>
+			<?php echo gmdate("G:i:s", $data['months'][$curmonth]) ?>
 		</div>
 	<?php else:?>
 		<div id="month_diff" class="negative">
 			<span class="diff_label"><?php echo formatmonth($curmonth) ?>:</span><br>
-			-<?php echo gmdate("G:i:s", $months[$curmonth]*-1) ?>
+			-<?php echo gmdate("G:i:s", $data['months'][$curmonth]*-1) ?>
 		</div>
 	<?php endif; ?>
 	<div id="action_field">
@@ -124,7 +124,7 @@
 			</tr>
 		</thead>
 		<tbody>
-	<?php foreach ($days as $cday): ?>
+	<?php foreach ($data['days'] as $cday): ?>
 		<?php if ($curmonth==$cday['month']): ?>
 			<tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
 				<td>
@@ -162,14 +162,12 @@
 	</div>
 
 	<div class="rightColumn">
-		<img src="http://chart.apis.google.com/chart?chtt=Anwesenheit+in+Stunden&chs=450x180&chxt=y,x&chxl=0:|6:15|8:45|11:15|1:|<?php echo (join('|', $daynames)) ?>&chco=7097AE&cht=lc&chm=r,CAE8EA,0,0.49,0.51&chds=6.25,11.25&chd=t:<?php echo join(',',$vals) ?>">
+		<img src="<?php echo $timetrack->generatePresenceGraphUrl($curmonth, 'Anwesenheit in Stunden'); ?>">
 		<br>
-		
-		<img src="http://chart.apis.google.com/chart?chtt=Differenz+zum+Soll&chs=450x180&chxt=y,x&chxl=0:|-3:00|-1:30|0:00|+1:30|+3:00|1:|<?php echo (join('|', $daynames)) ?>&chbh=a&chco=6694E3&cht=bvs&chp=0.5&chds=-3,3&chd=t:<?php echo join(',',$valsdif) ?>">
+		<img src="<?php echo $timetrack->generateDifferenceGraphUrl($curmonth, 'Differenz zum Soll'); ?>">
 		<br>
-		
-		<strong>Hash:</strong> <?php echo $hash ?><br />
-		<img src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $hash ?>&choe=UTF-8">
+		<strong>Hash:</strong> <?php echo $timetrack->hash ?><br />
+		<img src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $timetrack->hash ?>&choe=UTF-8">
 	</div>
 
 </div>

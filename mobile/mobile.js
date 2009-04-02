@@ -25,7 +25,7 @@ $$('.expressform').addEvent('submit', function(evnt) {
 		var date=datetime[0].split('-');
 		var time=datetime[1].split(':');
 		
-		var date = new Date(date[0], date[1], date[2], parseInt(time[0])+1, time[1], time[2]);
+		var date = new Date(date[0], date[1], date[2], parseInt(time[0]), time[1], time[2]);
 		
 		$$('.last_date').set('text', toDate(date));
 		$$('.last_time').set('text', toTime(date));
