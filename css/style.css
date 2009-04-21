@@ -1,8 +1,10 @@
 body
 {
+	background: #414E55 url(../img/mobile/topgradient.png) repeat-x;
+	color: #fff;
 	padding:0;
 	margin:0;
-	font-family:Courier, Fixed;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size:14px;
 	line-height:1.6em;
 }
@@ -14,7 +16,8 @@ table
 }
 
 th {
-	font: bold 11px Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 11px;
 	color: #6D929B;
 	border: 1px solid #C1DAD7;
 	letter-spacing: 2px;
@@ -25,6 +28,7 @@ th {
 }
 
 td {
+	font-family: Courier, Fixed;
 	border: 1px solid #C1DAD7;
 	padding: 3px 6px 3px 12px;
 	color: #6D929B;
@@ -52,6 +56,23 @@ tr.alt:hover
 	background-color:#dddddd;
 }
 
+form.login
+{
+	background: transparent url(../img/mobile/infogradient.png) repeat-x;
+	padding: 10px;
+	color: #444444;
+}
+
+form.login input[type=submit] {
+	border: 1px solid #fff;
+	background: #414E55;
+	color: #fff;
+	font-weight: bold;
+	width: 150px;
+	height: 30px;
+	margin: 0px auto;
+}
+
 span.negative_value
 {
 	color:#ff0000;
@@ -60,7 +81,7 @@ span.negative_value
 #month_navigator
 {
 	background: #92b361 url(../images/navigator_background.gif) repeat-x;
-	font: 16px Arial, Helvetica, sans-serif;
+	font-size: 16px;
 	color:white;
 	border-bottom:1px solid #aaaaaa;
 	padding: 0 15px;
@@ -128,7 +149,7 @@ span.negative_value
 	border:1px solid #cccccc;
 	width:1000px;
 	-moz-border-radius:10px;
-	font: 20px bold Arial, sans-serif;
+	font-size: 20px;
 	padding:0;
 	margin: 0 auto 0 auto;
 	overflow:hidden;
@@ -141,6 +162,7 @@ span.negative_value
 	border-right:1px solid #cccccc;
 	padding:0 20px 5px 30px;
 	margin:0;
+	color: #000;
 }
 
 #action_field

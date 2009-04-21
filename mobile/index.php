@@ -68,27 +68,76 @@
 	
 	?>
 
-	<form class="expressform">
-		<?php if(!$coming) : ?>
-		<button class="come" name="d" value="in" id="change_button">
+	<div id="page1" class="active" style="position: absolute; width: 100%;">
+		
+		<form class="expressform">
+			<?php if(!$coming) : ?>
+			<button class="come" name="d" value="in" id="change_button">
 
-		</button>
-		<?php else: ?>
-		<button class="go" name="d" value="out" id="change_button">
+			</button>
+			<?php else: ?>
+			<button class="go" name="d" value="out" id="change_button">
 
-		</button>
-		<?php endif; ?>
-		<input type="hidden" name="h" value="<?php echo $hash; ?>">
-	</form>
-	<div id="infosection">
-		<h1 class="now_date">
-		  <?php echo date('d.m.Y'); ?>
-		</h1>
-		<?php
-		echo '<p>am <span class="last_date">'.$date.'</span> um <span class="last_time">'.$time.'</span>';
-		echo '<br><strong class="direction_action">'.($coming ? 'GEKOMMEN' : 'GEGANGEN').'</strong></p>';
-		?>
+			</button>
+			<?php endif; ?>
+			<input type="hidden" name="h" value="<?php echo $hash; ?>">
+		</form>
+		<div id="infosection">
+			<h1 class="now_date">
+			  <?php echo date('d.m.Y'); ?>
+			</h1>
+			<?php
+			echo '<p>am <span class="last_date">'.$date.'</span> um <span class="last_time">'.$time.'</span>';
+			echo '<br><strong class="direction_action">'.($coming ? 'GEKOMMEN' : 'GEGANGEN').'</strong></p>';
+			?>
+		</div>
+
 	</div>
+
+	<div id="page2" class="dontshow" style="position: absolute; width: 100%;">
+		<div id="overview">
+			<div id="day_diff" class="">
+				<span class="diff_label">Ankunft:</span><br>
+				<?php echo date("G:i:s", $day['startstamp']) ?>
+			</div>
+			
+			<div id="day_diff" class="">
+				<span class="diff_label">Pause:</span><br>
+				<?php echo gmdate("G:i:s", $day['pause']) ?>
+			</div>
+			
+			<div id="day_diff" class="">
+				<span class="diff_label">Feierabend:</span><br>
+				<?php echo date("G:i:s", $day['startstamp']+$day['pause']+60*60*8.75) ?>
+			</div>
+			
+			<?php if ($day['diff']>0): ?>
+				<div id="day_diff">
+					<span class="diff_label">Differenz:</span><br>
+					<?php echo gmdate("G:i:s", $day['diff']) ?>
+				</div>
+			<?php else:?>
+				<div id="day_diff" class="negative">
+					<span class="diff_label">Differenz heute:</span><br>
+					-<?php echo gmdate("G:i:s", $day['diff']*-1) ?>
+				</div>
+			<?php endif; ?>
+		</div>	
+	</div>
+	
+	<div id="navigator">
+		<div id="action_menu">
+			<ul>
+				<li>
+					<a href="#" class="dontshow" id="show_home_link">&laquo; Home</a>
+				</li>
+				<li>
+					<a href="#" id="show_stats_link">Stats &raquo;</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+		
 <?php endif; ?>
 
 <script type="text/javascript" src="mootools-yui-compressed.js"></script>

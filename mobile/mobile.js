@@ -16,7 +16,7 @@ function toTime(thedate) {
 var wait_div=new Element('div', {'class':'wait_div','text':'Übertragen...'});
 
 $$('.expressform').addEvent('submit', function(evnt) {
-	wait_div.injectTop(document.body);
+	wait_div.inject(document.body);
 	evnt.stop();
 	var ajaxparams = {h: evnt.target.getElement('input[name=h]').get('value') , d: evnt.target.getElement('button[name=d]').get('value') };
 	var ajax = new Request({url:'../log.php', onComplete: function(res) { 
@@ -56,3 +56,65 @@ document.addEventListener("touchmove", function(e){e.preventDefault()}, false);
 /* preload spinner */
 new Element('img', {'src':'../img/mobile/wait.gif'});
 //var spinnercache=new Asset.image('../img/mobile/wait.gif');
+
+$('show_stats_link').addEvent('click', function() {
+	this.addClass('dontshow');
+	showPage('page2', 'left');
+	$('show_home_link').removeClass('dontshow');
+});
+
+$('show_home_link').addEvent('click', function() {
+	this.addClass('dontshow');
+	showPage('page1', 'right');
+	$('show_stats_link').removeClass('dontshow');
+});
+
+var activeEffect;
+var newEffect;
+
+function showPage(page, direction) {
+	if ($(page).hasClass('active')) return;
+	
+	if (direction) {
+		
+		var activeElement=$(page).getParent().getElement('.active');
+		
+		activeEffect = new Fx.Morph(activeElement, {duration:200});
+		newEffect = new Fx.Morph(page, {
+			onComplete:function(){
+				$(page).getParent().getElements('.active').removeClass('active');
+				$(page).addClass('active');
+			},
+			duration:200
+		});
+
+		//height from 10 to 100 and width from 900 to 300
+		if (direction=="left") {
+			newEffect.set({'left':window.getWidth()});
+			$(page).removeClass('dontshow');
+			activeEffect.start({
+					'left': [0, -1*window.getWidth()]
+			});
+			newEffect.start({
+					'left': [window.getWidth(), 0]
+			});
+		}
+		
+		if (direction=="right") {
+			newEffect.set({'left':-1*window.getWidth()});
+			$(page).removeClass('dontshow');
+			activeEffect.start({
+					'left': [0, window.getWidth()]
+			});
+			newEffect.start({
+					'left': [-1*window.getWidth(), 0]
+			});
+		}
+		
+		$(page).addClass('active');
+		return;
+	}
+	$(page).setStyle('left',0);
+	$(page).addClass('active');
+}
+

@@ -1,9 +1,10 @@
 body {
   margin:0;
   padding:0;
-	text-align: center;
+  text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   background:#414e55 url(../img/mobile/topgradient.png) repeat-x;
+  overflow: hidden;
 }
 
 button {
@@ -20,6 +21,11 @@ button.come {
 
 button.go {
 	background: url(../img/mobile/button_red.png);
+}
+
+.dontshow {
+	display: none;
+	visibility: hidden;
 }
 
 #infosection
@@ -43,9 +49,86 @@ div.wait_div
   width:100%;
   height:100%;
   position:absolute;
+  z-Index: 100;
   top:0;
   left:0;
   opacity:0.6;
   line-height:520px;
   color:#ffffff;
+}
+
+#navigator
+{
+	background: url(../images/navigator_background.gif) repeat-x;
+	font-size: 16px;
+	color:white;
+	border-bottom:1px solid #aaaaaa;
+	height: 49px;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+}
+#navigator ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#navigator ul li {
+	background: #92b361 url(../images/navigator_buttons.gif) no-repeat left top;
+	float: left;
+	color: #fff;
+	padding-left: 10px;
+}
+
+#navigator ul li  a {
+	background: #92b361 url(../images/navigator_buttons.gif) no-repeat right top;
+	padding-right: 10px;
+	float: left;
+	color: #ddd;
+	font-size: 12px;
+	text-decoration: none;
+	line-height: 36px;
+}
+
+#navigator ul li:hover {
+	background-position: left bottom;
+}
+
+#navigator ul li:hover a {
+	background-position: right bottom;
+}
+#action_menu
+{
+	padding-right: 15px;
+	padding-top: 6px;
+	float:right;
+	position:relative;
+}
+
+#action_menu a
+{
+	color:#ffffff;
+	font-weight:bold;
+}
+
+#overview
+{
+	background-color:#eeeeee;
+	border:1px solid #cccccc;
+	-moz-border-radius:10px;
+	font-size: 20px;
+	padding:0;
+	margin: 20px auto 0 auto;
+	overflow:hidden;
+}
+
+#month_diff,
+#day_diff
+{
+	border-bottom:1px solid #cccccc;
+	padding:0 20px 5px 30px;
+	margin:0;
+	color: #000;
+
 }
