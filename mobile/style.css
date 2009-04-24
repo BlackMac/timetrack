@@ -32,8 +32,7 @@ button.go {
 {
   margin:10px auto;
   background: url(../img/mobile/infogradient.png);
-  height:130px;
-  padding:55px;
+  height:236px;
   color:#444444;
   line-height:1.45em;
 }
@@ -41,6 +40,13 @@ button.go {
 #infosection h1
 {
   color:#999999;
+}
+
+.singlesection {
+  padding:55px;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
 div.wait_div
@@ -91,13 +97,6 @@ div.wait_div
 	line-height: 36px;
 }
 
-#navigator ul li:hover {
-	background-position: left bottom;
-}
-
-#navigator ul li:hover a {
-	background-position: right bottom;
-}
 #action_menu
 {
 	padding-right: 15px;
@@ -114,12 +113,14 @@ div.wait_div
 
 #overview
 {
-	background-color:#eeeeee;
+	font-size: 20px;
+	/*
+	padding: 0;
 	border:1px solid #cccccc;
 	-moz-border-radius:10px;
-	font-size: 20px;
-	padding:0;
+	background-color:#eeeeee;
 	margin: 20px auto 0 auto;
+	*/
 	overflow:hidden;
 }
 

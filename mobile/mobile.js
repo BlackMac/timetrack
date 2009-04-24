@@ -93,10 +93,12 @@ function showPage(page, direction) {
 			newEffect.set({'left':window.getWidth()});
 			$(page).removeClass('dontshow');
 			activeEffect.start({
-					'left': [0, -1*window.getWidth()]
+					'left': [0, -1*window.getWidth()],
+					'right': [0, window.getWidth()]
 			});
 			newEffect.start({
-					'left': [window.getWidth(), 0]
+					'left': [window.getWidth(), 0],
+					'right': [-1*window.getWidth(), 0]
 			});
 		}
 		
@@ -104,10 +106,12 @@ function showPage(page, direction) {
 			newEffect.set({'left':-1*window.getWidth()});
 			$(page).removeClass('dontshow');
 			activeEffect.start({
-					'left': [0, window.getWidth()]
+					'left': [0, window.getWidth()],
+					'right': [0, -1*window.getWidth()]
 			});
 			newEffect.start({
-					'left': [-1*window.getWidth(), 0]
+					'left': [-1*window.getWidth(), 0],
+					'right': [window.getWidth(), 0]
 			});
 		}
 		
