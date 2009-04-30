@@ -39,7 +39,17 @@ $oldstart = $_POST['oldstart'];
 $oldend = $_POST['oldend'];
 
 if(isset($formsend, $newstart, $newend, $oldstart, $oldend)) {
-	$success = $timetrack->updateFile($curdate, $oldstart, $newstart);
+
+	$success = true;
+
+	if($oldstart != $newstart) {
+		$success = $timetrack->updateFile($curdate, $oldstart, $newstart);
+	}
+
+	if($oldend != $newend) {
+		$success = $timetrack->updateFile($curdate, $oldend, $newend);
+	}
+
 	if(!$success) {
 		die("Update not successful");
 	} else {
