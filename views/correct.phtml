@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Zeittabelle - wann komme ich, wann gehe ich?</title>
+	<meta name="author" content="">
+	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
+	<link rel="shortcut icon" href="img/favicon.ico" />
+	<link rel="icon" href="img/favicon.ico" type="image/ico" />
+</head>
+<body>
+
+<div id="timeSlider">
+	<div class="gutter">
+		<div class="range"></div>
+		<div class="startKnob"></div>
+		<div class="endKnob"></div>
+	</div>
+
+	<div class="date">
+		<span class="startDate"></span> -
+		<span class="endDate"></span>
+	</div>
+
+</div>
+
+<form id="form_correction" action="correct.php" method="post">
+	<input type="hidden" id="form_oldstart" name="oldstart" value="<?php echo $day['startstamp'] ?>">
+	<input type="hidden" id="form_oldend" name="oldend" value="<?php echo $day['endstamp'] ?>">
+	<input type="hidden" id="form_newstart" name="newstart" value="<?php echo $day['startstamp'] ?>">
+	<input type="hidden" id="form_newend" name="newend" value="<?php echo $day['endstamp'] ?>">
+	<input type="hidden" id="form_date" name="date" value="<?php echo $curdate ?>">
+	<input type="submit" name="submit" value="Aktualisieren">
+</form>
+
+<script type="text/javascript">
+	var starttimestamp = <?php echo $day['startstamp'] ?>;
+	var endtimestamp = <?php echo $day['endstamp'] ?>;
+	var date = "<?php echo $day['date'] ?>".split(/-/);
+</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.2/mootools-yui-compressed.js"></script>
+<script type="text/javascript" src="js/mootools-1.2.2.1-more.js"></script>
+<script type="text/javascript" src="js/TimeSlider.js"></script>
+<?php if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') : ?>
+	<script type="text/javascript">
+	<?php readfile("js/correct.js") ?>
+	</script>
+<?php else: ?>
+	<script type="text/javascript" src="js/correct.js"></script>
+<?php endif; ?>
+
+</body>
+</html>

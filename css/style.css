@@ -63,6 +63,7 @@ form.login
 	color: #444444;
 }
 
+#form_correction input[type=submit],
 form.login input[type=submit] {
 	border: 1px solid #fff;
 	background: #414E55;
@@ -244,4 +245,44 @@ span.negative_value
 .rightColumn {
 	float:left;
 	margin:0 0 0 20px;
+}
+
+a.correctionLink {
+	color: inherit;
+}
+
+.correctionLightbox {
+	color: #000;
+}
+
+.correctionLightbox #sbox-content {
+	text-align: center;
+}
+
+#timeSlider {
+	width: 569px;
+	margin: 0 auto;
+}
+#timeSlider div.gutter {
+	height:50px;
+	background-image: url(../img/timeline.gif);
+	background-repeat: no-repeat;
+	background-position: 4px 0px;
+}
+
+#timeSlider div.startKnob,
+#timeSlider div.endKnob {
+
+	width:9px;
+	height: 50px;
+	background: url(../img/timeslider_knob.gif) no-repeat;
+	cursor:pointer;
+}
+#timeSlider div.range {
+	height: 50px;
+	background-color:#aaa;
+	background-image: url(../img/timeline_selected.gif);
+}
+#timeSlider div.date {
+	text-align: center;
 }

@@ -13,6 +13,7 @@
 	<?php endif; ?>	
 	<link rel="shortcut icon" href="img/favicon.ico" />
 	<link rel="icon" href="img/favicon.ico" type="image/ico" />
+	<link rel="stylesheet" type="text/css" href="js/SqueezeBox/assets/SqueezeBox.css">
 </head>
 <body>
 <div id="month_navigator">
@@ -126,11 +127,13 @@
 			</tr>
 		</thead>
 		<tbody>
-	<?php foreach ($data['days'] as $cday): ?>
+	<?php foreach ($data['days'] as $curday => $cday): ?>
 		<?php if ($curmonth==$cday['month']): ?>
 			<tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
 				<td>
+					<a href="correct.php?date=<?php echo $curday ?>" class="correctionLink">
 					<strong><?php echo date("d.m.Y",$cday['datestamp'])?></strong>
+					</a>
 				</td>
 				<td>
 					<?php echo date("G:i",$cday['startstamp'])?> - <?php echo date("G:i",$cday['endstamp'])?>
@@ -176,6 +179,9 @@
 <div>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
+<script type="text/javascript" src="js/mootools-1.2.2.1-more.js"></script>
+<script type="text/javascript" src="js/SqueezeBox/SqueezeBox.js"></script>
+<script type="text/javascript" src="js/TimeSlider.js"></script>
 <script type="text/javascript" src="js/show.js"></script>
 </body>
 </html>

@@ -58,9 +58,41 @@ class TimeTrack {
 
 	public function loadFile() 
 	{
-		$this->rawData = file($this->file);
+		$fileContent = file($this->file);
+		$rawData = array();
+
+		foreach ($fileContent as $line) {
+			if(trim($line) != "") {
+				$rawData[] = trim($line);
+			}
+		}
+		$this->rawData = $rawData;
+
 		$this->loadedData = true;
 		
+		return true;
+	}
+
+	public function updateFile($date, $oldtimestamp, $newtimestamp)
+	{
+		if(!$this->loadedData) $this->loadFile();
+
+		$searchdate = date("Y-m-d\TH:i:s", $oldtimestamp);
+		$replacedate =  date("Y-m-d\TH:i:s", $newtimestamp);
+		foreach ($this->rawData as &$line) {
+			if(false !== strpos($line, $searchdate)) {
+				$line = str_replace($searchdate, $replacedate, $line);
+				break;
+			}
+		}
+		$this->parseData();
+
+		@copy($this->file, $this->file . '.old');
+		if(@file_put_contents($this->file, join("\r\n", $this->rawData)) === false)
+		{
+			return false;
+		}
+
 		return true;
 	}
 	
@@ -75,9 +107,6 @@ class TimeTrack {
 		$pausestart = 0;
 
 		foreach ($this->rawData as $line_num => $line) {
-			$line = trim($line);
-			if ($line=="") continue;
-
 			if (substr($line,0,1)=="#") continue;
 			$coming=(substr($line,0,1)=="+");
 			
@@ -134,7 +163,7 @@ class TimeTrack {
 		
 		return $this->data;
 	}
-	
+
 	public function getLastDay() {
 		if(!isset($this->data) || !isset($this->data['days']))
 			return array();
