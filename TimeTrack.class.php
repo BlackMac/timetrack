@@ -73,6 +73,30 @@ class TimeTrack {
 		return true;
 	}
 
+	public function logFile($direction = null, $logtime = null, $message = null)
+	{
+		if(!isset($logtime) || empty($logtime)) {
+			$logtime=date("Y-m-d\TH:i:s");
+		}
+
+		$action="#";
+
+		if ($direction=="in") $action="+";
+		if ($direction=="out") $action="-";
+
+		if(!isset($message) || empty($message)) {
+			$message = $direction;
+		}
+		
+		$logline=$action.'['.$logtime.'] ***'.$message.'***'."\n";
+		
+		$file=fopen($this->file, 'a');
+		fputs($file, $logline);
+		fclose($file);
+		
+		return array('action' => $action, 'time' => $logtime, 'message' => $message);		
+	}
+
 	public function updateFile($date, $oldtimestamp, $newtimestamp)
 	{
 		if(!$this->loadedData) $this->loadFile();
