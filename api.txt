@@ -1,0 +1,18 @@
+getLastDay
+	input: 	hash
+getMonth
+	input: 	hash
+		month (optional)
+		year (optional)		
+login
+	input:	hash
+log
+	input:	hash
+		direction (optional) [in, out]
+		logtime (optional) [Y-m-d\TH:i:s]
+		message (optional)
+updateTimestamp
+	input:	hash
+		oldTimestamp
+		newTimestamp
+

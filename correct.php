@@ -43,11 +43,11 @@ if(isset($formsend, $newstart, $newend, $oldstart, $oldend)) {
 	$success = true;
 
 	if($oldstart != $newstart) {
-		$success = $timetrack->updateFile($curdate, $oldstart, $newstart);
+		$success = $timetrack->updateFile($oldstart, $newstart);
 	}
 
 	if($oldend != $newend) {
-		$success = $timetrack->updateFile($curdate, $oldend, $newend);
+		$success = $timetrack->updateFile($oldend, $newend);
 	}
 
 	if(!$success) {

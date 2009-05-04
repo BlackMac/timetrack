@@ -52,7 +52,8 @@ class jsonRPCServer {
 		// executes the task on local object
 		$request['method'] = str_replace('.','_',$request['method']);
 		try {
-			if ($result = @call_user_func_array(array($object,$request['method']),$request['params'])) {
+			if (method_exists($object, $request['method'])) {
+				$result = $object->{$request['method']}($request['params']);
 				$response = array (
 									'id' => $request['id'],
 									'result' => $result,
