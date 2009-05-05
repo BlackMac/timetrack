@@ -82,7 +82,7 @@
 		<input type="hidden" name="h" value="<?php echo $hash; ?>">
 	</form>
 	
-	<div id="infosection">
+	<div id="infosection" style="position: relative">
 		<div id="page1" class="active singlesection" style="">
 			<h1 class="now_date">
 			  <?php echo date('d.m.Y'); ?>
@@ -92,6 +92,7 @@
 			echo '<br><strong class="direction_action">'.($coming ? 'GEKOMMEN' : 'GEGANGEN').'</strong></p>';
 			?>
 		</div>
+		<a href="#" class="btn btnright" id="show_stats_link"><span>Stats &raquo;</span></a>
 
 		<div id="page2" class="dontshow singlesection" style="padding: 10px;">
 			<div id="overview">
@@ -123,21 +124,9 @@
 				<?php endif; ?>
 			</div>	
 		</div>			
+		<a href="#" class="dontshow btn btnleft" id="show_home_link"><span>&laquo; Home</span></a>
 	</div>
 
-	
-	<div id="navigator">
-		<div id="action_menu">
-			<ul>
-				<li>
-					<a href="#" class="dontshow" id="show_home_link">&laquo; Home</a>
-				</li>
-				<li>
-					<a href="#" id="show_stats_link">Stats &raquo;</a>
-				</li>
-			</ul>
-		</div>
-	</div>
 		
 <?php endif; ?>
 

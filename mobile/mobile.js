@@ -79,13 +79,13 @@ function showPage(page, direction) {
 		
 		var activeElement=$(page).getParent().getElement('.active');
 		
-		activeEffect = new Fx.Morph(activeElement, {duration:200});
+		activeEffect = new Fx.Morph(activeElement, {duration:200, fps: 20});
 		newEffect = new Fx.Morph(page, {
 			onComplete:function(){
 				$(page).getParent().getElements('.active').removeClass('active');
 				$(page).addClass('active');
 			},
-			duration:200
+			duration:200, fps: 20
 		});
 
 		//height from 10 to 100 and width from 900 to 300
