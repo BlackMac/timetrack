@@ -30,3 +30,6 @@ CACHE MANIFEST
 <?php echo $comment; ?>
 
 <?php echo $filelist; ?>
+
+NETWORK:
+index.php

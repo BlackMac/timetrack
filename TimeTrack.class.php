@@ -97,7 +97,7 @@ class TimeTrack {
 		return array('action' => $action, 'time' => $logtime, 'message' => $message);		
 	}
 
-	public function updateFile($date, $oldtimestamp, $newtimestamp)
+	public function updateFile($oldtimestamp, $newtimestamp)
 	{
 		if(!$this->loadedData) $this->loadFile();
 
