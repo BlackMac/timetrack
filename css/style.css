@@ -63,6 +63,8 @@ form.login
 	color: #444444;
 }
 
+#form_editor textarea,
+#form_editor input[type=submit],
 #form_correction input[type=submit],
 form.login input[type=submit] {
 	border: 1px solid #fff;
@@ -285,4 +287,8 @@ a.correctionLink {
 }
 #timeSlider div.date {
 	text-align: center;
+}
+
+div.editorLightbox {
+	background-color: #414E55 !important;
 }
