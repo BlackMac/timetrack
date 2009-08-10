@@ -18,10 +18,12 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-	<link rel="apple-touch-icon" href="/img/favicon.png"/>
 	<meta name="apple-mobile-web-app-capable" content="yes" />
   <title>time@work</title>
   <link href="style.css" media="screen" rel="stylesheet" type="text/css">
+  <link rel="apple-touch-icon" href="/img/favicon.png">
+  <link rel="apple-touch-startup-image" href="/img/startupimage.png">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
 </head>
 <body>
 
