@@ -82,16 +82,22 @@
 		<span class="diff_label">Feierabend:</span><br>
 		<?php echo date("G:i:s", $day['startstamp']+$day['pause']+60*60*8.75) ?>
 	</div>
-	
+
 	<?php if ($day['diff']>0): ?>
 		<div id="day_diff">
 			<span class="diff_label">Differenz:</span><br>
-			<?php echo gmdate("G:i:s", $day['diff']) ?>
+			<span id="day_diff_hour">
+				<?php echo gmdate("G", $day['diff']) ?>
+			</span>:<span id="day_diff_minute">
+				<?php echo gmdate("i", $day['diff']) ?>
+			</span>:<span id="day_diff_seconds">
+				<?php echo gmdate("s", $day['diff']) ?>
+			</span>
 		</div>
 	<?php else:?>
 		<div id="day_diff" class="negative">
 			<span class="diff_label">Differenz heute:</span><br>
-			-<?php echo gmdate("G:i:s", $day['diff']*-1) ?>
+			-<span id="day_diff_hour"><?php echo gmdate("G", $day['diff']*-1) ?></span>:<span id="day_diff_minute"><?php echo gmdate("i", $day['diff']*-1) ?></span>:<span id="day_diff_seconds"><?php echo gmdate("s", $day['diff']*-1) ?></span>
 		</div>
 	<?php endif; ?>
 	
@@ -178,6 +184,11 @@
 </div>
 <div>
 </div>
+<script type="text/javascript">
+<!--
+var day_diff = <?php echo $day['startstamp']+$day['pause']+60*60*8.75 ?>;
+-->
+</script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
 <script type="text/javascript" src="js/mootools-1.2.2.1-more.js"></script>
 <script type="text/javascript" src="js/SqueezeBox/SqueezeBox.js"></script>
