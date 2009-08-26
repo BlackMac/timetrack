@@ -38,5 +38,11 @@ window.addEvent('domready', function() {
 
 	countdownDayDiff.periodical(1000);
 
+	SqueezeBox.assign($$('a.editorLink'), {
+		parse: 'rel',
+		classWindow: 'editorLightbox',
+		size: {x: 600, y: 290}
+	});
+
 });
 

@@ -45,6 +45,16 @@ class TimeTrack {
 		return true;
 	}
 
+	public function getRawData() {
+		if(!$this->loadedData) $this->loadFile();
+		return $this->rawData;
+	}
+
+	public function isWritable()
+	{
+		return is_writable($this->file);
+	}
+
 	public function setFile($file) 
 	{
 		$fpath=realpath(dirname(__FILE__) . '/logs/'.$file);
@@ -113,6 +123,18 @@ class TimeTrack {
 
 		@copy($this->file, $this->file . '.old');
 		if(@file_put_contents($this->file, join("\r\n", $this->rawData)) === false)
+		{
+			return false;
+		}
+
+		return true;
+	}
+	
+	public function writeFile($rawFile) {
+		if(!$this->loadedData) $this->loadFile();
+		
+		@copy($this->file, $this->file . '.old');
+		if(@file_put_contents($this->file, $rawFile) === false)
 		{
 			return false;
 		}

@@ -4,7 +4,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Zeittabelle - wann komme ich, wann gehe ich?</title>
-	<meta name="generator" content="TextMate http://macromates.com/">
 	<meta name="author" content="">
 	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
 	<?php if($mobiledevice) : ?>
@@ -177,7 +176,13 @@
 		<br>
 		<img src="<?php echo $timetrack->generateDifferenceGraphUrl($curmonth, 'Differenz zum Soll'); ?>">
 		<br>
-		<strong>Hash:</strong> <?php echo $timetrack->hash ?><br />
+		<strong>Hash:</strong> 
+		<?php if ($timetrack->isWritable()): ?>
+			<a href="editor.php" class="editorLink" rel="{handler:'iframe'}" style="color: #fff; text-decoration: none;"><?php echo $timetrack->hash ?></a>
+		<?php else: ?>
+			<?php echo $timetrack->hash ?>
+		<?php endif; ?>
+		<br />
 		<img src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $timetrack->hash ?>&choe=UTF-8">
 	</div>
 
