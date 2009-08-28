@@ -85,18 +85,12 @@
 	<?php if ($day['diff']>0): ?>
 		<div id="day_diff">
 			<span class="diff_label">Differenz:</span><br>
-			<span id="day_diff_hour">
-				<?php echo gmdate("G", $day['diff']) ?>
-			</span>:<span id="day_diff_minute">
-				<?php echo gmdate("i", $day['diff']) ?>
-			</span>:<span id="day_diff_seconds">
-				<?php echo gmdate("s", $day['diff']) ?>
-			</span>
+			<span class="day_diff_hour"><?php echo gmdate("G", $day['diff']) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $day['diff']) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $day['diff']) ?></span>
 		</div>
 	<?php else:?>
 		<div id="day_diff" class="negative">
 			<span class="diff_label">Differenz heute:</span><br>
-			-<span id="day_diff_hour"><?php echo gmdate("G", $day['diff']*-1) ?></span>:<span id="day_diff_minute"><?php echo gmdate("i", $day['diff']*-1) ?></span>:<span id="day_diff_seconds"><?php echo gmdate("s", $day['diff']*-1) ?></span>
+			<span class="day_diff_minus">-</span><span class="day_diff_hour"><?php echo gmdate("G", $day['diff']*-1) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $day['diff']*-1) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $day['diff']*-1) ?></span>
 		</div>
 	<?php endif; ?>
 	
@@ -192,6 +186,7 @@
 <script type="text/javascript">
 <!--
 var day_diff = <?php echo $day['startstamp']+$day['pause']+60*60*8.75 ?>;
+var laststateIn = "<?php echo $day['laststateIn']?>";
 -->
 </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
