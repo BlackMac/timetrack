@@ -10,7 +10,7 @@ $action="#";
 if ($_GET['d']=="in") $action="+";
 if ($_GET['d']=="out") $action="-";
 
-$logline=$action.'['.$logtime.'] ***'.$_GET['d'].'***'."\n";
+$logline=$action.'['.$logtime.'] ***'.$_GET['d'].'***'."\r\n";
 
 $file=fopen('logs/'.$_GET['h'].'.log', 'a');
 fputs($file, $logline);

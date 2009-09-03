@@ -98,7 +98,7 @@ class TimeTrack {
 			$message = $direction;
 		}
 		
-		$logline=$action.'['.$logtime.'] ***'.$message.'***'."\n";
+		$logline=$action.'['.$logtime.'] ***'.$message.'***'."\r\n";
 		
 		$file=fopen($this->file, 'a');
 		fputs($file, $logline);
@@ -122,7 +122,7 @@ class TimeTrack {
 		$this->parseData();
 
 		@copy($this->file, $this->file . '.old');
-		if(@file_put_contents($this->file, join("\r\n", $this->rawData)) === false)
+		if(@file_put_contents($this->file, join("\r\n", $this->rawData) . "\r\n") === false)
 		{
 			return false;
 		}
@@ -134,7 +134,7 @@ class TimeTrack {
 		if(!$this->loadedData) $this->loadFile();
 		
 		@copy($this->file, $this->file . '.old');
-		if(@file_put_contents($this->file, $rawFile) === false)
+		if(@file_put_contents($this->file, $rawFile . "\r\n") === false)
 		{
 			return false;
 		}
