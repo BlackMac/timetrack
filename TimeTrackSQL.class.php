@@ -11,7 +11,7 @@ class TimeTrack {
 		if (!file_exists("logs/logs.sqlite")) {
 			$this->db=new SQLiteDatabase("logs/logs.sqlite");
 			$this->db->query("CREATE TABLE users (id INTEGER PRIMARY KEY, username CHAR(255) UNIQUE, password CHAR(60), email CHAR(80));");
-			$this->db->query("CREATE TABLE events (id INTEGER PRIMARY KEY, user_id INTEGER, event_date TIMESTAMP, direction INTEGER, comment CHAR(255));");
+			$this->db->query("CREATE TABLE events (id INTEGER PRIMARY KEY, user_id INTEGER, event_date TIMESTAMP, direction CHAR(1), comment CHAR(255));");
 		} else {
 			$this->db=new SQLiteDatabase("logs/logs.sqlite");
 		}
@@ -49,5 +49,30 @@ class TimeTrack {
 	
 	public function register($username=null, $password=null) {
 		$this->db->query("INSERT INTO users (username, password) VALUES ('$username','$password')");
+	}
+	
+	public function getEvents() {
+		$query="SELECT * FROM events WHERE user_id='$this->userId'";
+		$res=$this->db->query($query);
+		return $res;
+	}
+	
+	public function importText($hash) {
+		$file = fopen('http://timetrack.blackmac.de/logs/'.$hash.'.log', 'r');
+		
+		if (!$file) {
+			
+		} else {
+			$query="DELETE FROM events WHERE user_id='$this->userId'";
+			$this->db->query($query);
+			while ($line=fgets($file)) {
+				$direction=substr($line, 0, 1);
+				$date=strtotime(substr($line, 2, 19));
+				$query="INSERT INTO events (user_id, event_date, direction) VALUES ('$this->userId', datetime($date, 'unixepoch'), '$direction');";
+				$this->db->query($query);
+			}
+			
+			fclose($file);
+		}
 	}
 }
