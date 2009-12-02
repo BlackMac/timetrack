@@ -1,3 +1,4 @@
 logs/*.log
+logs/githook.txt
 *.marks
 .DS_Store
