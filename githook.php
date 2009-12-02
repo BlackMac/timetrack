@@ -14,7 +14,7 @@
 	$file=fopen('logs/githook.txt','w');
 	fwrite($file, date("l dS of F Y h:i:s A")."\n");
 	fclose($file);
-	passthru('/usr/bin/git pull');
+	system('/usr/bin/git pull');
 ?>
 	</pre>
 </body>
