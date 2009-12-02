@@ -172,7 +172,7 @@ class TimeTrack {
 					'datestamp'=>strtotime($date),
 					'start'=>substr($line,13, 8),
 					'startstamp'=>$datetime,
-					'laststateIn' => $coming,
+					'laststateIn' => (int)$coming,
 					'pause'=>0,
 				);
 			} elseif (substr($line,0,1)=="C") {
@@ -185,7 +185,7 @@ class TimeTrack {
 			} else {
 				$this->data['days'][$date]['pause']+=($datetime-$pausestart);
 			}
-			
+			$this->data['days'][$date]['laststateIn'] = $coming;
 			if ($coming && $date==date("Y-m-d")) $datetime=time();
 			
 			$this->data['days'][$date]['end']=substr($line,13, 8);

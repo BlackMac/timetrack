@@ -5,9 +5,12 @@ $tt = new TimeTrack();
 function getTimes($tt) {
 	$tt->parseData();
 	$ld=$tt->getLastDay();
+	//print_r($ld);
 	echo($ld['diff']."\n");
 	echo($ld['monthdiff']."\n");
-	echo($ld['laststateIn']."\n");
+	echo((int)$ld['laststateIn']."\n");
+	echo($ld['start']."\n");
+	echo($ld['pause']."\n");
 }
 
 error_reporting(E_ALL);
