@@ -11,9 +11,12 @@
 <body>
 	<pre>
 <?php
+	error_reporting(E_ALL);
+	ini_set("display_errors", 1);
 	$file=fopen('logs/githook.txt','w');
 	fwrite($file, date("l dS of F Y h:i:s A")."\n");
 	fclose($file);
+	system('cd /var/www/timetrack');
 	system('/usr/bin/git pull');
 ?>
 	</pre>
