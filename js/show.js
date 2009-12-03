@@ -46,7 +46,10 @@ function countdownDayDiff() {
 };
 
 window.addEvent('domready', function() {
-
+	$('previous_months_link').addEvent('click', function (e) {
+		e.preventDefault();
+		$('additional_months').toggleClass('hidden');
+	}.bindWithEvent());
 	SqueezeBox.assign($$('a.correctionLink'), {
 		classWindow: 'correctionLightbox',
 		size: {x: 600, y: 105}

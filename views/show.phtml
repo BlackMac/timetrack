@@ -19,7 +19,7 @@
 	<div id="action_menu">
 		<ul>
 		<li>
-		<a href="#" id="changeuserdata_action_link">Logindaten ändern</a>
+		<a href="#" id="changeuserdata_action_link">Logindaten</a>
 		<div id="changeuserdata_widow" class="settings_popdown">
 			<form action="<?php echo dirname($_SERVER["SCRIPT_NAME"]) ?>/action.php" method="POST" autocomplete="off">
 				<input type="hidden" name="action"  value="changeuserdata">
@@ -55,13 +55,24 @@
 		</ul>
 	</div>
 	
+	<div id="additional_months" class="hidden">
+		<ul>
+			<?php foreach($data['months'] as $month=>$time): ?>
+				<li>
+					<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+	
 	<div id="months">
 		<ul>
-		<?php foreach($data['months'] as $month=>$time): ?>
-			<li>
-				<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
-			</li>
-		<?php endforeach; ?>
+		<li>
+			<a href="#" id="previous_months_link">Alle Monate</a>
+		</li>
+		<li>
+			<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
+		</li>
 		</ul>
 	</div>
 </div>

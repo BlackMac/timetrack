@@ -129,6 +129,8 @@ span.negative_value
 	font-size: 12px;
 	text-decoration: none;
 	line-height: 36px;
+	width:100px;
+	text-align:center;
 }
 
 #month_navigator ul li:hover {
@@ -138,6 +140,49 @@ span.negative_value
 #month_navigator ul li:hover a {
 	background-position: right bottom;
 }
+
+#additional_months {
+	width:110px;;
+	background:#B8CD9B;
+	overflow:hidden;
+	display:block;
+	position:absolute;
+	top:40px;
+	left:19px;
+	border:1px solid #263705;
+}
+
+#additional_months ul li {
+	background:#B8CD9B;
+	text-align:center;
+	width:110px;
+	padding:0;
+}
+
+#additional_months ul li:hover {
+	background:#eeeeee;
+}
+
+#additional_months ul li a,
+#additional_months ul li a.active {
+	background:none;
+	line-height:20px;
+	width:auto;
+	width:110px;
+	color:#333333;
+}
+
+.hidden
+{
+	display:none;
+	visibility:hidden;
+}
+
+/*#month_navigator ul ul li{
+	width:100px;;
+	overflow:hidden;
+	display:none;
+}*/
 
 #content_wrapper
 {
