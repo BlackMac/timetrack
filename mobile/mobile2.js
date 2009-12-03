@@ -4,8 +4,8 @@ $.jQTouch({
     startupScreen: '../img/startupimage.png',
 	formSelector: '.nothing',
     preloadImages: [
-        '../img/mobile/button_red.png',
-        '../img/mobile/button_green.png'
+//        '../img/mobile/button_red.png',
+//        '../img/mobile/button_green.png'
         ]
 	
 });
@@ -18,7 +18,7 @@ function pad(number, digits) {
 }
 
 function toDate(thedate) {
-	return pad(thedate.getDate())+'.'+pad(thedate.getMonth())+'.'+pad(thedate.getFullYear());
+	return pad(thedate.getDate())+'.'+pad(thedate.getMonth()+1)+'.'+pad(thedate.getFullYear());
 }
 
 function toTime(thedate) {
@@ -41,29 +41,47 @@ $(function(){
 				var date=datetime[0].split('-');
 				var time=datetime[1].split(':');
 				
-				var date = new Date(date[0], date[1], date[2], parseInt(time[0], 10), time[1], time[2]);
+				var date = new Date(date[0], date[1]-1, date[2], parseInt(time[0], 10), time[1], time[2]);
 
-				$('.last_date').text(toDate(date));
-				$('.last_time').text(toTime(date));
+				$('.last_date')[0].innerHTML = toDate(date);
+				$('.last_time')[0].innerHTML = toTime(date);
 					
 				if (ajaxparams.d=="in") {
 					$('#change_button').attr({
 						'value':'out',
 						'class':'go'
 					});
-					$('.direction_action').text('GEKOMMEN');
+					$('#change_button')[0].innerHTML ='Abmelden';
+					$('.direction_action')[0].innerHTML = 'GEKOMMEN';
 				} else {
 					$('#change_button').attr({
 						'value':'in',
 						'class':'come'
 					});
-					$('.direction_action').text('GEGANGEN');
+					$('#change_button')[0].innerHTML ='Anmelden';
+					$('.direction_action')[0].innerHTML = 'GEGANGEN';
 				}
 	        }
 	    });
 		
 		return false;
 	
+	});
+	
+	$('#page2').bind('pageTransitionEnd', function(e, info){
+		/*
+		$.ajax({
+			url:"../json-rpc.php",
+			data: '{"id":"23342423","method":"getLastDay","params":{"hash":"' + $('input[name=h]')[0].value + '"}}',
+			type: 'POST',
+			dataType: 'json',
+			contentType: 'application/json',
+			success:
+		        function(data){
+					console.log(data);
+		        }
+	    });
+	    */
 	});
 
     $('#graphs').bind('pageTransitionEnd', function(e, info){

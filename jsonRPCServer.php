@@ -35,12 +35,12 @@ class jsonRPCServer {
 	 * @return boolean
 	 */
 	public static function handle($object) {
-		
+
 		// checks if a JSON-RCP request has been received
 		if (
 			$_SERVER['REQUEST_METHOD'] != 'POST' || 
 			empty($_SERVER['CONTENT_TYPE']) ||
-			$_SERVER['CONTENT_TYPE'] != 'application/json'
+			strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== 0
 			) {
 			// This is not a JSON-RPC request
 			return false;

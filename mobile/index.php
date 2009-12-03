@@ -81,16 +81,13 @@
 			}
 			
 			?>
-					
+			
 			<form class="expressform" style="text-align: center; margin-bottom: 30px;">
 				<?php if(!$coming) : ?>
-				<button class="come" name="d" value="in" id="change_button">
-		
-				</button>
+
+				<button class="come" name="d" value="in" id="change_button">Anmelden</button>
 				<?php else: ?>
-				<button class="go" name="d" value="out" id="change_button">
-		
-				</button>
+				<button class="go" name="d" value="out" id="change_button">Abmelden</button>
 				<?php endif; ?>
 				<input type="hidden" name="h" value="<?php echo $hash; ?>">
 			</form>
@@ -139,6 +136,16 @@
 								<?php echo gmdate("G:i:s", $lastEntry['diff']) ?>
 							<?php else:?>
 								-<?php echo gmdate("G:i:s", $lastEntry['diff']*-1) ?>
+							<?php endif; ?>
+						</span>
+					</li>
+					<li style="color: #bbb;">
+						<span class="monthdiff_label">Monatsbilanz:</span>
+						<span style="float: right">
+							<?php if ($lastEntry['monthdiff']>0): ?>
+								<?php echo gmdate("G:i:s", $lastEntry['monthdiff']) ?>
+							<?php else:?>
+								-<?php echo gmdate("G:i:s", $lastEntry['monthdiff']*-1) ?>
 							<?php endif; ?>
 						</span>
 					</li>
