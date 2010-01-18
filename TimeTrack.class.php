@@ -8,14 +8,22 @@ class TimeTrack {
 	private $loadedData = false;
 	private $rawData;
 	private $data = array();
-	
+
+  public function generateHash($user = null, $pass = null) {
+    if (isset($user) && isset($pass)) {
+      return md5($user."uphashseed".$pass);
+    }
+
+    return null;
+  }
+
 	public function login($user = null, $pass = null, $hash = null)
 	{
 //		$hash = null;
 
 		if (!isset($hash)) {
 			if (isset($user) && isset($pass)) {
-				$hash = md5($user."uphashseed".$pass);
+				$hash = $this->generateHash($user, $pass);
 			} elseif (isset($_SESSION['userhash'])) {
 				$hash = $_SESSION['userhash'];
 			}

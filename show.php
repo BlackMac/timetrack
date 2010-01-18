@@ -10,9 +10,9 @@ $loggedin=false;
 $loggedin = $timetrack->login($_POST['u'], $_POST['p']);
 	
 if (!$loggedin) {
-	if ($hash!="") {
+	if ($timetrack->generateHash($_POST['u'], $_POST['p']) ) {
 		unset($_SESSION['userhash']);
-		header("Location: download.php?h=".$hash);
+		header("Location: download.php?h=". $timetrack->generateHash($_POST['u'], $_POST['p']) );
 		exit;
 	} else {
 		unset($_SESSION['userhash']);
