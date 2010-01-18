@@ -117,7 +117,7 @@
 		</div>
 	<?php endif; ?>
 	<div id="action_field">
-		<a href="download.php?h=<?php echo $hash ?>">Daemon downloaden</a><br>
+		<a href="download.php?h=<?php echo $timetrack->hash ?>">Daemon downloaden</a><br>
 		<a href="index.php">Ausloggen</a>
 	</div>
 </div>
@@ -188,7 +188,31 @@
 			<?php echo $timetrack->hash ?>
 		<?php endif; ?>
 		<br />
-		<img src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $timetrack->hash ?>&choe=UTF-8">
+		<img style="float: right;" src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $timetrack->hash ?>&choe=UTF-8">
+    <table>
+      <thead>
+        <tr>
+          <th>Monat</th>
+          <th>Differenz</th>
+        </tr>
+      </thead>
+    <?php
+    $alldiff = 0;
+    foreach($data['months'] as $month => $diff) :
+    $alldiff += $diff;
+    ?>
+      <tr>
+        <td><?php echo formatmonth($month); ?></td>
+			  <td><?php echo ($diff < 0 ? '-':''). gmdate("G:i:s", $diff < 0 ? $diff*-1 : $diff); ?></td>
+      </tr>
+    <?php endforeach; ?>
+      <tfoot>
+        <tr>
+          <td>Durchschnitt:</td>
+          <td><?php $diff = $alldiff/count($data['months']); echo ($diff < 0 ? '-':''). gmdate("G:i:s", $diff < 0 ? $diff*-1 : $diff); ?></td>
+        </tr>
+      </tfoot>
+    </table>
 	</div>
 
 </div>

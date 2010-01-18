@@ -22,7 +22,6 @@ if (!$loggedin) {
 }
 
 $data = $timetrack->parseData();
-
 //$days[$date]['endstamp']=$datetime;
 
 //unset($days[$date]);
