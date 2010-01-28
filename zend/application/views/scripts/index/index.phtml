@@ -1,0 +1,20 @@
+<?php if (isset($error)): ?>
+<div id="error_box">
+	<strong><?php echo $error ?></strong>
+</div>
+<?php endif; ?>
+<p>
+	Benutzername und Passwort angeben um die Logs einzusehen:
+</p>
+<form class="login" action="<?php echo $this->url(array('action' => 'login'));?>" method="post">
+<p>
+<label for="name">Username:</label><br>
+	<input type="text" name="u" id="name" />
+</p><p>
+<label for="password">Passwort:</label><br>
+	<input type="password" name="p" id="password" />
+</p>
+<p>
+	<input type="submit" value="login" />
+</p>
+</form>
