@@ -93,6 +93,15 @@
 		<?php echo date("G:i:s", $day['startstamp']+$day['pause']+60*60*8.75) ?>
 	</div>
 
+    <div id="day_diff_earliest" class="">
+		<span class="diff_label">Fr&uuml;hestm&ouml;glicher Feierabend:</span><br>
+                <?php
+                    foreach ($data['days'] as $k => $v) if($k!=date("Y-m-d",time())) $tmp_yesterday = $k;
+                    if(substr($tmp_yesterday,5,2)==date("m")) $yesterdaydiff = $data['days'][$tmp_yesterday]['monthdiff']; else $yesterdaydiff = 0;
+                    echo date("G:i:s", $day['startstamp']+$day['pause']-$yesterdaydiff+60*60*8.75)
+                ?>
+	</div>
+
 	<?php if ($day['diff']>0): ?>
 		<div id="day_diff">
 			<span class="diff_label">Differenz:</span><br>
@@ -229,6 +238,6 @@ var laststateIn = "<?php echo $day['laststateIn']?>";
 <script type="text/javascript" src="js/SqueezeBox/SqueezeBox.js"></script>
 <script type="text/javascript" src="js/TimeSlider.js"></script>
 <script type="text/javascript" src="js/show.js"></script>
+
 </body>
 </html>
-

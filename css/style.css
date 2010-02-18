@@ -204,7 +204,8 @@ span.negative_value
 }
 
 #month_diff,
-#day_diff
+#day_diff,
+#day_diff_earliest
 {
 	float:left;
 	border-right:1px solid #cccccc;
