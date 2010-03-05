@@ -93,12 +93,14 @@
 		<?php echo date("G:i:s", $day['startstamp']+$day['pause']+60*60*8.75) ?>
 	</div>
 
-    <div id="day_diff_earliest" class="">
+    <div id="day_diff_earliest" class="" style="height:48px;">
 		<span class="diff_label">Fr&uuml;hestm&ouml;glicher Feierabend:</span><br>
                 <?php
                     foreach ($data['days'] as $k => $v) if($k!=date("Y-m-d",time())) $tmp_yesterday = $k;
                     if(substr($tmp_yesterday,5,2)==date("m")) $yesterdaydiff = $data['days'][$tmp_yesterday]['monthdiff']; else $yesterdaydiff = 0;
-                    echo date("G:i:s", $day['startstamp']+$day['pause']-$yesterdaydiff+60*60*8.75)
+                    $fmfeierabend = $day['startstamp']+$day['pause']-$yesterdaydiff+60*60*8.75;
+                    echo date("G:i:s", $fmfeierabend);
+                    echo "&nbsp;<a href=\"#\" OnClick=\"javascript:window.open('countdown.php?std=".date("G",$fmfeierabend)."&min=".date("i",$fmfeierabend)."&sec=".date("s",$fmfeierabend)."','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;\" style=\"font-size:10px;\">[countdown]</a>";
                 ?>
 	</div>
 
