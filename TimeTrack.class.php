@@ -246,7 +246,7 @@ class TimeTrack {
 					'chtt' => $title,
 					'chs' => '450x180',
 					'chxt' => 'y,x',
-					'chxl' => '0:|6:15|8:45|11:15|1:|'. join('|', $this->data['daynames'][$month]),
+					'chxl' => '0:|'.$min.'|8:45|'.$max.'|1:|'. join('|', $this->data['daynames'][$month]),
 					'chco' => '7097AE',
 					'cht' => 'lc',
 					'chm' => 'r,CAE8EA,0,0.49,0.51',
