@@ -201,6 +201,11 @@ span.negative_value
 	padding:0;
 	margin: 0 auto 0 auto;
 	overflow:hidden;
+	color: #000;
+}
+
+#overview p {
+  font-size: 14px;
 }
 
 #month_diff,

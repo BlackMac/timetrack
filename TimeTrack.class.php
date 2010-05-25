@@ -28,14 +28,14 @@ class TimeTrack {
 				$hash = $_SESSION['userhash'];
 			}
 		}
-		
-		if(!isset($hash)) {
+
+    if(!isset($hash)) {
 			return false;
 		}
 		
-		$auth = $this->setFile($hash.'.log');
-		
-		if(!$auth) {
+		$auth = $this->setFile($hash);
+
+		if($auth === false) {
 			return false;
 		}
 
@@ -49,6 +49,11 @@ class TimeTrack {
 		$this->hash = $hash;
 
 		$_SESSION['userhash']=$hash;
+
+    if($auth === -1) {
+      header("Location: migration.php");
+      die();
+    }
 		
 		return true;
 	}
@@ -63,9 +68,40 @@ class TimeTrack {
 		return is_writable($this->file);
 	}
 
+  public static $migrationMode = false;
+  public function migrateFileToDir($file)
+  {
+		$old=realpath(dirname(__FILE__) . '/logs/') .'/'. $file.'.log';
+		$new=realpath(dirname(__FILE__) . '/logs/') .'/'. $file;
+
+    if(is_file($old) === false) return array('error' => true, 'where' => 'old is no file -> ' . $old);
+    if(is_writable(realpath(dirname(__FILE__) . '/logs/')) === false) return array('error' => true, 'where' => 'logs directory is not writeable');
+
+    $res = mkdir($new);
+    if($res === false) return array('error' => true, 'where' => 'mkdir');
+
+    $res = copy($old, $new . '/tracks.log');
+    if($res === false) return array('error' => true, 'where' => 'copy');
+
+    return array('error' => false);
+ }
+
 	public function setFile($file) 
 	{
-		$fpath=realpath(dirname(__FILE__) . '/logs/'.$file);
+    $fpath=realpath(dirname(__FILE__) . '/logs/'.$file);
+
+    if($fpath === false) {
+      $fpath=realpath(dirname(__FILE__) . '/logs/'.$file.'.log');
+    }
+
+    if(!is_dir($fpath) && is_file($fpath) && self::$migrationMode === false) {
+      return -1;
+    }
+
+    if(self::$migrationMode === false) {
+      $fpath.='/tracks.log';
+    }
+
 		if (file_exists($fpath)) {
 			$this->file = $fpath;
 			return true;

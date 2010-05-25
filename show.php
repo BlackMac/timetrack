@@ -35,5 +35,6 @@ $alt=true;
 
 $day = $timetrack->getLastDay();
 
-include "views/show.phtml";
+$filename = pathinfo(__FILE__, PATHINFO_FILENAME);
+include "views/$filename.phtml";
 

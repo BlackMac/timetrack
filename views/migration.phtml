@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Zeittabelle - wann komme ich, wann gehe ich?</title>
+	<meta name="author" content="">
+	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
+	<link rel="shortcut icon" href="img/favicon.ico" />
+	<link rel="icon" href="img/favicon.ico" type="image/ico" />
+</head>
+<body>
+
+<div id="month_navigator"></div>
+
+<form method="POST">
+<div id="overview" style="text-align: center;">
+<h1>Migration</h1>
+<p>Auch TimeTrack wird veraendert und bekommt neue Funktionen.<br> Um diese Funktionen nutzen zu koennen, ist es notwendig, dass du deine alte Dateien migrierst.<br>
+	<button type="submit" name="migrate" value="migrate">Migrieren</button>
+</p>
+</div>
+</form>
+
+<?php if(isset($res['error']) && $res['error']===true) : ?>
+  <div class="error">
+    Es ist ein Fehler aufgetreten. Beschreibung: <?php echo $res['where']; ?>
+  </div>
+<?php endif; ?>
+
+</body>
+</html>
