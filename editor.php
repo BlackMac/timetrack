@@ -25,21 +25,31 @@ $postTimestamp = $_POST['timestamp'];
 
 if(isset($logfileRaw, $postHash, $postIp, $postTimestamp)) {
 
+	$matches = array();
+	if(preg_match("/^[-\+#]\[(\d{4}-\d{2}-\d{2}\w\d{2}:\d{2}:\d{2})\]\s.*/", $logfileRaw, $matches))
+	{
+		$curmonth = date("Ym", strtotime($matches[1]));
+	}
+
 	if($postHash != $timetrack->hash || $postIp != $_SERVER['REMOTE_ADDR']) {
 		$msg = "Something went wrong. Security Information did not match.";
-	} else 	
+	} else
 	if(time() - $postTimestamp < 5) {
 		$msg = "Flash Gordon was here. Try to breathe in and out and give yourself more time to edit.";
 	} else
-	if(!$timetrack->writeFile($logfileRaw)) {
+	if(!$timetrack->writeFile($logfileRaw, $curmonth)) {
 		$msg = "Update not successful";
 	} else
 	{
 		$msg = '';
-		header('Location: show.php');
+		header('Location: show.php?m=' . $curmonth);
 	}
-	
+
 	die($msg);
+}
+
+if(isset($_GET['m'])) {
+	$timetrack->setMonth($_GET['m']);
 }
 
 include "views/editor.phtml";

@@ -3,19 +3,20 @@
 <html lang="de">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Zeittabelle - wann komme ich, wann gehe ich?</title>
+	<title>TimeTrack - wann komme ich, wann gehe ich?</title>
 	<meta name="author" content="">
 	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
 	<?php if($mobiledevice) : ?>
 		<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-		<link href="css/style.handheld.css" rel="stylesheet" type="text/css">		
-	<?php endif; ?>	
+		<link href="css/style.handheld.css" rel="stylesheet" type="text/css">
+	<?php endif; ?>
 	<link rel="shortcut icon" href="img/favicon.ico" />
 	<link rel="icon" href="img/favicon.ico" type="image/ico" />
 	<link rel="stylesheet" type="text/css" href="js/SqueezeBox/assets/SqueezeBox.css">
 </head>
 <body>
 <div id="month_navigator">
+
 	<div id="action_menu">
 		<ul>
 		<li>
@@ -54,7 +55,7 @@
 		</li>
 		</ul>
 	</div>
-	
+
 	<div id="additional_months" class="hidden">
 		<ul>
 			<?php foreach($data['months'] as $month=>$time): ?>
@@ -64,7 +65,7 @@
 			<?php endforeach; ?>
 		</ul>
 	</div>
-	
+
 	<div id="months">
 		<ul>
 		<li>
@@ -75,19 +76,22 @@
 		</li>
 		</ul>
 	</div>
+	<div id="current_month"><?php echo formatmonth($curmonth); ?></div>
+
 </div>
 
+<?php if ($curmonth==date('Ym')) : ?>
 <div id="overview">
 	<div id="day_diff" class="">
 		<span class="diff_label">Ankunft:</span><br>
 		<?php echo date("G:i:s", $day['startstamp']) ?>
 	</div>
-	
+
 	<div id="day_diff" class="">
 		<span class="diff_label">Pause:</span><br>
 		<?php echo gmdate("G:i:s", $day['pause']) ?>
 	</div>
-	
+
 	<div id="day_diff" class="">
 		<span class="diff_label">Feierabend:</span><br>
 		<?php echo date("G:i:s", $day['startstamp']+$day['pause']+60*60*8.75) ?>
@@ -115,7 +119,7 @@
 			<span class="day_diff_minus">-</span><span class="day_diff_hour"><?php echo gmdate("G", $day['diff']*-1) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $day['diff']*-1) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $day['diff']*-1) ?></span>
 		</div>
 	<?php endif; ?>
-	
+
 	<?php if ($data['months'][$curmonth]>0): ?>
 		<div id="month_diff">
 			<span class="diff_label"><?php echo formatmonth($curmonth) ?>:</span><br>
@@ -132,6 +136,7 @@
 		<a href="index.php">Ausloggen</a>
 	</div>
 </div>
+<?php endif; ?>
 
 
 <div style="overflow:hidden" id="content_wrapper">
@@ -178,7 +183,7 @@
 				<?php else: ?>
 					<span class="negative_value">-<?php echo gmdate("G:i",$cday['monthdiff']*-1) ?></span>
 				<?php endif; ?>
-					
+
 				</td>
 			</tr>
 		<?php endif; ?>
@@ -192,9 +197,9 @@
 		<br>
 		<img src="<?php echo $timetrack->generateDifferenceGraphUrl($curmonth, 'Differenz zum Soll'); ?>">
 		<br>
-		<strong>Hash:</strong> 
+		<strong>Hash:</strong>
 		<?php if ($timetrack->isWritable()): ?>
-			<a href="editor.php" class="editorLink" rel="{handler:'iframe'}" style="color: #fff; text-decoration: none;"><?php echo $timetrack->hash ?></a>
+			<a href="editor.php?m=<?php echo $curmonth ?>" class="editorLink" rel="{handler:'iframe'}" style="color: #fff; text-decoration: none;"><?php echo $timetrack->hash ?></a>
 		<?php else: ?>
 			<?php echo $timetrack->hash ?>
 		<?php endif; ?>

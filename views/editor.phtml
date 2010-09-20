@@ -3,7 +3,7 @@
 <html lang="de">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Zeittabelle - wann komme ich, wann gehe ich?</title>
+	<title>TimeTrack - wann komme ich, wann gehe ich?</title>
 	<meta name="author" content="">
 	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="img/favicon.ico" />
@@ -18,26 +18,26 @@
 		<br>
 		Wie kommst Du überhaupt hierhin???
 	</p>
-	
+
 <?php else: ?>
-	
+
 	<p>
 		<b>ACHTUNG:</b>
-		Es liegt sehr viel Macht in diesem Editor. Er kann alles zerstören, was du dir erarbeitet hast. 
+		Es liegt sehr viel Macht in diesem Editor. Er kann alles zerstören, was du dir erarbeitet hast.
 		Benutze ihn deshalb äußerst behutsam!
 	</p>
 	<form id="form_editor" action="editor.php" method="post" target="_top" style="text-align: center;" autocomplete="off">
-		
+
 		<textarea name="logfileRaw" style="width: 75%; height: 150px"><?php echo join("\r\n", $timetrack->getRawData() ); ?></textarea>
 		<br>
-		
+
 		<input type="hidden" name="hash" value="<?php echo $timetrack->hash; ?>">
 		<input type="hidden" name="ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
 		<input type="hidden" name="timestamp" value="<?php echo time(); ?>">
 		<input type="submit" name="submit" value="Aktualisieren">
-		
+
 	</form>
-	
+
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.2/mootools-yui-compressed.js"></script>
 	<script type="text/javascript" src="js/mootools-1.2.2.1-more.js"></script>
 

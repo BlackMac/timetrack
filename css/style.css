@@ -141,6 +141,14 @@ span.negative_value
 	background-position: right bottom;
 }
 
+#month_navigator div#current_month
+{
+	font-size: 32px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 40px;
+}
+
 #additional_months {
 	width:110px;;
 	background:#B8CD9B;

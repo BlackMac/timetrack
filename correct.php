@@ -53,10 +53,12 @@ if(isset($formsend, $newstart, $newend, $oldstart, $oldend)) {
 	if(!$success) {
 		die("Update not successful");
 	} else {
-		header('Location: show.php');
+		$month = date("Ym", $oldstart);
+		header('Location: show.php?m=' . $month);
 	}
 }
 
+$timetrack->setMonth(date("Ym",strtotime($curdate)));
 $data = $timetrack->parseData();
 $day = $data['days'][$curdate];
 

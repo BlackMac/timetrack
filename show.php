@@ -8,7 +8,7 @@ $mobiledevice = detectMobileDevices();
 
 $loggedin=false;
 $loggedin = $timetrack->login($_POST['u'], $_POST['p']);
-	
+
 if (!$loggedin) {
 	if ($timetrack->generateHash($_POST['u'], $_POST['p']) ) {
 		unset($_SESSION['userhash']);
@@ -21,15 +21,16 @@ if (!$loggedin) {
 	}
 }
 
-$data = $timetrack->parseData();
-//$days[$date]['endstamp']=$datetime;
-
-//unset($days[$date]);
-
 $curmonth=date("Ym");
 if (isset($_GET['m'])) {
 	$curmonth=$_GET['m'];
 }
+
+$timetrack->setMonth($curmonth);
+$data = $timetrack->parseData();
+//$days[$date]['endstamp']=$datetime;
+
+//unset($days[$date]);
 
 $alt=true;
 
