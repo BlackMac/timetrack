@@ -15,4 +15,3 @@ updateTimestamp
 	input:	hash
 		oldTimestamp
 		newTimestamp
-

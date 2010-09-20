@@ -1,7 +1,7 @@
 <?php
 include "functions_GRML.php";
 include "TimeTrack.class.php";
-
+// Comment
 session_start();
 $timetrack = new TimeTrack();
 
