@@ -1,5 +1,13 @@
 <?php
 
+function walk_method(&$item) {
+	$item = trim($item);
+}
+
+function filter_method(&$item) {
+	return !empty($item);
+}
+
 class TimeTrack
 {
 
@@ -134,9 +142,9 @@ class TimeTrack
 		$raw = file($old);
 
 		// trim all elements
-		array_walk($raw, function(&$item) { $item = trim($item); });
+		array_walk($raw, function(&$item) { "walk_method" });
 		// remove empty elements
-		$raw = array_filter($raw, function($item) { return !empty($item); });
+		$raw = array_filter($raw, function($item) { "filter_method" });
 
 		$monthArray = array();
 		foreach ($raw as $line)
