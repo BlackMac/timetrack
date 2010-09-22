@@ -124,19 +124,12 @@ class TimeTrack
 				);
 		}
 
-		/*
-	    if(!is_file($new . '/tracks.log')) {
-	      $res = copy($old, $new . '/tracks.log');
-	      if($res === false) return array('error' => true, 'where' => 'copy');
-	    }
-	    */
-
-		$raw = file($old);
-
-		// trim all elements
-		array_walk($raw, function(&$item) { $item = trim($item); });
-		// remove empty elements
-		$raw = array_filter($raw, function($item) { return !empty($item); });
+		$raw = file($old, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
+		if($res === false)
+			return array(
+				'error' => true,
+				'where' => 'old file is not readable'
+			);
 
 		$monthArray = array();
 		foreach ($raw as $line)
@@ -225,18 +218,13 @@ class TimeTrack
 			return false;
 		}
 
-		$fileContent = file($filename);
+		$fileContent = file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
 
-		$rawData = array();
-
-		foreach ($fileContent as $line)
-		{
-			if(trim($line) != "")
-			{
-				$rawData[] = trim($line);
-			}
+		if($fileContent === false) {
+			return false;
 		}
-		$this->rawData = $rawData;
+
+		$this->rawData = $fileContent;
 
 		$this->loadedData = true;
 
