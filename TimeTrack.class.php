@@ -1,4 +1,13 @@
 <?php
+
+function walk_method(&$item) {
+	$item = trim($item);
+}
+
+function filter_method($item) {
+	return !empty($item);
+}
+
 class TimeTrack
 {
 
@@ -123,12 +132,19 @@ class TimeTrack
 				);
 		}
 
-		$raw = file($old, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
-		if($res === false)
-			return array(
-				'error' => true,
-				'where' => 'old file is not readable'
-			);
+		/*
+	    if(!is_file($new . '/tracks.log')) {
+	      $res = copy($old, $new . '/tracks.log');
+	      if($res === false) return array('error' => true, 'where' => 'copy');
+	    }
+	    */
+
+		$raw = file($old);
+
+		// trim all elements
+		array_walk($raw, "walk_method" );
+		// remove empty elements
+		$raw = array_filter($raw, "filter_method" );
 
 		$monthArray = array();
 		foreach ($raw as $line)
@@ -217,13 +233,18 @@ class TimeTrack
 			return false;
 		}
 
-		$fileContent = file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
+		$fileContent = file($filename);
 
-		if($fileContent === false) {
-			return false;
+		$rawData = array();
+
+		foreach ($fileContent as $line)
+		{
+			if(trim($line) != "")
+			{
+				$rawData[] = trim($line);
+			}
 		}
-
-		$this->rawData = $fileContent;
+		$this->rawData = $rawData;
 
 		$this->loadedData = true;
 
@@ -424,7 +445,7 @@ class TimeTrack
 		if(! isset($this->data) || ! isset($this->data['days']))
 			return array();
 		else
-			return $this->data['days'];
+			return end($this->data['days']);
 	}
 
 	public function generatePresenceGraphUrl($month, $title = 'Anwesenheit in Stunden')
