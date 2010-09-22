@@ -445,7 +445,7 @@ class TimeTrack
 		if(! isset($this->data) || ! isset($this->data['days']))
 			return array();
 		else
-			return end($this->data['days']);
+			return $this->data['days'];
 	}
 
 	public function generatePresenceGraphUrl($month, $title = 'Anwesenheit in Stunden')
