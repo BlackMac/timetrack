@@ -4,7 +4,7 @@ function walk_method(&$item) {
 	$item = trim($item);
 }
 
-function filter_method(&$item) {
+function filter_method($item) {
 	return !empty($item);
 }
 
@@ -142,9 +142,9 @@ class TimeTrack
 		$raw = file($old);
 
 		// trim all elements
-		array_walk($raw, function(&$item) { "walk_method" });
+		array_walk($raw, "walk_method" );
 		// remove empty elements
-		$raw = array_filter($raw, function($item) { "filter_method" });
+		$raw = array_filter($raw, "filter_method" );
 
 		$monthArray = array();
 		foreach ($raw as $line)
