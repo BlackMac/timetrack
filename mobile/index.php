@@ -2,7 +2,7 @@
 	session_start();
 	include "../TimeTrack.class.php";
 	$timetrack = new TimeTrack();
-	
+
 	$loggedin = $timetrack->login($_POST['u'], $_POST['p'], $_GET['h']);
 	$hash = $timetrack->hash;
 
@@ -22,10 +22,10 @@
 	<link href="style.css" media="screen" rel="stylesheet" type="text/css">
 	<style type="text/css" media="screen">@import "jqtouch/jqtouch/jqtouch.min.css";</style>
 	<style type="text/css" media="screen">@import "jqtouch/themes/jqt/theme.min.css";</style>
-	
+
 	<script src="jqtouch/jqtouch/jquery.1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="jqtouch/jqtouch/jqtouch.min.js" type="application/x-javascript" charset="utf-8"></script>
-	
+
 	<script type="text/javascript" src="mobile2.js"></script>
 </head>
 <body>
@@ -36,7 +36,7 @@
             <a class="button slideup" href="#page2">Stats</a>
 			<?php endif; ?>
         </div>
-		
+
 		<?php  if(isset($_POST['u']) && isset($_POST['p'])) : ?>
 			<?php  if(!$loggedin) : ?>
 				<ul class="edgetoedge" style="background-color: #c00;">
@@ -52,7 +52,7 @@
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
-		
+
 		<?php if(!$loggedin) : ?>
 		        <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
 		            <ul class="edit form">
@@ -61,17 +61,24 @@
 		            </ul>
 		           	<input type="submit" name="submit" style="margin: 10px auto; width: 90%" class="whiteButton"  value="Login" />
 		        </form>
-				
+
 			</div>
-		
+
 		<?php else : ?>
-			
-			<?php 
+
+			<?php
+			$curmonth=date("Ym");
+			if (isset($_GET['m'])) {
+				$curmonth=$_GET['m'];
+			}
+
+			$timetrack->setMonth($curmonth);
+
 			$timetrack->parseData();
 			$lastEntry = $timetrack->getLastDay();
 
 			$coming = $lastEntry['laststateIn'];
-		
+
 			if($coming) {
 				$date=date("d.m.Y", $lastEntry['startstamp']);
 				$time=date("H:i",  $lastEntry['startstamp']);
@@ -79,10 +86,10 @@
 				$date=date("d.m.Y", $lastEntry['endstamp']);
 				$time=date("H:i",  $lastEntry['endstamp']);
 			}
-			
+
 			?>
-			
-			<form class="expressform" style="text-align: center; margin-bottom: 30px;">
+
+			<form class="expressform" style="text-align: center; margin-bottom: 30px; padding-top: 40px;">
 				<?php if(!$coming) : ?>
 
 				<button class="come" name="d" value="in" id="change_button">Anmelden</button>
@@ -91,7 +98,7 @@
 				<?php endif; ?>
 				<input type="hidden" name="h" value="<?php echo $hash; ?>">
 			</form>
-			
+
 			<div class="metal" style="position: absolute; bottom: 0px; width: 100%;">
 				<ul style="text-align: center;">
 					<!--
@@ -108,14 +115,14 @@
 				</ul>
 			</div>
 		    </div>
-		
+
 			<div id="page2">
 		        <div class="toolbar">
 		            <h1>Stats</h1>
 		            <a class="button back" href="#home">Home</a>
 		            <a class="button slideup" href="#graphs">Graphs</a>
-		        </div>		
-				
+		        </div>
+
 				<ul>
 					<li style="color: #bbb;">
 						<span class="diff_label">Ankunft:</span>
@@ -151,20 +158,20 @@
 					</li>
 				</ul>
 			</div>
-			
+
 			<div id="graphs">
 		        <div class="toolbar" id="graphtoolbar">
 		            <h1>Graphs</h1>
 		            <a class="button back" href="#home">Home</a>
-		        </div>		
-				
-			</div>			
-	
+		        </div>
+
+			</div>
+
 			<script type="text/javascript">
 				var presenceGraph = "<?php echo $timetrack->generatePresenceGraphUrl($lastEntry['month'], 'Anwesenheit in Stunden'); ?>";
 				var differenceGraph = "<?php echo $timetrack->generateDifferenceGraphUrl($lastEntry['month'], 'Differenz zum Soll'); ?>";
-			</script>	
-					
+			</script>
+
 		<?php endif; ?>
 
 </body>
