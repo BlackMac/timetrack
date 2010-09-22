@@ -23,6 +23,13 @@ if (!$tt->login(null, null, $hash)) {
 	die('INVALID LOGIN');
 }
 
+$curmonth=date("Ym");
+if (isset($_GET['m'])) {
+	$curmonth=$_GET['m'];
+}
+
+$tt->setMonth($curmonth);
+
 if ($action=="times") {
 	getTimes($tt);
 }
