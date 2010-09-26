@@ -57,11 +57,24 @@ window.addEvent('domready', function() {
 
 	countdownTimer = countdownDayDiff.periodical(1000);
 
-	SqueezeBox.assign($$('a.editorLink'), {
+	var options = {
+			
 		parse: 'rel',
 		classWindow: 'editorLightbox',
 		size: {x: 600, y: 290}
-	});
+	};
+	
+	SqueezeBox.assign($$('a.editorLink'), options);
 
+	$('dropBoxLink').href = $('dropBoxLink').href + location.search;
+
+	options.size.y = 600;
+	
+	SqueezeBox.assign($('dropBoxLink'), options);
+	
+	if(location.search.test('dropbox=1'))
+	{
+		SqueezeBox.open($('dropBoxLink'), options);
+	}
 });
 

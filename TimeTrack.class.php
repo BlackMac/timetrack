@@ -333,6 +333,35 @@ class TimeTrack
 		return true;
 	}
 
+	public function getOptions()
+	{
+		if(!is_dir($this->file))
+			$dir = dirname($this->file);
+		else
+			$dir = $this->file;
+
+		$filename = $dir . DIRECTORY_SEPARATOR . 'options.ini';
+		if(! is_file($filename))
+		{
+			return array();
+		}
+
+		$fileContent = file_get_contents($filename);
+		return json_decode($fileContent, true);
+	}
+	
+	public function setOptions($options)
+	{
+		if(!is_dir($this->file))
+			$dir = dirname($this->file);
+		else
+			$dir = $this->file;
+
+		$filename = $dir . DIRECTORY_SEPARATOR . 'options.ini';
+
+		return file_put_contents($filename, json_encode($options));
+	}	
+	
 	public function findAllMonths()
 	{
 		if(!is_dir($this->file))
@@ -351,35 +380,40 @@ class TimeTrack
 
 	public function parseData()
 	{
-		if(! $this->loadedData)
-		{
-			if(! $this->loadFile())
-				return;
-		}
-
 		$this->data = array(
 			'days' => array(),
 			'months' => array()
 		);
 
 		$this->data['months'] = $this->findAllMonths();
-
+		
+		if(! $this->loadedData)
+		{
+			if(! $this->loadFile())
+				return $this->data;
+		}
+		
 		$pausestart = 0;
 
 		foreach ($this->rawData as $line_num => $line)
 		{
-			if(substr($line, 0, 1) == "#")
+			$matches = array();
+			if(!preg_match("/^([-\+#])\[(\d{4}-\d{2}-\d{2}\w\d{2}:\d{2}:\d{2})\]\s(.*)/", $line, $matches))
 				continue;
-			$coming = (substr($line, 0, 1) == "+");
+			list ($match, $status, $datetime, $comment) = $matches;
+			
+			if($status == "#")
+				continue;
+			$coming = ($status == "+");
 
-			$datetime = strtotime(substr($line, 2, 19));
+			$datetime = strtotime($datetime);
 			$monthy = date("Ym", $datetime);
 
 			if(! isset($this->data['months'][$monthy]))
 			{
 				$this->data['months'][$monthy] = 0;
 			}
-			$date = substr($line, 2, 10);
+			$date = date('Y-m-d', $datetime);
 
 			if(! isset($this->data['days'][$date]))
 			{
@@ -388,13 +422,13 @@ class TimeTrack
 					'month' => $monthy,
 					'date' => $date,
 					'datestamp' => strtotime($date),
-					'start' => substr($line, 13, 8),
+					'start' => date('h:i:s', $datetime),
 					'startstamp' => $datetime,
 					'laststateIn' => (int)$coming,
 					'pause' => 0
 				);
 			}
-			elseif(substr($line, 0, 1) == "C")
+			elseif($status == "C")
 			{
 				echo "C" . $this->data['days'][$date]['start'];
 				$this->data['days'][$date]['startstamp'] -= substr($line, 22);
@@ -413,7 +447,7 @@ class TimeTrack
 			if($coming && $date == date("Y-m-d"))
 				$datetime = time();
 
-			$this->data['days'][$date]['end'] = substr($line, 13, 8);
+			$this->data['days'][$date]['end'] = date('h:i:s', $datetime);
 			$this->data['days'][$date]['endstamp'] = $datetime;
 
 			$worktime = $datetime - $this->data['days'][$date]['startstamp'];
@@ -442,7 +476,7 @@ class TimeTrack
 
 	public function getLastDay()
 	{
-		if(! isset($this->data) || ! isset($this->data['days']))
+		if(! isset($this->data) || ! isset($this->data['days']) || count($this->data['days']) == 0)
 			return array();
 		else
 			return end($this->data['days']);

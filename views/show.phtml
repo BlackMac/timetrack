@@ -53,6 +53,12 @@
 			</form>
 		</div>
 		</li>
+		<li>
+			<a href="dropbox.php" id="dropBoxLink" rel="{handler:'iframe'}" style="height: 36px; width: 50px;">
+				<div style="background: url(images/dropbox-backup.png) no-repeat center center; height: 36px;"></div> 
+			</a>
+		</li>
+		
 		</ul>
 	</div>
 
@@ -80,7 +86,7 @@
 
 </div>
 
-<?php if ($curmonth==date('Ym')) : ?>
+<?php if ($curmonth==date('Ym') && count($day) > 0) : ?>
 <div id="overview">
 	<div id="day_diff" class="">
 		<span class="diff_label">Ankunft:</span><br>

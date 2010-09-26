@@ -28,9 +28,6 @@ if (isset($_GET['m'])) {
 
 $timetrack->setMonth($curmonth);
 $data = $timetrack->parseData();
-//$days[$date]['endstamp']=$datetime;
-
-//unset($days[$date]);
 
 $alt=true;
 
