@@ -349,7 +349,7 @@ class TimeTrack
 		$fileContent = file_get_contents($filename);
 		return json_decode($fileContent, true);
 	}
-	
+
 	public function setOptions($options)
 	{
 		if(!is_dir($this->file))
@@ -360,8 +360,21 @@ class TimeTrack
 		$filename = $dir . DIRECTORY_SEPARATOR . 'options.ini';
 
 		return file_put_contents($filename, json_encode($options));
-	}	
-	
+	}
+
+	/**
+	 * need it for backup tasks
+	 */
+	public function getAllDataFiles()
+	{
+		if(!is_dir($this->file))
+			return array($this->file);
+		else
+			$dir = $this->file;
+
+		return glob($dir . '/*');
+	}
+
 	public function findAllMonths()
 	{
 		if(!is_dir($this->file))
@@ -386,13 +399,13 @@ class TimeTrack
 		);
 
 		$this->data['months'] = $this->findAllMonths();
-		
+
 		if(! $this->loadedData)
 		{
 			if(! $this->loadFile())
 				return $this->data;
 		}
-		
+
 		$pausestart = 0;
 
 		foreach ($this->rawData as $line_num => $line)
@@ -401,7 +414,7 @@ class TimeTrack
 			if(!preg_match("/^([-\+#])\[(\d{4}-\d{2}-\d{2}\w\d{2}:\d{2}:\d{2})\]\s(.*)/", $line, $matches))
 				continue;
 			list ($match, $status, $datetime, $comment) = $matches;
-			
+
 			if($status == "#")
 				continue;
 			$coming = ($status == "+");
