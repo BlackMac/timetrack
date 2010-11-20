@@ -1,20 +1,3 @@
-<!DOCTYPE html>
-
-<html lang="de">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>TimeTrack - wann komme ich, wann gehe ich?</title>
-	<meta name="author" content="">
-	<link href="css/style.css" media="screen" rel="stylesheet" type="text/css">
-	<?php if($mobiledevice) : ?>
-		<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-		<link href="css/style.handheld.css" rel="stylesheet" type="text/css">
-	<?php endif; ?>
-	<link rel="shortcut icon" href="img/favicon.ico" />
-	<link rel="icon" href="img/favicon.ico" type="image/ico" />
-	<link rel="stylesheet" type="text/css" href="js/SqueezeBox/assets/SqueezeBox.css">
-</head>
-<body>
 <div id="month_navigator">
 
 	<div id="action_menu">
@@ -64,9 +47,9 @@
 
 	<div id="additional_months" class="hidden">
 		<ul>
-			<?php foreach($data['months'] as $month=>$time): ?>
+			<?php foreach($this->data['months'] as $month=>$time): ?>
 				<li>
-					<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
+					<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$this->curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
 				</li>
 			<?php endforeach; ?>
 		</ul>
@@ -78,67 +61,67 @@
 			<a href="#" id="previous_months_link">Alle Monate</a>
 		</li>
 		<li>
-			<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
+			<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$this->curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
 		</li>
 		</ul>
 	</div>
-	<div id="current_month"><?php echo formatmonth($curmonth); ?></div>
+	<div id="current_month"><?php echo formatmonth($this->curmonth); ?></div>
 
 </div>
 
-<?php if ($curmonth==date('Ym') && count($day) > 0) : ?>
+<?php if ($this->curmonth==date('Ym') && count($this->day) > 0) : ?>
 <div id="overview">
 	<div id="day_diff" class="">
 		<span class="diff_label">Ankunft:</span><br>
-		<?php echo date("G:i:s", $day['startstamp']) ?>
+		<?php echo date("G:i:s", $this->day['startstamp']) ?>
 	</div>
 
 	<div id="day_diff" class="">
 		<span class="diff_label">Pause:</span><br>
-		<?php echo gmdate("G:i:s", $day['pause']) ?>
+		<?php echo gmdate("G:i:s", $this->day['pause']) ?>
 	</div>
 
 	<div id="day_diff" class="">
 		<span class="diff_label">Feierabend:</span><br>
-		<?php echo date("G:i:s", $day['startstamp']+$day['pause']+60*60*8.75) ?>
+		<?php echo date("G:i:s", $this->day['startstamp']+$this->day['pause']+60*60*8.75) ?>
 	</div>
 
     <div id="day_diff_earliest" class="" style="height:48px;">
 		<span class="diff_label">Fr&uuml;hestm&ouml;glicher Feierabend:</span><br>
                 <?php
-                    foreach ($data['days'] as $k => $v) if($k!=date("Y-m-d",time())) $tmp_yesterday = $k;
-                    if(substr($tmp_yesterday,5,2)==date("m")) $yesterdaydiff = $data['days'][$tmp_yesterday]['monthdiff']; else $yesterdaydiff = 0;
-                    $fmfeierabend = $day['startstamp']+$day['pause']-$yesterdaydiff+60*60*8.75;
+                    foreach ($this->data['days'] as $k => $v) if($k!=date("Y-m-d",time())) $tmp_yesterday = $k;
+                    if(substr($tmp_yesterday,5,2)==date("m")) $yesterdaydiff = $this->data['days'][$tmp_yesterday]['monthdiff']; else $yesterdaydiff = 0;
+                    $fmfeierabend = $this->day['startstamp']+$this->day['pause']-$yesterdaydiff+60*60*8.75;
                     echo date("G:i:s", $fmfeierabend);
                     echo "&nbsp;<a href=\"#\" OnClick=\"javascript:window.open('countdown.php?std=".date("G",$fmfeierabend)."&min=".date("i",$fmfeierabend)."&sec=".date("s",$fmfeierabend)."','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;\" style=\"font-size:10px;\">[countdown]</a>";
                 ?>
 	</div>
 
-	<?php if ($day['diff']>0): ?>
+	<?php if ($this->day['diff']>0): ?>
 		<div id="day_diff">
 			<span class="diff_label">Differenz:</span><br>
-			<span class="day_diff_hour"><?php echo gmdate("G", $day['diff']) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $day['diff']) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $day['diff']) ?></span>
+			<span class="day_diff_hour"><?php echo gmdate("G", $this->day['diff']) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $this->day['diff']) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $this->day['diff']) ?></span>
 		</div>
 	<?php else:?>
 		<div id="day_diff" class="negative">
 			<span class="diff_label">Differenz heute:</span><br>
-			<span class="day_diff_minus">-</span><span class="day_diff_hour"><?php echo gmdate("G", $day['diff']*-1) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $day['diff']*-1) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $day['diff']*-1) ?></span>
+			<span class="day_diff_minus">-</span><span class="day_diff_hour"><?php echo gmdate("G", $this->day['diff']*-1) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $this->day['diff']*-1) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $this->day['diff']*-1) ?></span>
 		</div>
 	<?php endif; ?>
 
-	<?php if ($data['months'][$curmonth]>0): ?>
+	<?php if ($this->data['months'][$this->curmonth]>0): ?>
 		<div id="month_diff">
-			<span class="diff_label"><?php echo formatmonth($curmonth) ?>:</span><br>
-			<?php echo gmdate("G:i:s", $data['months'][$curmonth]) ?>
+			<span class="diff_label"><?php echo formatmonth($this->curmonth) ?>:</span><br>
+			<?php echo gmdate("G:i:s", $this->data['months'][$this->curmonth]) ?>
 		</div>
 	<?php else:?>
 		<div id="month_diff" class="negative">
-			<span class="diff_label"><?php echo formatmonth($curmonth) ?>:</span><br>
-			-<?php echo gmdate("G:i:s", $data['months'][$curmonth]*-1) ?>
+			<span class="diff_label"><?php echo formatmonth($this->curmonth) ?>:</span><br>
+			-<?php echo gmdate("G:i:s", $this->data['months'][$this->curmonth]*-1) ?>
 		</div>
 	<?php endif; ?>
 	<div id="action_field">
-		<a href="download.php?h=<?php echo $timetrack->hash ?>">Daemon downloaden</a><br>
+		<a href="download.php?h=<?php echo $this->hash ?>">Daemon downloaden</a><br>
 		<a href="index.php">Ausloggen</a>
 	</div>
 </div>
@@ -159,8 +142,8 @@
 			</tr>
 		</thead>
 		<tbody>
-	<?php foreach ($data['days'] as $curday => $cday): ?>
-		<?php if ($curmonth==$cday['month']): ?>
+	<?php foreach ($this->data['days'] as $curday => $cday): ?>
+		<?php if ($this->curmonth==$cday['month']): ?>
 			<tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
 				<td>
 					<a href="correct.php?date=<?php echo $curday ?>" class="correctionLink">
@@ -199,18 +182,20 @@
 	</div>
 
 	<div class="rightColumn">
-		<img src="<?php echo $timetrack->generatePresenceGraphUrl($curmonth, 'Anwesenheit in Stunden'); ?>">
+		<img src="<?php echo $this->presenceGraphUrl; ?>">
 		<br>
-		<img src="<?php echo $timetrack->generateDifferenceGraphUrl($curmonth, 'Differenz zum Soll'); ?>">
+		<img src="<?php echo $this->differenceGraphUrl; ?>">
 		<br>
 		<strong>Hash:</strong>
-		<?php if ($timetrack->isWritable()): ?>
-			<a href="editor.php?m=<?php echo $curmonth ?>" class="editorLink" rel="{handler:'iframe'}" style="color: #fff; text-decoration: none;"><?php echo $timetrack->hash ?></a>
+		<?php if ($this->isWritable): ?>
+			<a href="editor.php?m=<?php echo $this->curmonth ?>" class="editorLink" rel="{handler:'iframe'}" style="color: #fff; text-decoration: none;"><?php echo $this->hash ?></a>
 		<?php else: ?>
-			<?php echo $timetrack->hash ?>
+			<?php echo $this->hash ?>
 		<?php endif; ?>
+		<?php /* 
 		<br />
-		<img style="float: right;" src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $timetrack->hash ?>&choe=UTF-8">
+		<img style="float: right;" src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $this->hash ?>&choe=UTF-8">
+		*/ ?>
 	</div>
 
 </div>
@@ -218,15 +203,12 @@
 </div>
 <script type="text/javascript">
 <!--
-var day_diff = <?php echo $day['startstamp']+$day['pause']+60*60*8.75 ?>;
-var laststateIn = "<?php echo $day['laststateIn']?>";
+var day_diff = <?php echo $this->day['startstamp']+$this->day['pause']+60*60*8.75 ?>;
+var laststateIn = "<?php echo $this->day['laststateIn']?>";
 -->
 </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
-<script type="text/javascript" src="js/mootools-1.2.2.1-more.js"></script>
-<script type="text/javascript" src="js/SqueezeBox/SqueezeBox.js"></script>
-<script type="text/javascript" src="js/TimeSlider.js"></script>
-<script type="text/javascript" src="js/show.js"></script>
-
-</body>
-</html>
+<script type="text/javascript" src="static/js/mootools-1.2.2.1-more.js"></script>
+<script type="text/javascript" src="static/js/SqueezeBox/SqueezeBox.js"></script>
+<script type="text/javascript" src="static/js/TimeSlider.js"></script>
+<script type="text/javascript" src="static/js/show.js"></script>

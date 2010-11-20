@@ -71,9 +71,26 @@ class TimeTrackAPI {
 
 		$this->login(array('hash' => $hash));
 
+		$this->_timetrack->setMonth(date('Ym'));
 		$this->_timetrack->parseData();
 		$res = 	$this->_timetrack->getLastDay();
 
+		return $res;
+	}
+	
+	public function generateGraphUrls($params) {
+		$hash = $params['hash'];
+
+		$this->login(array('hash' => $hash));
+
+		$this->_timetrack->setMonth(date('Ym'));
+		$this->_timetrack->parseData();
+		
+		$res = array(
+			'presence' => $this->_timetrack->generatePresenceGraphUrl(date('Ym'), 'Anwesenheit in Stunden'),
+			'difference' => $this->_timetrack->generateDifferenceGraphUrl(date('Ym'), 'Differenz zum Soll')
+		);
+		
 		return $res;
 	}
 

@@ -46,6 +46,8 @@ function countdownDayDiff() {
 };
 
 window.addEvent('domready', function() {
+	new Element('link', {rel:'stylesheet', type: 'text/css', href: 'static/js/SqueezeBox/assets/SqueezeBox.css'}).inject(document.head);
+	
 	$('previous_months_link').addEvent('click', function (e) {
 		e.preventDefault();
 		$('additional_months').toggleClass('hidden');

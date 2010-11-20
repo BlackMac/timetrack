@@ -75,7 +75,7 @@ class TimeTrack
 
 		$this->user = $user;
 		$this->hash = $hash;
-
+		
 		$_SESSION['userhash'] = $hash;
 
 		if($auth === -1)
@@ -435,7 +435,7 @@ class TimeTrack
 					'month' => $monthy,
 					'date' => $date,
 					'datestamp' => strtotime($date),
-					'start' => date('h:i:s', $datetime),
+					'start' => date('G:i:s', $datetime),
 					'startstamp' => $datetime,
 					'laststateIn' => (int)$coming,
 					'pause' => 0

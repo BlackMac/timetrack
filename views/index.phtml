@@ -1,43 +1,20 @@
-<!DOCTYPE html>
-
-<html lang="de">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>TimeTrack</title>
-	<meta name="author" content="Stefan Lange-Hegermann">
-	<link href="css/style.css" rel="stylesheet" type="text/css">		
-	<?php if($mobiledevice) : ?>
-		<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-		<link href="css/style.handheld.css" rel="stylesheet" type="text/css">		
-	<?php endif; ?>
-	<link rel="shortcut icon" href="img/favicon.ico" />
-	<link rel="icon" href="img/favicon.ico" type="image/ico" />
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<link rel="apple-touch-icon" href="/img/favicon.png">
-	<link rel="apple-touch-startup-image" href="/img/startupimage.png">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-</head>
-<body>
-	<?php if (isset($error)): ?>
-	<div id="error_box">
-		<strong><?php echo $error ?></strong>
-	</div>
-	<?php endif; ?>
-	<p>
-		Benutzername und Passwort angeben um die Logs einzusehen:
-	</p>
-	<form class="login" action="show.php" method="post">
-	<p>
-	<label for="name">Username:</label><br>
-		<input type="text" name="u" id="name" />
-	</p><p>
-	<label for="password">Passwort:</label><br>
-		<input type="password" name="p" id="password" />
-	</p>
-	<p>
-		<input type="submit" value="login" />
-	</p>
-	</form>
-</body>
-</html>
-
+<?php if (isset($error)): ?>
+<div id="error_box">
+	<strong><?php echo $error ?></strong>
+</div>
+<?php endif; ?>
+<p>
+	Benutzername und Passwort angeben um die Logs einzusehen:
+</p>
+<form class="login" action="show.php" method="post">
+<p>
+<label for="name">Username:</label><br>
+	<input type="text" name="u" id="name" />
+</p><p>
+<label for="password">Passwort:</label><br>
+	<input type="password" name="p" id="password" />
+</p>
+<p>
+	<input type="submit" value="login" />
+</p>
+</form>

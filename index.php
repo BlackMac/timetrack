@@ -8,9 +8,16 @@
 		$error='Login fehlgeschlagen!';
 	}
 
-include "functions_GRML.php";
+include_once 'application/View.php';
 
-$mobiledevice = detectMobileDevices();
+class Timetrack_View_Index extends Timetrack_View
+{
+	protected function prepare()
+	{
+		$this->setViewScript('index');
+		$this->view->mobiledevice = $this->detectMobileDevices();
+	}
+}
 
-include "views/index.phtml";
-
+$page = new Timetrack_View_Index();
+echo $page->render();
