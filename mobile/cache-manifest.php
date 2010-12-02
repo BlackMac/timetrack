@@ -6,17 +6,15 @@ $url='http://'.$_SERVER['SERVER_NAME'].$path_info['dirname'].'/';
 $comment = "";
 $filelist = "";
 
-$files = array(
-    "style.css",
-    "mobile.js",
-    "mootools-yui-compressed.js",
-    "../images/navigator_buttons.gif",
-    "../img/mobile/button_green.png",
-    "../img/mobile/button_red.png",
-    "../img/mobile/infogradient.png",
-    "../img/mobile/topgradient.png",
-    "../img/mobile/wait.gif",
-    );
+$files = array();
+
+$ite=new RecursiveDirectoryIterator(".");
+foreach (new RecursiveIteratorIterator($ite) as $filename=>$cur) {
+	if(preg_match('/\.php$/', $filename) != 0) continue;
+	$files[] = $filename;
+}
+
+$files[] = "../static/img/mobile/wait.gif";
 //echo '#'.microtime()."\n";
 
 foreach($files as $file) {
@@ -26,10 +24,6 @@ foreach($files as $file) {
 }
 ?>
 CACHE MANIFEST
-# v0.1
 <?php echo $comment; ?>
 
 <?php echo $filelist; ?>
-
-NETWORK:
-index.php

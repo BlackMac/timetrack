@@ -25,9 +25,14 @@ function toTime(thedate) {
 	return pad(thedate.getHours())+':'+pad(thedate.getMinutes());
 }
 
+document.addEventListener("touchmove", function(e){e.preventDefault()}, false);
+
 $(function(){
+	var wait_div = $(document.createElement('div')).addClass('wait_div').addClass('current');
 	
-	
+	if($('#change_button').size() == 0) {
+		return;
+	}
 	
 	$('.expressform').submit(function() {
 	
@@ -37,7 +42,10 @@ $(function(){
 	        url:'../log.php',
 	        data: ajaxparams,
 	        type: 'GET',
+			beforeSend: function() { $('body').append(wait_div); },
+	    	error: function() { wait_div.remove(); },
 	        success: function (res) {
+	    		wait_div.remove();
 				var timestring=res.substr(2,19);
 				var datetime=timestring.split('T');
 				var date=datetime[0].split('-');
@@ -70,13 +78,18 @@ $(function(){
 	
 	});
 	
+	
     $.ajax({
 		url:"../json-rpc.php",
 		data: '{"id":"23342423","method":"getLastDay","params":{"hash":"' + $('input[name=h]')[0].value + '"}}',
 		type: 'POST',
 		dataType: 'json',
 		contentType: 'application/json',
+		beforeSend: function() { $('body').append(wait_div); },
+    	error: function() { wait_div.remove(); },
         success: function (data) {
+    		wait_div.remove();
+    		
 			if(data.error != null || !data.result) {
 				return;
 			}
@@ -130,8 +143,11 @@ $(function(){
 				type: 'POST',
 				dataType: 'json',
 				contentType: 'application/json',
+				beforeSend: function() { $('body').append(wait_div); },
+		    	error: function() { wait_div.remove(); },
 				success:
 			        function(data){
+		    			wait_div.remove();
 						if(data.error != null || !data.result) {
 							return;
 						}
