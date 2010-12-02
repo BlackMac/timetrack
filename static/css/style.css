@@ -58,20 +58,68 @@ tr.alt:hover
 
 form.login
 {
-	background: transparent url(../img/mobile/infogradient.png) repeat-x;
-	padding: 10px;
+	background: #EFEFEF;
+	background-image: -moz-linear-gradient(top, #EFEFEF 11%, #B0B0B0 93%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(11%,#EFEFEF), color-stop(93%,#B0B0B0));
+	padding: 20px;
 	color: #444444;
+	margin: 50px auto 0;
+	width: 200px;
+	height: 240px;
+	font-family: 'Nobile', Arial, Helvetica, sans-serif;
+	border: 2px solid #27343b;
+	border-radius: 10px;	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-webkit-box-shadow:  4px 5px 26px -1px #222222;
+	-moz-box-shadow: 4px 5px 26px -1px #222222;
+	box-shadow: 4px 5px 26px -1px #222222;
+}
+
+form.login h1 {
+	margin-top: 0px;
+	margin-bottom: 30px;
+	text-align: center;
+	font-family: 'Josefin Sans', serif;
+	font-weight: 700;
+}
+
+form.login label {
+	font-size: 14px;
+}
+
+form.login input#name,
+form.login input#password {
+	width: 192px;
+	padding: 3px;
+	border: 1px solid #748187;
+	border-radius: 5px;	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	font-size: 14px;
+	-moz-box-shadow: 1px 1px 5px -2px #000000 inset;
+	-webkit-box-shadow: 1px 1px 5px -2px #000000 inset;
+	box-shadow: 1px 1px 5px -2px #000000 inset;
+}
+
+form.login input#login {
+	margin-top: 8px;
 }
 
 #form_editor textarea,
 #form_editor input[type=submit],
 #form_correction input[type=submit],
 form.login input[type=submit] {
-	border: 1px solid #fff;
-	background: #414E55;
+	border: 1px solid #748187;
+	border-radius: 5px;	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background: #A3BBC6;
+	background: -moz-linear-gradient(top, #A3BBC6 0%, #566D77 50%, #414E55 51%, #86A9BA 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#A3BBC6), color-stop(50%,#566D77), color-stop(51%,#414E55), color-stop(100%,#86A9BA)); /* webkit */
 	color: #fff;
 	font-weight: bold;
-	width: 150px;
+	width: 200px;
 	height: 30px;
 	margin: 0px auto;
 }

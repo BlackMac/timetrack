@@ -3,18 +3,18 @@
 	<strong><?php echo $error ?></strong>
 </div>
 <?php endif; ?>
-<p>
-	Benutzername und Passwort angeben um die Logs einzusehen:
-</p>
 <form class="login" action="show.php" method="post">
-<p>
-<label for="name">Username:</label><br>
-	<input type="text" name="u" id="name" />
-</p><p>
-<label for="password">Passwort:</label><br>
-	<input type="password" name="p" id="password" />
-</p>
-<p>
-	<input type="submit" value="login" />
-</p>
+	<h1>
+	TimeTrack
+	</h1>
+	<p>
+	<label for="name">Benutzername:</label><br>
+		<input type="text" name="u" id="name" />
+	</p><p>
+	<label for="password">Passwort:</label><br>
+		<input type="password" name="p" id="password" />
+	</p>
+	<p>
+		<input type="submit" id="login" value="Login" />
+	</p>
 </form>
