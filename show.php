@@ -43,6 +43,34 @@ class Timetrack_View_Show extends Timetrack_View
 		
 		$this->setViewScript('show');
 		$this->view->mobiledevice = $this->detectMobileDevices();
+		
+		$options = $this->core->getOptions();
+		$this->view->notificationsMapping = array(
+			'when' => array(
+				'5' => '5 Minuten',
+				'10' => '10 Minuten',
+				'15' => '15 Minuten',
+				'20' => '20 Minuten',
+				'25' => '25 Minuten',
+				'30' => '30 Minuten',
+			),
+			'what' => array(
+				'earliest' => 'frühestmöglichen',
+				'normal' => 'normalen',				
+			),
+			'how' => array(
+				'mail' => 'E-Mail',
+				'sms' => 'SMS',
+				'iphone' => 'iPhone-Push'
+			),
+		);
+		$defaultNotification = array(
+			'when' => $this->view->notificationsMapping['when']['5'],
+			'what' => $this->view->notificationsMapping['what']['earliest'],
+			'how' => $this->view->notificationsMapping['how']['mail'],
+		);
+		$this->view->notifications = array_merge($defaultNotification, (array)$options['notifications']); 
+		$this->view->backup = $options['backup'];
 	}
 }
 

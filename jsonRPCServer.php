@@ -20,7 +20,6 @@ You should have received a copy of the GNU General Public License
 along with JSON-RPC PHP; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
 /**
  * This class build a json-RPC Server 1.0
  * http://json-rpc.org/wiki/specification
@@ -48,9 +47,15 @@ class jsonRPCServer {
 				
 		// reads the input data
 		$request = json_decode(file_get_contents('php://input'),true);
+
+		if(!isset($request)) {
+			header('HTTP/1.0 400 Bad Request');
+			return;			
+		}		
 		
 		// executes the task on local object
-		$request['method'] = str_replace('.','_',$request['method']);
+		$request['method'] = str_replace('.','_',$request['method']);			
+		
 		try {
 			if (method_exists($object, $request['method'])) {
 				$result = $object->{$request['method']}($request['params']);
@@ -79,9 +84,8 @@ class jsonRPCServer {
 			header('content-type: text/javascript');
 			echo json_encode($response);
 		}
-		
+
 		// finish
 		return true;
 	}
 }
-?>

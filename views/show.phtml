@@ -127,8 +127,12 @@
 </div>
 <?php endif; ?>
 
-
 <div style="overflow:hidden" id="content_wrapper">
+<?php if(count($this->data['days']) < 1) : ?>
+	<div id="overview" style="text-align: center;">
+		<p>Für diesen Monat liegen keine Daten vor.</p>
+	</div>
+<?php else: ?>
 	<div class="leftColumn">
 	<table>
 		<thead>
@@ -185,19 +189,57 @@
 		<img src="<?php echo $this->presenceGraphUrl; ?>">
 		<br>
 		<img src="<?php echo $this->differenceGraphUrl; ?>">
-		<br>
-		<strong>Hash:</strong>
-		<?php if ($this->isWritable): ?>
-			<a href="editor.php?m=<?php echo $this->curmonth ?>" class="editorLink" rel="{handler:'iframe'}" style="color: #fff; text-decoration: none;"><?php echo $this->hash ?></a>
-		<?php else: ?>
-			<?php echo $this->hash ?>
-		<?php endif; ?>
-		<?php /* 
-		<br />
-		<img style="float: right;" src="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=<?php echo $this->hash ?>&choe=UTF-8">
-		*/ ?>
+		<dl>
+			<dt>
+				Hash:
+			</dt>
+			<dd>
+				<?php if ($this->isWritable): ?>
+					<a href="editor.php?m=<?php echo $this->curmonth ?>" class="editorLink" rel="{handler:'iframe'}" style="color: #fff; text-decoration: none;"><?php echo $this->hash ?></a>
+				<?php else: ?>
+					<?php echo $this->hash ?>
+				<?php endif; ?>
+			</dd>
+			<dt>
+				Benachrichtigungen
+			</dt>
+			<dd id="dd_notifications">
+				<input type="checkbox" id="notificationEnabled" <?php if(isset($this->notifications['enabled']) && $this->notifications['enabled'] === true) echo "checked='checked'" ?>>
+				Ich möchte
+				<span id="notificationWhen" class="notificationSetting"><?php echo $this->notificationsMapping['when'][$this->notifications['when']]; ?></span>
+				vor dem 
+				<span id="notificationWhat" class="notificationSetting"><?php echo $this->notificationsMapping['what'][$this->notifications['what']]; ?></span>
+				Feierabend per
+				<span id="notificationHow" class="notificationSetting"><?php echo $this->notificationsMapping['how'][$this->notifications['how']]; ?></span>
+				informiert werden.
+			</dd>
+			<dt>
+				Auto-Backup
+			</dt>
+			<dd>
+				<a href="backup.php" class="iframeLink" rel="{handler:'iframe'}" style="color: #fff;">
+				<?php
+					$backupCount = 0;
+					$backupsActive = array();
+					if(isset($this->backups)) {
+						foreach($this->backups as $backupName => $backup) {
+							if($backup === true) {
+								$backupCount++;
+								$backupsActive[] = ucfirst($backupName);
+							}
+						}
+					}
+					if($backupCount > 0) {
+						echo join(", ", $backupsActive);
+					} else {
+						echo "deaktiviert";
+					}
+				?>
+				</a>		
+			</dd>
+		</dl>
 	</div>
-
+<?php endif;?>
 </div>
 <div>
 </div>
@@ -205,6 +247,7 @@
 <!--
 var day_diff = <?php echo $this->day['startstamp']+$this->day['pause']+60*60*8.75 ?>;
 var laststateIn = "<?php echo $this->day['laststateIn']?>";
+var hash = "<?php echo $this->hash ?>";
 -->
 </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js"></script>
@@ -212,3 +255,27 @@ var laststateIn = "<?php echo $this->day['laststateIn']?>";
 <script type="text/javascript" src="static/js/SqueezeBox/SqueezeBox.js"></script>
 <script type="text/javascript" src="static/js/TimeSlider.js"></script>
 <script type="text/javascript" src="static/js/show.js"></script>
+
+<div id="options_notificationWhen" class="notificationSettingBox hidden">
+	<ul>
+		<?php foreach($this->notificationsMapping['when'] as $key => $value) : ?>
+		<li class="notificationOption"><input type="hidden" name="when" value="<?php echo $key; ?>"><?php echo $value; ?></li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+
+<div id="options_notificationWhat" class="notificationSettingBox hidden">
+	<ul>
+		<?php foreach($this->notificationsMapping['what'] as $key => $value) : ?>
+		<li class="notificationOption"><input type="hidden" name="what" value="<?php echo $key; ?>"><?php echo $value; ?></li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+
+<div id="options_notificationHow" class="notificationSettingBox hidden">
+	<ul>
+		<?php foreach($this->notificationsMapping['how'] as $key => $value) : ?>
+		<li class="notificationOption"><input type="hidden" name="how" value="<?php echo $key; ?>"><?php echo $value; ?></li>
+		<?php endforeach; ?>
+	</ul>
+</div>

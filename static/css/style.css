@@ -354,6 +354,16 @@ span.negative_value
 .rightColumn {
 	float:left;
 	margin:0 0 0 20px;
+	width:450px;
+}
+
+.rightColumn dt {
+	font-weight: bold;
+}
+
+.rightColumn span.notificationSetting {
+	border-bottom: 1px dashed;
+	white-space: nowrap;
 }
 
 a.correctionLink {
@@ -398,4 +408,31 @@ a.correctionLink {
 
 div.editorLightbox {
 	background-color: #414E55 !important;
+}
+
+div.notificationSettingBox {
+	position: absolute;
+	background: #333;
+	border-radius: 3px;
+	border: 2px solid white;
+	padding: 5px 0;
+}
+
+div.notificationSettingBox ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+div.notificationSettingBox ul li {
+	padding: 2px 5px;
+}
+
+div.notificationSettingBox ul li:hover {
+	background: #777;
+	cursor: pointer;
+}
+
+div.notificationSettingBox ul li.active {
+	font-weight: bold;
 }

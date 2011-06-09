@@ -498,41 +498,64 @@ class TimeTrack
 	public function generatePresenceGraphUrl($month, $title = 'Anwesenheit in Stunden')
 	{
 		$vals = array();
-
+		$max = 31500;
+		$min = 31500;
+		
+		if(count($this->data['days']) < 1) {
+			return '';
+		}
+		
 		foreach ($this->data['days'] as $day)
 		{
 			if($month != $day['month'])
 				continue;
 
-			$bc = gmdate("i", $day['worktime'] - $day['pause']);
+			$worktimeWOPause = $day['worktime'] - $day['pause'];				
+			
+			if($max < $worktimeWOPause) 
+			{
+				$max = $worktimeWOPause;
+			}
+			
+			if($min > $worktimeWOPause) 
+			{
+				$min = $worktimeWOPause;
+			}
+				
+			$bc = gmdate("i", $worktimeWOPause);
 			$part = $bc / 60;
-			$floattime = gmdate("G", $day['worktime'] - $day['pause']) + $part;
+			$floattime = gmdate("G", $worktimeWOPause) + $part;
 			$vals[] = $floattime;
 
 			$daynames[] = date("d.", $day['datestamp']);
 		}
-
+		
 		$baseUrl = 'http://chart.apis.google.com/chart';
 
 		$data = array(
 			'chtt' => $title,
 			'chs' => '450x180',
 			'chxt' => 'y,x',
-			'chxl' => '0:|' . $min . '|8:45|' . $max . '|1:|' . join('|', $this->data['daynames'][$month]),
+			'chxl' => '0:|' . gmdate("G:i", $min) . '|8:45|' . gmdate("G:i", $max) . '|1:|' . join('|', $this->data['daynames'][$month]),
 			'chco' => '7097AE',
 			'cht' => 'lc',
 			'chm' => 'r,CAE8EA,0,0.49,0.51',
-			'chds' => '6.25,11.25',
+			'chds' => $min/3600-0.01 . ',' .$max/3600,
 			'chd' => 't:' . join(',', $vals)
 		);
-
+		
+		
 		return $baseUrl . '?' . http_build_query($data);
 	}
 
 	public function generateDifferenceGraphUrl($month, $title = 'Differenz zum Soll')
 	{
 		$valsdif = array();
-
+		
+		if(count($this->data['days']) < 1) {
+			return '';
+		}
+		
 		foreach ($this->data['days'] as $day)
 		{
 			if($month != $day['month'])

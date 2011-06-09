@@ -105,4 +105,30 @@ class TimeTrackAPI {
 		return $methods;
 	}
 
+	public function updateNotification($params) {
+		$hash = $params['hash'];
+
+		$this->login(array('hash' => $hash));
+		
+		$possibleOptions = array(
+			'enabled' => array(true, false),
+			'when' => array('5', '10', '15', '20', '25', '30'),
+			'what' => array('earliest', 'normal'),
+			'how' => array('mail', 'sms', 'iphone'),
+		);
+		
+		// check for right values
+		if(!isset($params['option'], $params['value']) 
+			|| !in_array($params['option'], array_keys($possibleOptions))
+			|| !in_array($params['value'], $possibleOptions[$params['option']])
+		) {
+			return array("save" => "fail");
+		}
+		
+		$options = $this->_timetrack->getOptions();
+		$options['notifications'][$params['option']] = $params['value'];
+		$this->_timetrack->setOptions($options);
+
+		return array("save" => "ok");
+	}
 }

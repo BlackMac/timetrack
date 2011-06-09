@@ -78,5 +78,82 @@ window.addEvent('domready', function() {
 	{
 		SqueezeBox.open($('dropBoxLink'), options);
 	}
+
+	SqueezeBox.assign($$('a.iframeLink'), {parse:'rel', classWindow: 'editorLightbox'});
+	
+	$$('span.notificationSetting').addEvent('mouseenter', function(e) {
+		var pos = this.getPosition();
+		$('options_' + this.id).getElements('li').each(function(el) {
+			if(el.get('text').trim() == e.target.get('text').trim()) {
+				el.addClass('active');
+			} else {
+				el.removeClass('active');
+			}				
+		});
+		$('options_' + this.id).removeClass('hidden').setStyles({top: pos.y, left: pos.x});
+	});
+	
+	$$('div.notificationSettingBox').addEvent('mouseleave', function(e) {
+		this.addClass('hidden');
+	});
+	
+	$$('li.notificationOption').addEvent('click', function(e) {
+		if(e.target.get('tag') != 'li') return;
+		var name = e.target.getElement('input').get('name');
+		var value = e.target.getElement('input').get('value');
+		var params = {
+			id: $time(),
+			method: "updateNotification",
+			params: {
+				'hash': hash,
+				'option': name,
+				'value': value
+			}
+		};
+		var settingBox = e.target.getParent('div.notificationSettingBox');
+		new Request.JSON({
+			url: 'json-rpc.php',
+	        headers: {
+	            'Content-Type': 'application/json',
+	            'Accept': 'application/json, text/x-json, application/x-javascript'
+	        },
+			onComplete: function(res) {
+	        	if(!res || !res.result || res.result.save != "ok") {
+		    		$(settingBox.id.replace('options_', '')).highlight('#880000', '#414E55');
+	        		return;
+	        	}
+	    		$(settingBox.id.replace('options_', '')).set('text', e.target.get('text').trim()).highlight('#008800', '#414E55');
+			}
+		}).send(JSON.encode(params));
+		settingBox.addClass('hidden');
+	});
+	
+	$('notificationEnabled').addEvent('change', function(e) {
+		var params = {
+				id: $time(),
+				method: "updateNotification",
+				params: {
+					'hash': hash,
+					'option': 'enabled',
+					'value': e.target.get('checked')
+				}
+			};
+			var settingBox = e.target.getParent('div.notificationSettingBox');
+			new Request.JSON({
+				url: 'json-rpc.php',
+		        headers: {
+		            'Content-Type': 'application/json',
+		            'Accept': 'application/json, text/x-json, application/x-javascript'
+		        },
+				onComplete: function(res) {
+		        	if(!res || !res.result || res.result.save != "ok") {
+			    		$('dd_notifications').highlight('#880000', '#414E55');
+			    		e.target.set('checked', !e.target.get('checked'));
+		        		return;
+		        	}
+		        	$('dd_notifications').highlight('#008800', '#414E55');
+				}
+			}).send(JSON.encode(params));		
+	});		
 });
 
