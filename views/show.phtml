@@ -206,7 +206,8 @@
 			<dd id="dd_notifications">
 				<input type="checkbox" id="notificationEnabled" <?php if(isset($this->notifications['enabled']) && $this->notifications['enabled'] === true) echo "checked='checked'" ?>>
 				Ich möchte
-				<span id="notificationWhen" class="notificationSetting"><?php echo $this->notificationsMapping['when'][$this->notifications['when']]; ?></span>
+
+        <span id="notificationWhen" class="notificationSetting"><?php echo $this->notificationsMapping['when'][$this->notifications['when']]; ?></span>
 				vor dem 
 				<span id="notificationWhat" class="notificationSetting"><?php echo $this->notificationsMapping['what'][$this->notifications['what']]; ?></span>
 				Feierabend per

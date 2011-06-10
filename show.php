@@ -65,9 +65,9 @@ class Timetrack_View_Show extends Timetrack_View
 			),
 		);
 		$defaultNotification = array(
-			'when' => $this->view->notificationsMapping['when']['5'],
-			'what' => $this->view->notificationsMapping['what']['earliest'],
-			'how' => $this->view->notificationsMapping['how']['mail'],
+			'when' => '5',
+			'what' => 'earliest',
+			'how' => 'mail',
 		);
 		$this->view->notifications = array_merge($defaultNotification, (array)$options['notifications']); 
 		$this->view->backup = $options['backup'];
