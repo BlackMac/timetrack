@@ -1,11 +1,9 @@
 $.jQTouch({
-    icon: '../img/favicon.png',
+    icon: '../static/img/favicon.png',
     statusBar: 'black',
-    startupScreen: '../img/startupimage.png',
+    startupScreen: '../static/img/startupimage.png',
 	formSelector: '.nothing',
     preloadImages: [
-//        '../img/mobile/button_red.png',
-//        '../img/mobile/button_green.png'
         ]
 	
 });

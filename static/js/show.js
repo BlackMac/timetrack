@@ -101,6 +101,7 @@ window.addEvent('domready', function() {
 		if(e.target.get('tag') != 'li') return;
 		var name = e.target.getElement('input').get('name');
 		var value = e.target.getElement('input').get('value');
+		
 		var params = {
 			id: $time(),
 			method: "updateNotification",
@@ -111,21 +112,45 @@ window.addEvent('domready', function() {
 			}
 		};
 		var settingBox = e.target.getParent('div.notificationSettingBox');
-		new Request.JSON({
-			url: 'json-rpc.php',
-	        headers: {
-	            'Content-Type': 'application/json',
-	            'Accept': 'application/json, text/x-json, application/x-javascript'
-	        },
-			onComplete: function(res) {
-	        	if(!res || !res.result || res.result.save != "ok") {
-		    		$(settingBox.id.replace('options_', '')).highlight('#880000', '#414E55');
-	        		return;
-	        	}
-	    		$(settingBox.id.replace('options_', '')).set('text', e.target.get('text').trim()).highlight('#008800', '#414E55');
-			}
-		}).send(JSON.encode(params));
+		var save = function() {
+			new Request.JSON({
+				url: 'json-rpc.php',
+		        headers: {
+		            'Content-Type': 'application/json',
+		            'Accept': 'application/json, text/x-json, application/x-javascript'
+		        },
+				onComplete: function(res) {
+		        	if(!res || !res.result || res.result.save != "ok") {
+			    		$(settingBox.id.replace('options_', '')).highlight('#880000', '#414E55');
+		        		return;
+		        	}
+		    		$(settingBox.id.replace('options_', '')).set('text', e.target.get('text').trim()).highlight('#008800', '#414E55');
+				}
+			}).send(JSON.encode(params));
+		};
 		settingBox.addClass('hidden');
+				
+		if(name=="how" && ["mail", "iphone"].indexOf(value) !== -1) {
+			SqueezeBox.open($('options_notificationHow_email'), {
+				classWindow: 'editorLightbox',
+				handler: 'clone',
+				size: {x: 300, y: 120},
+				onUpdate: function() {
+					this.content.getElement('input').select();
+				},
+				onOpen: function() {
+					this.content.getElement('div.hidden').removeClass('hidden');
+					this.content.getElement('button').addEvent('click', function() {
+						var email = this.content.getElement('input').get('value');
+						console.log(email);
+						save();
+						this.close();
+					}.bind(this));
+				}
+			});
+		} else {
+			save();
+		}		
 	});
 	
 	$('notificationEnabled').addEvent('change', function(e) {

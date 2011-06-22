@@ -410,6 +410,10 @@ div.editorLightbox {
 	background-color: #414E55 !important;
 }
 
+div.editorLightbox div.sbox-content-clone {
+	background-color: #414E55 !important;
+}
+
 div.notificationSettingBox {
 	position: absolute;
 	background: #333;
