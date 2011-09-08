@@ -83,18 +83,15 @@
 
 	<div id="day_diff" class="">
 		<span class="diff_label">Feierabend:</span><br>
-		<?php echo date("G:i:s", $this->day['startstamp']+$this->day['pause']+60*60*8.75) ?>
+		<?php echo date("G:i:s", $this->normalEnd) ?>
 	</div>
 
     <div id="day_diff_earliest" class="" style="height:48px;">
 		<span class="diff_label">Fr&uuml;hestm&ouml;glicher Feierabend:</span><br>
-                <?php
-                    foreach ($this->data['days'] as $k => $v) if($k!=date("Y-m-d",time())) $tmp_yesterday = $k;
-                    if(substr($tmp_yesterday,5,2)==date("m")) $yesterdaydiff = $this->data['days'][$tmp_yesterday]['monthdiff']; else $yesterdaydiff = 0;
-                    $fmfeierabend = $this->day['startstamp']+$this->day['pause']-$yesterdaydiff+60*60*8.75;
-                    echo date("G:i:s", $fmfeierabend);
-                    echo "&nbsp;<a href=\"#\" OnClick=\"javascript:window.open('countdown.php?std=".date("G",$fmfeierabend)."&min=".date("i",$fmfeierabend)."&sec=".date("s",$fmfeierabend)."','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;\" style=\"font-size:10px;\">[countdown]</a>";
-                ?>
+		<?php
+		echo date("G:i:s", $this->earliestEnd);            
+		echo "&nbsp;<a href=\"#\" OnClick=\"javascript:window.open('countdown.php?std=".date("G",$this->earliestEnd)."&min=".date("i",$this->earliestEnd)."&sec=".date("s",$this->earliestEnd)."','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;\" style=\"font-size:10px;\">[countdown]</a>";
+		?>
 	</div>
 
 	<?php if ($this->day['diff']>0): ?>
@@ -246,7 +243,7 @@
 </div>
 <script type="text/javascript">
 <!--
-var day_diff = <?php echo $this->day['startstamp']+$this->day['pause']+60*60*8.75 ?>;
+var day_diff = <?php echo $this->normalEnd; ?>;
 var laststateIn = "<?php echo $this->day['laststateIn']?>";
 var hash = "<?php echo $this->hash ?>";
 -->

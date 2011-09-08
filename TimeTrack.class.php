@@ -24,6 +24,8 @@ class TimeTrack
 	private $data = array();
 
 	private $curMonth;
+	
+	private $dailyWorkTime = 8.75; 
 
 	public function generateHash($user = null, $pass = null)
 	{
@@ -493,6 +495,28 @@ class TimeTrack
 			return array();
 		else
 			return end($this->data['days']);
+	}
+	
+	public function getNormalDayEnd()
+	{
+		$lastDay = $this->getLastDay();
+		if(count($lastDay) == 0) return null;
+		return $lastDay['startstamp'] + $lastDay['pause'] + 60*60 * $this->dailyWorkTime;
+	}
+	
+	public function getEarliestDayEnd()
+	{
+		$lastDay = $this->getLastDay();
+		if(count($lastDay) == 0) return null;
+		$yesterday = array_pop($this->data['days']);
+		if(isset($yesterday) && $yesterday['date'] == date("Y-m-d",time())) {
+			$yesterday = array_pop($this->data['days']);
+		}
+		if(!isset($yesterday)) {
+			$yesterday = 0;
+		}
+		$yesterdaydiff = $yesterday['monthdiff'];
+		return $lastDay['startstamp'] + $lastDay['pause'] - $yesterdaydiff + 60*60 * $this->dailyWorkTime;
 	}
 
 	public function generatePresenceGraphUrl($month, $title = 'Anwesenheit in Stunden')

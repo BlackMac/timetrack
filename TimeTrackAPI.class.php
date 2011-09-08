@@ -127,6 +127,11 @@ class TimeTrackAPI {
 		
 		$options = $this->_timetrack->getOptions();
 		$options['notifications'][$params['option']] = $params['value'];
+		
+		if(isset($params['target'])) {
+			$options['notifications']['target'] = $params['target'];
+		}
+		
 		$this->_timetrack->setOptions($options);
 
 		return array("save" => "ok");

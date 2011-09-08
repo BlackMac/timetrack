@@ -108,7 +108,8 @@ window.addEvent('domready', function() {
 			params: {
 				'hash': hash,
 				'option': name,
-				'value': value
+				'value': value,
+				'target': ''
 			}
 		};
 		var settingBox = e.target.getParent('div.notificationSettingBox');
@@ -142,7 +143,7 @@ window.addEvent('domready', function() {
 					this.content.getElement('div.hidden').removeClass('hidden');
 					this.content.getElement('button').addEvent('click', function() {
 						var email = this.content.getElement('input').get('value');
-						console.log(email);
+						params.params.target = email;
 						save();
 						this.close();
 					}.bind(this));

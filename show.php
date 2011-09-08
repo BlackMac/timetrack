@@ -40,6 +40,8 @@ class Timetrack_View_Show extends Timetrack_View
 		$this->view->alt = true;
 		$this->view->presenceGraphUrl = $this->core->generatePresenceGraphUrl($curmonth, 'Anwesenheit in Stunden');		
 		$this->view->differenceGraphUrl = $this->core->generateDifferenceGraphUrl($curmonth, 'Differenz zum Soll');
+		$this->view->normalEnd = $this->core->getNormalDayEnd();
+		$this->view->earliestEnd = $this->core->getEarliestDayEnd();
 		
 		$this->setViewScript('show');
 		$this->view->mobiledevice = $this->detectMobileDevices();
