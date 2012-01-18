@@ -122,10 +122,21 @@ $(function(){
 			$('#stats_pause').text([pause.getUTCHours(), pad(pause.getUTCMinutes()), pad(pause.getUTCSeconds())].join(':'));
 			var finishingtime = new Date((data.result.startstamp+data.result.pause+60*60*8.75)*1000);
 			$('#stats_finishingtime').text([finishingtime.getHours(), pad(finishingtime.getMinutes()), pad(finishingtime.getSeconds())].join(':'));
+			var earliestfinishingtime = new Date(data.result.earliestend * 1000);
+			$('#stats_earliestfinishingtime').text(
+				[earliestfinishingtime.getHours(), pad(earliestfinishingtime.getMinutes()),
+				pad(earliestfinishingtime.getSeconds())].join(':')
+			);
+
 			var diff = new Date(Math.abs(data.result.diff) * 1000);
 			$('#stats_diff').text((data.result.diff < 0 ? '-' : '') + [diff.getUTCHours(), pad(diff.getUTCMinutes()), pad(diff.getUTCSeconds())].join(':'));
-			var monthdiff = new Date(data.result.monthdiff * 1000);
-			$('#stats_monthdiff').text([monthdiff.getUTCHours(), pad(monthdiff.getUTCMinutes()), pad(monthdiff.getUTCSeconds())].join(':'));
+			var monthdiff = new Date(Math.abs(data.result.monthdiff * 1000));
+			$('#stats_monthdiff').text(
+				(data.result.monthdiff < 0 ? '-' : '') +
+				[monthdiff.getUTCHours(), pad(monthdiff.getUTCMinutes()), pad(monthdiff.getUTCSeconds())].join(':')
+			);
+
+
         }
     });
 	

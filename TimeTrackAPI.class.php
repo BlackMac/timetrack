@@ -75,6 +75,8 @@ class TimeTrackAPI {
 		$this->_timetrack->parseData();
 		$res = 	$this->_timetrack->getLastDay();
 
+    $res['earliestend'] = $this->_timetrack->getEarliestDayEnd();
+
 		return $res;
 	}
 	

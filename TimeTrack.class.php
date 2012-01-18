@@ -516,7 +516,8 @@ class TimeTrack
 			$yesterday = 0;
 		}
 		$yesterdaydiff = $yesterday['monthdiff'];
-		return $lastDay['startstamp'] + $lastDay['pause'] - $yesterdaydiff + 60*60 * $this->dailyWorkTime;
+		$end = $lastDay['startstamp'] + $lastDay['pause'] - $yesterdaydiff + 60*60 * $this->dailyWorkTime;
+    return $end;
 	}
 
 	public function generatePresenceGraphUrl($month, $title = 'Anwesenheit in Stunden')
