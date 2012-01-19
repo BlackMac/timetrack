@@ -9,14 +9,15 @@ $('changeuserdata_action_link').addEvent('click', function() {
 });
 
 var countdownTimer;
-var endofday = new Date().set('Time', day_diff * 1000);
 var pageLoad = $time();
 
 function countdownDayDiff() {
 
 	var now = new Date();
+	var endofday = new Date().set('Time', day_diff * 1000);
+	var earliest_endofday = new Date().set('Time', earliest_diff * 1000);
 
-	if(now.diff(endofday, 'day') != 0 || laststateIn != "1") {
+	if(endofday.getUTCDate() != now.getUTCDate() || laststateIn != "1") {
 		$clear(countdownTimer);
 		return;
 	}
@@ -24,25 +25,52 @@ function countdownDayDiff() {
 	if($time() - pageLoad > 60 * 60 * 1000) {
 		location.href = location.href;
 	}
+	
+	var day_countdown = getTimeDiffSplitted(now, endofday);
+	var month_countdown = getTimeDiffSplitted(now, earliest_endofday);
 
-	var diff_second = now.diff(endofday, 'second');
+	if(day_countdown.second < 0 || day_countdown.minute < 0 || day_countdown.hour < 0) {
+		$('day_diff').removeClass('negative');
+		$$('.day_diff_minus').setStyle('display', 'none');
+		day_countdown.hour = Math.abs(day_countdown.hour);
+		day_countdown.minute = Math.abs(day_countdown.minute);
+		day_countdown.second = Math.abs(day_countdown.second);
+	}
+
+	$$('.day_diff_hour').set('text', day_countdown.hour);
+	$$('.day_diff_minute').set('text', zeroize(day_countdown.minute, 2));
+	$$('.day_diff_seconds').set('text', zeroize(day_countdown.second, 2));
+
+	if(month_countdown.second < 0 || month_countdown.minute < 0 || month_countdown.hour < 0) {
+		$('month_diff').removeClass('negative');
+		$$('.month_diff_minus').setStyle('display', 'none');
+		month_countdown.hour = Math.abs(month_countdown.hour);
+		month_countdown.minute = Math.abs(month_countdown.minute);
+		month_countdown.second = Math.abs(month_countdown.second);
+	}
+	
+	$$('.month_diff_hour').set('text', month_countdown.hour);
+	$$('.month_diff_minute').set('text', zeroize(month_countdown.minute, 2));
+	$$('.month_diff_seconds').set('text', zeroize(month_countdown.second, 2));
+
+};
+
+function getTimeDiffSplitted(now, countto) {
+	var diff_second = now.diff(countto, 'second');
 	var diff_hour = (diff_second / 60 / 60).toInt();
 	diff_second = diff_second - diff_hour*60*60;
 	var diff_minute = (diff_second / 60).toInt();
 	diff_second = diff_second - diff_minute*60;
 
-	if(diff_second < 0 || diff_minute < 0 || diff_hour < 0) {
-		$('day_diff').removeClass('negative');
-		$$('.day_diff_minus').setStyle('display', 'none');
-		diff_hour = Math.abs(diff_hour);
-		diff_minute = Math.abs(diff_minute);
-		diff_second = Math.abs(diff_second);
-	}
+	return {
+		hour: diff_hour,
+		minute: diff_minute,
+		second: diff_second
+	};
+}
 
-	$$('.day_diff_hour').set('text', diff_hour);
-	$$('.day_diff_minute').set('text', (diff_minute<10 ? '0' : '') + diff_minute);
-	$$('.day_diff_seconds').set('text', (diff_second<10 ? '0' : '') + diff_second);
-	
+var zeroize = function(what, length){
+	return '0'.repeat(length - what.toString().length) + what;
 };
 
 window.addEvent('domready', function() {
@@ -180,6 +208,49 @@ window.addEvent('domready', function() {
 		        	$('dd_notifications').highlight('#008800', '#414E55');
 				}
 			}).send(JSON.encode(params));		
-	});		
+	});
+	
+	$$('span.unavail').addEvent('click', function(evnt) {
+		var clickedOn = $(evnt.target);
+		
+		var cell = clickedOn.getParent("td");
+		var date = cell.getElement("input[name=unavail_date]").get('value');
+		var subject = "";
+		
+		if(clickedOn.hasClass("unavail_illness"))
+		{
+			subject = "illness";
+		}
+		else if(clickedOn.hasClass("unavail_vacation"))
+		{
+			subject = "vacation";
+		}
+		
+		var params = {
+			id: $time(),
+			method: "changeDaySubject",
+			params: {
+				'hash': hash,
+				'date': date,
+				'subject': subject
+			}
+		};
+		new Request.JSON({
+			url: 'json-rpc.php',
+	        headers: {
+	            'Content-Type': 'application/json',
+	            'Accept': 'application/json, text/x-json, application/x-javascript'
+	        },
+			onComplete: function(res) {
+	        	if(!res || !res.result || res.result.save != "ok") {
+	        		cell.highlight('#880000', '#dddddd');
+	        		return;
+	        	}
+	        	location.reload();
+			}
+		}).send(JSON.encode(params));		
+
+	});
+	
 });
 

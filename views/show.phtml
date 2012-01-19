@@ -38,10 +38,10 @@
 		</li>
 		<li>
 			<a href="dropbox.php" id="dropBoxLink" rel="{handler:'iframe'}" style="height: 36px; width: 50px;">
-				<div style="background: url(static/img/dropbox-backup.png) no-repeat center center; height: 36px;"></div> 
+				<div style="background: url(static/img/dropbox-backup.png) no-repeat center center; height: 36px;"></div>
 			</a>
 		</li>
-		
+
 		</ul>
 	</div>
 
@@ -89,7 +89,7 @@
     <div id="day_diff_earliest" class="" style="height:48px;">
 		<span class="diff_label">Fr&uuml;hestm&ouml;glicher Feierabend:</span><br>
 		<?php
-		echo date("G:i:s", $this->earliestEnd);            
+		echo date("G:i:s", $this->earliestEnd);
 		echo "&nbsp;<a href=\"#\" OnClick=\"javascript:window.open('countdown.php?std=".date("G",$this->earliestEnd)."&min=".date("i",$this->earliestEnd)."&sec=".date("s",$this->earliestEnd)."','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;\" style=\"font-size:10px;\">[countdown]</a>";
 		?>
 	</div>
@@ -109,12 +109,12 @@
 	<?php if ($this->data['months'][$this->curmonth]>0): ?>
 		<div id="month_diff">
 			<span class="diff_label"><?php echo formatmonth($this->curmonth) ?>:</span><br>
-			<?php echo gmdate("G:i:s", $this->data['months'][$this->curmonth]) ?>
+			<span class="month_diff_hour"><?php echo gmdate("G", $this->data['months'][$this->curmonth]) ?></span>:<span class="month_diff_minute"><?php echo gmdate("i", $this->data['months'][$this->curmonth]) ?></span>:<span class="month_diff_seconds"><?php echo gmdate("s", $this->data['months'][$this->curmonth]) ?></span>
 		</div>
 	<?php else:?>
 		<div id="month_diff" class="negative">
 			<span class="diff_label"><?php echo formatmonth($this->curmonth) ?>:</span><br>
-			-<?php echo gmdate("G:i:s", $this->data['months'][$this->curmonth]*-1) ?>
+			<span class="month_diff_minus">-</span><span class="month_diff_hour"><?php echo gmdate("G", $this->data['months'][$this->curmonth]*-1) ?></span>:<span class="month_diff_minute"><?php echo gmdate("i", $this->data['months'][$this->curmonth]*-1) ?></span>:<span class="month_diff_seconds"><?php echo gmdate("s", $this->data['months'][$this->curmonth]*-1) ?></span>
 		</div>
 	<?php endif; ?>
 	<div id="action_field">
@@ -143,52 +143,63 @@
 			</tr>
 		</thead>
 		<tbody>
-    <?php
-    $curmonth = substr($this->curmonth, 4, 2);
-    $curyear = substr($this->curmonth, 0, 4);
-    $daysInMonth = date('t',mktime(12,0,0, $curmonth,1,$curyear));
-    for($i=1; $i <= $daysInMonth; $i++) :
-      $curday = sprintf('%s-%02s-%02d', $curyear, $curmonth, $i);
-      $daytimestamp = mktime(0,0,0,$curmonth, $i, $curyear);
-      $dayOfWeek = date("N", $daytimestamp);
-      if($dayOfWeek >= 6 || $daytimestamp > time()) continue;
-      $cday = $this->data['days'][$curday];
-    ?>
-    <tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
-				<td>
-					<a href="correct.php?date=<?php echo $curday ?>" class="correctionLink">
+		<?php
+		$curmonth = substr($this->curmonth, 4, 2);
+		$curyear = substr($this->curmonth, 0, 4);
+		$daysInMonth = date('t',mktime(12,0,0, $curmonth,1,$curyear));
+		for($i=1; $i <= $daysInMonth; $i++) :
+			$daytimestamp = mktime(0,0,0,$curmonth, $i, $curyear);
+			$dayOfWeek = date("N", $daytimestamp);
+			if($dayOfWeek >= 6 || $daytimestamp > time()) continue;
+			$curday = sprintf('%s-%02s-%02d', $curyear, $curmonth, $i);
+			$cday = $this->data['days'][$curday];
+		?>
+		<tr class="<?php echo ($alt=!$alt ? 'alt' : '') ?>">
+		<?php if(isset($cday)) : ?>
+			<td>
+				<a href="correct.php?date=<?php echo $curday ?>" class="correctionLink">
 					<strong><?php echo date("d.m.Y", $daytimestamp); ?></strong>
-					</a>
-				</td>
-        <?php if(isset($cday)) : ?>
-				<td><?php echo date("G:i",$cday['startstamp'])?> - <?php echo date("G:i",$cday['endstamp'])?></td>
-				<td><?php echo gmdate("G:i",$cday['worktime']) ?></td>
-				<td><?php echo gmdate("G:i",$cday['pause']) ?></td>
-				<td>
-					<?php if ($cday['diff']>=0): ?>
-					+<?php echo gmdate("G:i",$cday['diff']) ?>
-					<?php else: ?>
-					<span class="negative_value">-<?php echo gmdate("G:i",$cday['diff']*-1) ?></span>
-					<?php endif; ?>
-				</td>
-				<td>
-				<?php if ($cday['monthdiff']>=0): ?>
-					+<?php echo gmdate("G:i",$cday['monthdiff']) ?>
+				</a>
+			</td>
+			<td><?php echo date("G:i",$cday['startstamp'])?> - <?php echo date("G:i",$cday['endstamp'])?></td>
+			<td><?php echo gmdate("G:i",$cday['worktime']) ?></td>
+			<td><?php echo gmdate("G:i",$cday['pause']) ?></td>
+			<td>
+				<?php if ($cday['diff']>=0): ?>
+				+<?php echo gmdate("G:i",$cday['diff']) ?>
 				<?php else: ?>
-					<span class="negative_value">-<?php echo gmdate("G:i",$cday['monthdiff']*-1) ?></span>
+				<span class="negative_value">-<?php echo gmdate("G:i",$cday['diff']*-1) ?></span>
 				<?php endif; ?>
-				</td>
-        <?php elseif(isset($this->holidays[$daytimestamp])) : ?>
-          <td colspan="5" class="holidays">
-            <?php echo $this->holidays[$daytimestamp]; ?>
-          </td>
-        <?php else: ?>
-          <td colspan="5">Krank oder Urlaub?
-          </td>
-        <?php endif; ?>
-    </tr>
-    <?php endfor; ?>
-	</tbody>
+			</td>
+			<td>
+			<?php if ($cday['monthdiff']>=0): ?>
+				+<?php echo gmdate("G:i",$cday['monthdiff']) ?>
+			<?php else: ?>
+				<span class="negative_value">-<?php echo gmdate("G:i",$cday['monthdiff']*-1) ?></span>
+			<?php endif; ?>
+			</td>
+		<?php elseif(isset($this->holidays[$daytimestamp])) : ?>
+			<td  class="holidays">
+					<strong><?php echo date("d.m.Y", $daytimestamp); ?></strong>
+			</td>
+			<td colspan="5" class="holidays">
+				<?php echo $this->holidays[$daytimestamp]; ?>
+			</td>
+		<?php else: ?>
+			<td>
+				<strong><?php echo date("d.m.Y", $daytimestamp); ?></strong>
+			</td>
+			<td colspan="5">
+				<input type="hidden" name="unavail_date" value="<?php echo $curday ?>">
+				Bitte wählen:
+				<span class="unavail unavail_illness">Krank</span>
+				-
+				<span class="unavail unavail_vacation">Urlaub</span>
+			</td>
+		<?php endif; ?>
+		</tr>
+		<?php endfor; ?>
+		</tbody>
 	</table>
 	</div>
 
@@ -215,7 +226,7 @@
 				Ich möchte
 
         <span id="notificationWhen" class="notificationSetting"><?php echo $this->notificationsMapping['when'][$this->notifications['when']]; ?></span>
-				vor dem 
+				vor dem
 				<span id="notificationWhat" class="notificationSetting"><?php echo $this->notificationsMapping['what'][$this->notifications['what']]; ?></span>
 				Feierabend per
 				<span id="notificationHow" class="notificationSetting"><?php echo $this->notificationsMapping['how'][$this->notifications['how']]; ?></span>
@@ -243,7 +254,7 @@
 						echo "deaktiviert";
 					}
 				?>
-				</a>		
+				</a>
 			</dd>
 		</dl>
 	</div>
@@ -254,6 +265,7 @@
 <script type="text/javascript">
 <!--
 var day_diff = <?php echo $this->normalEnd; ?>;
+var earliest_diff = <?php echo $this->earliestEnd; ?>;
 var laststateIn = "<?php echo $this->day['laststateIn']?>";
 var hash = "<?php echo $this->hash ?>";
 -->

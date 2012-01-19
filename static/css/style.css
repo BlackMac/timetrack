@@ -24,7 +24,7 @@ th {
 	text-transform: uppercase;
 	text-align: left;
 	padding: 6px 6px 6px 12px;
-	background: #CAE8EA url(img/bg_header.jpg) no-repeat;
+	background: #CAE8EA no-repeat;
 }
 
 td {
@@ -38,6 +38,11 @@ td {
 td.alt {
 	background: #F5FAFA;
 	color: #B4AA9D;
+}
+
+td.holidays {
+	background-color: #e5e6c7;
+	color: #6f7269;
 }
 
 tr
@@ -54,6 +59,27 @@ tr:hover,
 tr.alt:hover
 {
 	background-color:#dddddd;
+}
+
+span.unavail {
+	background: #d5cea6;
+	background: -webkit-linear-gradient(top, #d5cea6 0%,#c9c190 40%,#b7ad70 100%);
+	background: linear-gradient(top, #d5cea6 0%,#c9c190 40%,#b7ad70 100%);
+	background: -moz-linear-gradient(top, #d5cea6 0%, #c9c190 40%, #b7ad70 100%);		
+	padding: 3px 5px;
+	border-radius: 3px;
+	border: 1px solid #6f7269;
+	color: #6f7269;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	cursor: pointer;
+}
+
+span.unavail:hover {
+	background: #b7ad6f;
+	background: -moz-linear-gradient(top, #b7ad6f 0%, #c9c291 60%, #d5cea7 100%);
+	background: -webkit-linear-gradient(top, #b7ad6f 0%,#c9c291 60%,#d5cea7 100%);
+	background: linear-gradient(top, #b7ad6f 0%,#c9c291 60%,#d5cea7 100%);	
 }
 
 form.login

@@ -24,8 +24,8 @@ class TimeTrack
 	private $data = array();
 
 	private $curMonth;
-	
-	private $dailyWorkTime = 8.75; 
+
+	private $dailyWorkTime = 8.75;
 
 	public function generateHash($user = null, $pass = null)
 	{
@@ -77,7 +77,7 @@ class TimeTrack
 
 		$this->user = $user;
 		$this->hash = $hash;
-		
+
 		$_SESSION['userhash'] = $hash;
 
 		if($auth === -1)
@@ -135,18 +135,17 @@ class TimeTrack
 		}
 
 		/*
-	    if(!is_file($new . '/tracks.log')) {
-	      $res = copy($old, $new . '/tracks.log');
-	      if($res === false) return array('error' => true, 'where' => 'copy');
-	    }
-	    */
+		 * if(!is_file($new . '/tracks.log')) { $res = copy($old, $new .
+		 * '/tracks.log'); if($res === false) return array('error' => true,
+		 * 'where' => 'copy'); }
+		 */
 
 		$raw = file($old);
 
 		// trim all elements
-		array_walk($raw, "walk_method" );
+		array_walk($raw, "walk_method");
 		// remove empty elements
-		$raw = array_filter($raw, "filter_method" );
+		$raw = array_filter($raw, "filter_method");
 
 		$monthArray = array();
 		foreach ($raw as $line)
@@ -196,15 +195,12 @@ class TimeTrack
 
 		if(! is_dir($fpath) && is_file($fpath) && self::$migrationMode === false)
 		{
-			return -1;
+			return - 1;
 		}
 
 		/*
-		if(self::$migrationMode === false)
-		{
-			$fpath .= '/tracks.log';
-		}
-		*/
+		 * if(self::$migrationMode === false) { $fpath .= '/tracks.log'; }
+		 */
 
 		if(file_exists($fpath))
 		{
@@ -224,7 +220,7 @@ class TimeTrack
 			return false;
 		}
 
-		if(!is_dir($this->file))
+		if(! is_dir($this->file))
 			$dir = dirname($this->file);
 		else
 			$dir = $this->file;
@@ -496,14 +492,14 @@ class TimeTrack
 		else
 			return end($this->data['days']);
 	}
-	
+
 	public function getNormalDayEnd()
 	{
 		$lastDay = $this->getLastDay();
 		if(count($lastDay) == 0) return null;
 		return $lastDay['startstamp'] + $lastDay['pause'] + 60*60 * $this->dailyWorkTime;
 	}
-	
+
 	public function getEarliestDayEnd()
 	{
 		$lastDay = $this->getLastDay();
@@ -525,28 +521,28 @@ class TimeTrack
 		$vals = array();
 		$max = 31500;
 		$min = 31500;
-		
+
 		if(count($this->data['days']) < 1) {
 			return '';
 		}
-		
+
 		foreach ($this->data['days'] as $day)
 		{
 			if($month != $day['month'])
 				continue;
 
-			$worktimeWOPause = $day['worktime'] - $day['pause'];				
-			
-			if($max < $worktimeWOPause) 
+			$worktimeWOPause = $day['worktime'] - $day['pause'];
+
+			if($max < $worktimeWOPause)
 			{
 				$max = $worktimeWOPause;
 			}
-			
-			if($min > $worktimeWOPause) 
+
+			if($min > $worktimeWOPause)
 			{
 				$min = $worktimeWOPause;
 			}
-				
+
 			$bc = gmdate("i", $worktimeWOPause);
 			$part = $bc / 60;
 			$floattime = gmdate("G", $worktimeWOPause) + $part;
@@ -554,7 +550,7 @@ class TimeTrack
 
 			$daynames[] = date("d.", $day['datestamp']);
 		}
-		
+
 		$baseUrl = 'http://chart.apis.google.com/chart';
 
 		$data = array(
@@ -568,19 +564,19 @@ class TimeTrack
 			'chds' => $min/3600-0.01 . ',' .$max/3600,
 			'chd' => 't:' . join(',', $vals)
 		);
-		
-		
+
+
 		return $baseUrl . '?' . http_build_query($data);
 	}
 
 	public function generateDifferenceGraphUrl($month, $title = 'Differenz zum Soll')
 	{
 		$valsdif = array();
-		
+
 		if(count($this->data['days']) < 1) {
 			return '';
 		}
-		
+
 		foreach ($this->data['days'] as $day)
 		{
 			if($month != $day['month'])
@@ -626,103 +622,116 @@ class TimeTrack
 		echo "</pre>";
 	}
 
-  public function getEaster($iYear = -1)
-  {
-    // the Golden number 
-    $iGolden= ($iYear % 19) + 1; 
+	public function getEaster($iYear = -1)
+	{
+		// the Golden number
+		$iGolden = ($iYear % 19) + 1;
 
-    // the "Domincal number" 
-    $iDom = ($iYear + (int)($iYear / 4) - (int)($iYear / 100) + (int)($iYear / 400)) % 7; 
-    if ($iDom < 0) 
-      $iDom += 7; 
+		// the "Domincal number"
+		$iDom = ($iYear + (int)($iYear / 4) - (int)($iYear / 100) + (int)($iYear / 400)) % 7;
+		if($iDom < 0)
+			$iDom += 7;
 
-    // the solar and lunar corrections 
-    $iSolar = ($iYear - 1600) / 100 - ($iYear - 1600) / 400; 
-    $iLunar = ((($iYear - 1400) / 100) *8) / 25; 
+		// the solar and lunar corrections
+		$iSolar = ($iYear - 1600) / 100 - ($iYear - 1600) / 400;
+		$iLunar = ((($iYear - 1400) / 100) * 8) / 25;
 
-    // uncorrected date of the Paschal full moon 
-    $iPFM= (3 - (11 * $iGolden) + $iSolar - $iLunar) % 30; 
-    if ($iPFM < 0) $iPFM += 30; 
+		// uncorrected date of the Paschal full moon
+		$iPFM = (3 - (11 * $iGolden) + $iSolar - $iLunar) % 30;
+		if($iPFM < 0)
+			$iPFM += 30;
 
-    // corrected date of the Paschal full moon 
-    // days after 21st March 
-    if (($iPFM == 29) || ($iPFM == 28 && $iGolden > 11)) 
-    { 
-      $iPFM--; 
-    } 
-    $iTMP= (4 - $iPFM - $iDom) % 7; 
-    if ($iTMP < 0) 
-      $iTMP += 7; 
+		// corrected date of the Paschal full moon
+		// days after 21st March
+		if(($iPFM == 29) || ($iPFM == 28 && $iGolden > 11))
+		{
+			$iPFM--;
+		}
+		$iTMP = (4 - $iPFM - $iDom) % 7;
+		if($iTMP < 0)
+			$iTMP += 7;
 
-    // Easter as the number of days after 21st March */ 
-    $iEaster= $iPFM + $iTMP + 1; 
-    if ($iEaster < 11) 
-    { 
-      $iMonth = 3; 
-      $iDay = $iEaster + 21; 
-    } 
-    else 
-    { 
-      $iMonth = 4; 
-      $iDay = $iEaster - 10; 
-    } 
-    $iEaster = mktime(0, 0, 0, $iMonth, $iDay, $iYear, -1); 
-    return $iEaster; 
-  }
+		// Easter as the number of days after 21st March */
+		$iEaster = $iPFM + $iTMP + 1;
+		if($iEaster < 11)
+		{
+			$iMonth = 3;
+			$iDay = $iEaster + 21;
+		}
+		else
+		{
+			$iMonth = 4;
+			$iDay = $iEaster - 10;
+		}
+		$iEaster = mktime(0, 0, 0, $iMonth, $iDay, $iYear, - 1);
+		return $iEaster;
+	}
 
-  private function getFirstAdvent( $iYear )
-  {
-    $iFirstAdvent = mktime(0, 0, 0, 11, 26, $iYear);
-    while (0 != date('w', $iFirstAdvent)) $iFirstAdvent += 86400;
-    return $iFirstAdvent; 
-  }
+	private function getFirstAdvent($iYear)
+	{
+		$iFirstAdvent = mktime(0, 0, 0, 11, 26, $iYear);
+		while (0 != date('w', $iFirstAdvent))
+			$iFirstAdvent += 86400;
+		return $iFirstAdvent;
+	}
 
-  public function getHolidays($iYear){
-    // Feste Feiertage short / long description
-    $aHoliday[mktime(0, 0, 0, 1, 1, $iYear)] = 'Neujahr'; 
-//    $aHoliday[mktime(0, 0, 0, 1, 6, $iYear)] = 'Heilige 3 K&oouml;nige'; 
-    $aHoliday[mktime(0, 0, 0, 5, 1, $iYear)] = 'Tag der Arbeit'; 
-//    $aHoliday[mktime(0, 0, 0, 8, 15, $iYear)] = 'Maria Himmelfahrt'; 
-    $aHoliday[mktime(0, 0, 0, 10, 3, $iYear)] = 'Tag der deutschen Einheit'; 
-//    $aHoliday[mktime(0, 0, 0, 10, 31, $iYear)] = 'Reformationstag'; 
-    $aHoliday[mktime(0, 0, 0, 11, 1, $iYear)] = 'Allerheiligen'; 
-    $aHoliday[mktime(0, 0, 0, 12, 24, $iYear)] = 'Heiligabend'; 
-    $aHoliday[mktime(0, 0, 0, 12, 25, $iYear)] = '1. Weihnachtsfeiertag'; 
-    $aHoliday[mktime(0, 0, 0, 12, 26, $iYear)] = '2. Weihnachtsfeiertag'; 
-    $aHoliday[mktime(0, 0, 0, 12, 31, $iYear)] = 'Silvester'; 
+	public function getHolidays($iYear)
+	{
+		// Feste Feiertage short / long description
+		$aHoliday[mktime(0, 0, 0, 1, 1, $iYear)] = 'Neujahr';
+		// $aHoliday[mktime(0, 0, 0, 1, 6, $iYear)] = 'Heilige 3 K&oouml;nige';
+		$aHoliday[mktime(0, 0, 0, 5, 1, $iYear)] = 'Tag der Arbeit';
+		// $aHoliday[mktime(0, 0, 0, 8, 15, $iYear)] = 'Maria Himmelfahrt';
+		$aHoliday[mktime(0, 0, 0, 10, 3, $iYear)] = 'Tag der deutschen Einheit';
+		// $aHoliday[mktime(0, 0, 0, 10, 31, $iYear)] = 'Reformationstag';
+		$aHoliday[mktime(0, 0, 0, 11, 1, $iYear)] = 'Allerheiligen';
+		$aHoliday[mktime(0, 0, 0, 12, 24, $iYear)] = 'Heiligabend';
+		$aHoliday[mktime(0, 0, 0, 12, 25, $iYear)] = '1. Weihnachtsfeiertag';
+		$aHoliday[mktime(0, 0, 0, 12, 26, $iYear)] = '2. Weihnachtsfeiertag';
+		$aHoliday[mktime(0, 0, 0, 12, 31, $iYear)] = 'Silvester';
 
-    // Bewegliche Feiertage, von Ostern abhängig 
-    $iEaster = $this->getEaster($iYear);
-    $iEasterDay = date('d',$iEaster);
-    $iEasterMonth = date('m',$iEaster);
-    $iEasterYear = date('Y',$iEaster);
+		// Bewegliche Feiertage, von Ostern abhängig
+		$iEaster = $this->getEaster($iYear);
+		$iEasterDay = date('d', $iEaster);
+		$iEasterMonth = date('m', $iEaster);
+		$iEasterYear = date('Y', $iEaster);
 
-//    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay-48,$iEasterYear)]= 'Rosenmontag';
-//    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay-46,$iEasterYear)]= 'Aschermittwoch';
-    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay-2,$iEasterYear)] = 'Karfreitag';
-//    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay,$iEasterYear)] = 'Ostersonntag';
-    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay+1,$iEasterYear)] = 'Ostermontag';
-    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay+39,$iEasterYear)]= 'Himmelfahrt';
-//    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay+49,$iEasterYear)]= 'Pfingstsonntag';
-    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay+50,$iEasterYear)]= 'Pfingstmontag';
-    $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay+60,$iEasterYear)]= 'Fronleichnam';
+		// $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay-48,$iEasterYear)]=
+		// 'Rosenmontag';
+		// $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay-46,$iEasterYear)]=
+		// 'Aschermittwoch';
+		$aHoliday[mktime(0, 0, 0, $iEasterMonth, $iEasterDay - 2, $iEasterYear)] = 'Karfreitag';
+		// $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay,$iEasterYear)] =
+		// 'Ostersonntag';
+		$aHoliday[mktime(0, 0, 0, $iEasterMonth, $iEasterDay + 1, $iEasterYear)] = 'Ostermontag';
+		$aHoliday[mktime(0, 0, 0, $iEasterMonth, $iEasterDay + 39, $iEasterYear)] = 'Himmelfahrt';
+		// $aHoliday[mktime(0,0,0,$iEasterMonth,$iEasterDay+49,$iEasterYear)]=
+		// 'Pfingstsonntag';
+		$aHoliday[mktime(0, 0, 0, $iEasterMonth, $iEasterDay + 50, $iEasterYear)] = 'Pfingstmontag';
+		$aHoliday[mktime(0, 0, 0, $iEasterMonth, $iEasterDay + 60, $iEasterYear)] = 'Fronleichnam';
 
-    // Bewegliche Feiertage, vom ersten Advent abhängig 
-//    $iFirstAdvent = $this->getFirstAdvent($iYear); 
-//    $iAdventDay = date('d',$iFirstAdvent);
-//    $iAdventMonth = date('m',$iFirstAdvent);
-//    $iAdventYear = date('Y',$iFirstAdvent);
+		// Bewegliche Feiertage, vom ersten Advent abhängig
+		// $iFirstAdvent = $this->getFirstAdvent($iYear);
+		// $iAdventDay = date('d',$iFirstAdvent);
+		// $iAdventMonth = date('m',$iFirstAdvent);
+		// $iAdventYear = date('Y',$iFirstAdvent);
 
-//    $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay,$iAdventYear)]= '1. Advent';
-//    $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay+7,$iAdventYear)]= '2. Advent';
-//    $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay+14,$iAdventYear)]= '3. Advent';
-//    $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay+21,$iAdventYear)]= '4. Advent';
-//    $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay-32,$iAdventYear)]= 'Buss- und Bettag';
-//    $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay-28,$iAdventYear)]= 'Totensonntag';
-//    $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay-35,$iAdventYear)]= 'Volkstrauertag';
+		// $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay,$iAdventYear)]= '1.
+		// Advent';
+		// $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay+7,$iAdventYear)]=
+		// '2. Advent';
+		// $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay+14,$iAdventYear)]=
+		// '3. Advent';
+		// $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay+21,$iAdventYear)]=
+		// '4. Advent';
+		// $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay-32,$iAdventYear)]=
+		// 'Buss- und Bettag';
+		// $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay-28,$iAdventYear)]=
+		// 'Totensonntag';
+		// $aHoliday[mktime(0,0,0,$iAdventMonth,$iAdventDay-35,$iAdventYear)]=
+		// 'Volkstrauertag';
 
-    return $aHoliday;
-  }
-
+		return $aHoliday;
+	}
 
 }
