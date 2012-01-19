@@ -34,6 +34,9 @@ class Timetrack_View_Show extends Timetrack_View
 		$this->core->setMonth($curmonth);
 		$this->view->hash = $this->core->hash;
 		$this->view->isWritable = $this->core->isWritable();
+
+    $curyear = substr($curmonth, 0, 4);
+    $this->view->holidays = $this->core->getHolidays($curyear);
 		
 		$this->view->data = $this->core->parseData();
 		$this->view->day = $this->core->getLastDay();
