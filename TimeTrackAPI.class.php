@@ -2,7 +2,7 @@
 require_once "TimeTrack.class.php";
 
 class TimeTrackAPI {
-	
+
 	private $_timetrack;
 
 	function __construct() {
@@ -79,7 +79,7 @@ class TimeTrackAPI {
 
 		return $res;
 	}
-	
+
 	public function generateGraphUrls($params) {
 		$hash = $params['hash'];
 
@@ -87,12 +87,12 @@ class TimeTrackAPI {
 
 		$this->_timetrack->setMonth(date('Ym'));
 		$this->_timetrack->parseData();
-		
+
 		$res = array(
 			'presence' => $this->_timetrack->generatePresenceGraphUrl(date('Ym'), 'Anwesenheit in Stunden'),
 			'difference' => $this->_timetrack->generateDifferenceGraphUrl(date('Ym'), 'Differenz zum Soll')
 		);
-		
+
 		return $res;
 	}
 
@@ -111,30 +111,45 @@ class TimeTrackAPI {
 		$hash = $params['hash'];
 
 		$this->login(array('hash' => $hash));
-		
+
 		$possibleOptions = array(
 			'enabled' => array(true, false),
 			'when' => array('5', '10', '15', '20', '25', '30'),
 			'what' => array('earliest', 'normal'),
 			'how' => array('mail', 'sms', 'iphone'),
 		);
-		
+
 		// check for right values
-		if(!isset($params['option'], $params['value']) 
+		if(!isset($params['option'], $params['value'])
 			|| !in_array($params['option'], array_keys($possibleOptions))
 			|| !in_array($params['value'], $possibleOptions[$params['option']])
 		) {
 			return array("save" => "fail");
 		}
-		
+
 		$options = $this->_timetrack->getOptions();
 		$options['notifications'][$params['option']] = $params['value'];
-		
+
 		if(isset($params['target'])) {
 			$options['notifications']['target'] = $params['target'];
 		}
-		
+
 		$this->_timetrack->setOptions($options);
+
+		return array("save" => "ok");
+	}
+
+	public function changeDaySubject($params) {
+		$hash = $params['hash'];
+
+		$this->login(array('hash' => $hash));
+
+		$res = $this->_timetrack->changeDaySubject($params['date'], $params['subject']);
+
+		if(!$res)
+		{
+			return array("save" => "fail");
+		}
 
 		return array("save" => "ok");
 	}

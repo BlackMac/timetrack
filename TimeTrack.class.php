@@ -734,4 +734,76 @@ class TimeTrack
 		return $aHoliday;
 	}
 
+	public function getDaySubjectsForYear($year)
+	{
+		if(!preg_match('/^\d{4}$/', $year))
+		{
+			return array();
+		}
+
+		if(!is_dir($this->file))
+			$dir = dirname($this->file);
+		else
+			$dir = $this->file;
+
+		$filename = $dir . DIRECTORY_SEPARATOR . 'subjects_' .$year.'.log';
+		if(! is_file($filename))
+		{
+			return array();
+		}
+
+		$fileContent = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+		$returnValue = array();
+		foreach($fileContent as $line) {
+			$matches = array();
+			if(preg_match('/\[(\d{4}-\d{2}-\d{2})\]\s(.*)/', $line, $matches))
+			{
+				$returnValue[$matches[1]] = array('subject' => $matches[2]);
+			}
+		}
+		return $returnValue;
+	}
+
+	public function setDaySubjectsForYear($year, $subjects)
+	{
+		if(!preg_match('/^\d{4}$/', $year))
+		{
+			return false;
+		}
+
+		if(!is_dir($this->file))
+			$dir = dirname($this->file);
+		else
+			$dir = $this->file;
+
+		$filename = $dir . DIRECTORY_SEPARATOR . 'subjects_' .$year.'.log';
+
+		$lines = array();
+		foreach($subjects as $date => $payload)
+		{
+			$lines[] = sprintf("[%s] %s", $date, $payload['subject']);
+		}
+
+		$res = file_put_contents($filename, join("\r\n", $lines) . "\r\n");
+
+		return $res !== FALSE;
+	}
+
+	public function changeDaySubject($date, $subject)
+	{
+		$dateSplitted = array();
+		if(!isset($date, $subject)
+			|| !in_array($subject, array('illness', 'vacation'))
+			|| !preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $date, $dateSplitted)
+		)
+		{
+			return false;
+		}
+
+		$actualSubjects = $this->getDaySubjectsForYear($dateSplitted[1]);
+		$actualSubjects[$date] = array('subject' => $subject);
+
+		return $this->setDaySubjectsForYear($dateSplitted[1], $actualSubjects);
+	}
 }

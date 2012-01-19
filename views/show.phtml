@@ -185,6 +185,21 @@
 			<td colspan="5" class="holidays">
 				<?php echo $this->holidays[$daytimestamp]; ?>
 			</td>
+		<?php elseif(isset($this->subjects[$curday])) : ?>
+			<td class="specialday">
+				<strong><?php echo date("d.m.Y", $daytimestamp); ?></strong>
+			</td>
+			<td class="specialday" colspan="5">
+				<?php
+				$subject = $this->subjects[$curday]['subject'];
+				if($subject == "vacation") {
+					echo "Urlaub";
+				} elseif($subject == "illness") {
+					echo "Krank";
+				}
+				?>
+			</td>
+
 		<?php else: ?>
 			<td>
 				<strong><?php echo date("d.m.Y", $daytimestamp); ?></strong>

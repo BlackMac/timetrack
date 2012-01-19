@@ -40,9 +40,14 @@ td.alt {
 	color: #B4AA9D;
 }
 
+td.specialday,
 td.holidays {
 	background-color: #e5e6c7;
 	color: #6f7269;
+}
+
+td.specialday {
+	font-weight: bold;
 }
 
 tr

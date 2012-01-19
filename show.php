@@ -8,7 +8,7 @@ session_start();
 class Timetrack_View_Show extends Timetrack_View
 {
 	private $core;
-	
+
 	protected function prepare()
 	{
 		$curmonth = date("Ym");
@@ -16,9 +16,9 @@ class Timetrack_View_Show extends Timetrack_View
 			$curmonth = $_GET['m'];
 		}
 		$this->view->curmonth = $curmonth;
-		
+
 		$this->core = new TimeTrack();
-				
+
 		if (!$this->core->login($_POST['u'], $_POST['p'])) {
 			if ($this->core->generateHash($_POST['u'], $_POST['p']) ) {
 				unset($_SESSION['userhash']);
@@ -30,25 +30,26 @@ class Timetrack_View_Show extends Timetrack_View
 				exit;
 			}
 		}
-				
+
 		$this->core->setMonth($curmonth);
 		$this->view->hash = $this->core->hash;
 		$this->view->isWritable = $this->core->isWritable();
 
-    $curyear = substr($curmonth, 0, 4);
-    $this->view->holidays = $this->core->getHolidays($curyear);
-		
+		$curyear = substr($curmonth, 0, 4);
+		$this->view->holidays = $this->core->getHolidays($curyear);
+		$this->view->subjects = $this->core->getDaySubjectsForYear($curyear);
+
 		$this->view->data = $this->core->parseData();
 		$this->view->day = $this->core->getLastDay();
 		$this->view->alt = true;
-		$this->view->presenceGraphUrl = $this->core->generatePresenceGraphUrl($curmonth, 'Anwesenheit in Stunden');		
+		$this->view->presenceGraphUrl = $this->core->generatePresenceGraphUrl($curmonth, 'Anwesenheit in Stunden');
 		$this->view->differenceGraphUrl = $this->core->generateDifferenceGraphUrl($curmonth, 'Differenz zum Soll');
 		$this->view->normalEnd = $this->core->getNormalDayEnd();
 		$this->view->earliestEnd = $this->core->getEarliestDayEnd();
-		
+
 		$this->setViewScript('show');
 		$this->view->mobiledevice = $this->detectMobileDevices();
-		
+
 		$options = $this->core->getOptions();
 		$this->view->notificationsMapping = array(
 			'when' => array(
@@ -61,7 +62,7 @@ class Timetrack_View_Show extends Timetrack_View
 			),
 			'what' => array(
 				'earliest' => 'frühestmöglichen',
-				'normal' => 'normalen',				
+				'normal' => 'normalen',
 			),
 			'how' => array(
 				'mail' => 'E-Mail',
@@ -74,7 +75,7 @@ class Timetrack_View_Show extends Timetrack_View
 			'what' => 'earliest',
 			'how' => 'mail',
 		);
-		$this->view->notifications = array_merge($defaultNotification, (array)$options['notifications']); 
+		$this->view->notifications = array_merge($defaultNotification, (array)$options['notifications']);
 		$this->view->backup = $options['backup'];
 	}
 }
