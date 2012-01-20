@@ -35,10 +35,6 @@ class Timetrack_View_Show extends Timetrack_View
 		$this->view->hash = $this->core->hash;
 		$this->view->isWritable = $this->core->isWritable();
 
-		$curyear = substr($curmonth, 0, 4);
-		$this->view->holidays = $this->core->getHolidays($curyear);
-		$this->view->subjects = $this->core->getDaySubjectsForYear($curyear);
-
 		$this->view->data = $this->core->parseData();
 		$this->view->day = $this->core->getLastDay();
 		$this->view->alt = true;
@@ -46,6 +42,15 @@ class Timetrack_View_Show extends Timetrack_View
 		$this->view->differenceGraphUrl = $this->core->generateDifferenceGraphUrl($curmonth, 'Differenz zum Soll');
 		$this->view->normalEnd = $this->core->getNormalDayEnd();
 		$this->view->earliestEnd = $this->core->getEarliestDayEnd();
+
+		$curyear = substr($curmonth, 0, 4);
+		$this->view->holidays = $this->core->getHolidays($curyear);
+		$this->view->subjects = $this->core->getDaySubjectsForYear($curyear);
+
+		if ($curmonth==date('Ym') && count($this->view->day) > 0)
+		{
+			$this->view->subjectSum = $this->calculateSubjectDays($this->view->subjects);
+		}
 
 		$this->setViewScript('show');
 		$this->view->mobiledevice = $this->detectMobileDevices();
@@ -77,6 +82,31 @@ class Timetrack_View_Show extends Timetrack_View
 		);
 		$this->view->notifications = array_merge($defaultNotification, (array)$options['notifications']);
 		$this->view->backup = $options['backup'];
+	}
+
+	protected function calculateSubjectDays($subjects)
+	{
+		$vacation = 0;
+		$illness = 0;
+		if(isset($subjects)) {
+			foreach($subjects as $date) {
+				if($date['subject'] == "vacation") $vacation++;
+				elseif($date['subject'] == "illness") $illness++;
+			}
+		}
+
+		$christmasTimestamp = mktime(0, 0, 0, 12, 24, date("Y"));
+		$silvesterTimestamp = mktime(0, 0, 0, 12, 31, date("Y"));
+
+		if(date("N", $christmasTimestamp) < 6) {
+			$vacation += .5;
+		}
+
+		if(date("N", $silvesterTimestamp) < 6) {
+			$vacation += .5;
+		}
+
+		return array('vacation' => $vacation, 'illness' => $illness);
 	}
 }
 

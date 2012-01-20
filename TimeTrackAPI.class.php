@@ -153,4 +153,19 @@ class TimeTrackAPI {
 
 		return array("save" => "ok");
 	}
+
+	public function removeDaySubject($params) {
+		$hash = $params['hash'];
+
+		$this->login(array('hash' => $hash));
+
+		$res = $this->_timetrack->removeDaySubject($params['date']);
+
+		if(!$res)
+		{
+			return array("save" => "fail");
+		}
+
+		return array("save" => "ok");
+	}
 }

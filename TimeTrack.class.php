@@ -806,4 +806,18 @@ class TimeTrack
 
 		return $this->setDaySubjectsForYear($dateSplitted[1], $actualSubjects);
 	}
+
+	public function removeDaySubject($date)
+	{
+		$dateSplitted = array();
+		if(!isset($date) || !preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $date, $dateSplitted))
+		{
+			return false;
+		}
+
+		$actualSubjects = $this->getDaySubjectsForYear($dateSplitted[1]);
+		unset($actualSubjects[$date]);
+
+		return $this->setDaySubjectsForYear($dateSplitted[1], $actualSubjects);
+	}
 }

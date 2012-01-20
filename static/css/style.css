@@ -50,6 +50,14 @@ td.specialday {
 	font-weight: bold;
 }
 
+td.specialday a.unavail_remove
+{
+	font-weight: normal;
+	float: right;
+	font-size: 10px;
+	color: blue;
+}
+
 tr
 {
 	background-color:#ffffff;
@@ -282,37 +290,51 @@ span.negative_value
 {
 	background-color:#eeeeee;
 	border:1px solid #cccccc;
-	width:1000px;
 	-moz-border-radius:10px;
+	border-radius:10px;
+	-webkit-border-radius:10px;
 	font-size: 20px;
 	padding:0;
 	margin: 0 auto 0 auto;
 	overflow:hidden;
 	color: #000;
+	width: 780px;
 }
 
 #overview p {
   font-size: 14px;
 }
 
+.day_data,
 #month_diff,
 #day_diff,
 #day_diff_earliest
 {
 	float:left;
 	border-right:1px solid #cccccc;
+	border-bottom:1px solid #cccccc;
 	padding:0 20px 5px 30px;
 	margin:0;
 	color: #000;
+	width: 79px;
+}
+
+.day_subdata {
+	font-size: 14px;
+	float: left;
+	line-height:22px;
+	padding:4px 15px;
+}
+
+.day_subdata .diff_label {
+	margin: 0;
 }
 
 #action_field
 {
 	float:right;
-	padding:4px 10px;
 	margin:0;
 	font-size:12px;
-	line-height:22px;
 	text-align:right;
 }
 

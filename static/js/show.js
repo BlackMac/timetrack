@@ -210,6 +210,36 @@ window.addEvent('domready', function() {
 			}).send(JSON.encode(params));		
 	});
 	
+	$$('a.unavail_remove').addEvent('click', function(evnt) {
+		var clickedOn = $(evnt.target);
+		var cell = clickedOn.getParent("td");
+		var date = cell.getElement("input[name=unavail_date]").get('value');
+		var params = {
+			id: $time(),
+			method: "removeDaySubject",
+			params: {
+				'hash': hash,
+				'date': date
+			}
+		};
+		new Request.JSON({
+			url: 'json-rpc.php',
+	        headers: {
+	            'Content-Type': 'application/json',
+	            'Accept': 'application/json, text/x-json, application/x-javascript'
+	        },
+			onComplete: function(res) {
+	        	if(!res || !res.result || res.result.save != "ok") {
+	        		cell.highlight('#880000', '#dddddd');
+	        		return;
+	        	}
+	        	location.reload();
+			}
+		}).send(JSON.encode(params));		
+		
+	});
+	
+	
 	$$('span.unavail').addEvent('click', function(evnt) {
 		var clickedOn = $(evnt.target);
 		

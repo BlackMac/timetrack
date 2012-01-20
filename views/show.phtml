@@ -71,27 +71,28 @@
 
 <?php if ($this->curmonth==date('Ym') && count($this->day) > 0) : ?>
 <div id="overview">
-	<div id="day_diff" class="">
+	<div class="day_data">
 		<span class="diff_label">Ankunft:</span><br>
 		<?php echo date("G:i:s", $this->day['startstamp']) ?>
 	</div>
 
-	<div id="day_diff" class="">
+	<div class="day_data">
 		<span class="diff_label">Pause:</span><br>
 		<?php echo gmdate("G:i:s", $this->day['pause']) ?>
 	</div>
 
-	<div id="day_diff" class="">
+	<div class="day_data">
 		<span class="diff_label">Feierabend:</span><br>
 		<?php echo date("G:i:s", $this->normalEnd) ?>
 	</div>
 
     <div id="day_diff_earliest" class="" style="height:48px;">
-		<span class="diff_label">Fr&uuml;hestm&ouml;glicher Feierabend:</span><br>
-		<?php
-		echo date("G:i:s", $this->earliestEnd);
-		echo "&nbsp;<a href=\"#\" OnClick=\"javascript:window.open('countdown.php?std=".date("G",$this->earliestEnd)."&min=".date("i",$this->earliestEnd)."&sec=".date("s",$this->earliestEnd)."','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;\" style=\"font-size:10px;\">[countdown]</a>";
-		?>
+    	<?php $countdownParam = http_build_query(array('std'=>date("G",$this->earliestEnd),'min'=>date("i",$this->earliestEnd),'sec'=>date("s",$this->earliestEnd)));?>
+    	<a href="#" onclick="javascript:window.open('countdown.php?<?php echo $countdownParam; ?>','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;" style="font-size:10px;">
+			<span class="diff_label">Fr&uuml;hestes Ende:</span>
+		</a>
+		<br>
+		<?php echo date("G:i:s", $this->earliestEnd); ?>
 	</div>
 
 	<?php if ($this->day['diff']>0): ?>
@@ -117,8 +118,21 @@
 			<span class="month_diff_minus">-</span><span class="month_diff_hour"><?php echo gmdate("G", $this->data['months'][$this->curmonth]*-1) ?></span>:<span class="month_diff_minute"><?php echo gmdate("i", $this->data['months'][$this->curmonth]*-1) ?></span>:<span class="month_diff_seconds"><?php echo gmdate("s", $this->data['months'][$this->curmonth]*-1) ?></span>
 		</div>
 	<?php endif; ?>
-	<div id="action_field">
-		<a href="download.php?h=<?php echo $this->hash ?>">Daemon downloaden</a><br>
+
+	<div style="clear:left"></div>
+
+	<div class="day_subdata">
+		<span class="diff_label">Urlaubstage <?php echo substr($this->curmonth, 0, 4); ?>:</span>
+		<?php echo $this->subjectSum['vacation']; ?>
+	</div>
+
+	<div class="day_subdata">
+		<span class="diff_label">Krankheitstage <?php echo substr($this->curmonth, 0, 4); ?>:</span>
+		<?php echo $this->subjectSum['illness']; ?>
+	</div>
+
+	<div class="day_subdata" id="action_field">
+		<a href="download.php?h=<?php echo $this->hash ?>">Daemon downloaden</a>
 		<a href="index.php">Ausloggen</a>
 	</div>
 </div>
@@ -190,6 +204,7 @@
 				<strong><?php echo date("d.m.Y", $daytimestamp); ?></strong>
 			</td>
 			<td class="specialday" colspan="5">
+				<input type="hidden" name="unavail_date" value="<?php echo $curday ?>">
 				<?php
 				$subject = $this->subjects[$curday]['subject'];
 				if($subject == "vacation") {
@@ -198,6 +213,7 @@
 					echo "Krank";
 				}
 				?>
+				<a href="javascript:;" class="unavail_remove">Eintrag entfernen</a>
 			</td>
 
 		<?php else: ?>
