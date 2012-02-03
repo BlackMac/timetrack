@@ -44,7 +44,7 @@ function CountdownAnzeigen()
 </head> 
 <body onLoad="CountdownAnzeigen();" bgcolor="#000000" text="white"> 
 <center> 
-<div id="Countdown" style="font-size:60px;"></div> 
+<div id="Countdown" style="font-size:60px;font-family:Arial,Verdana;"></div> 
 </center> 
 </body> 
 </html> 
