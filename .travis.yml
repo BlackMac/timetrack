@@ -1,5 +1,7 @@
 language: php
-php: 5.3
+php: 
+    - 5.3
+    - 5.4
 notifications:
   email:
     - travisci@p5t.de
