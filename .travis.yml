@@ -5,3 +5,4 @@ php:
 notifications:
   email:
     - travisci@p5t.de
+after_script: curl http://timetrack.blackmac.de/deploy.php?c=ahcheic2ohthet1daeceQue2uoChai
