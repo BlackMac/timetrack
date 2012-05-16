@@ -131,8 +131,12 @@
 		<?php echo $this->subjectSum['illness']; ?>
 	</div>
 
+	<div class="day_subdata">
+	</div>
+
 	<div class="day_subdata" id="action_field">
-		<a href="download.php?h=<?php echo $this->hash ?>">Daemon downloaden</a>
+		<a href="calendar.php?m=<?php echo $this->curmonth ?>" class="editorLink" rel="{handler:'iframe'}">Jahreskalender anzeigen</a> |
+		<a href="download.php?h=<?php echo $this->hash ?>">Daemon downloaden</a> |
 		<a href="index.php">Ausloggen</a>
 	</div>
 </div>

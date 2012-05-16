@@ -1,0 +1,53 @@
+body {
+	background: #414E55 url(../img/mobile/topgradient.png) repeat-x;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.month {
+	float: left;
+	margin: 5px;
+	font-size: 12px;
+}
+
+.month td {
+	background: white;
+	border-bottom: 1px solid #C1DAD7;
+	border-left: 1px solid #C1DAD7;
+	text-align: center;
+	vertical-align: center;
+	padding: 2px;
+	color: #6F7269;
+}
+
+td.nobusiness {
+	background: #E6C7C7;
+}
+
+
+td.holiday {
+	background: #E47D7D;
+	color: white;
+}
+
+td.vacation {
+	background: yellow;
+}
+
+td.illness {
+	background: red;
+	color: white;
+}
+
+.month tr.weekdays td {
+	background: #E5E6C7;
+	color: #6F7269;
+	border: 0px;
+	border-bottom: 1px solid #C1DAD7;
+}
+
+.month th {
+	padding: 2px 0px; color : #6F7269;
+	border: 1px solid #C1DAD7;
+	color: #6D929B;
+	background: #C1DAD7;
+}
