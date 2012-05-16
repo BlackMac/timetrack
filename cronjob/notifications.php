@@ -1,5 +1,10 @@
 #!/usr/bin/php
 <?php
+if(php_sapi_name() !== "cli")
+{
+	die("This script is for command line use only");
+}
+
 include "../TimeTrack.class.php";
 $dir = dirname(dirname(__FILE__));
 $files = glob($dir . '/logs/*/options.ini');
@@ -41,12 +46,11 @@ foreach ($files as $optionFileName)
 		}
 		$neededMaxGap = $options->notifications->when * 60;
 		$actualGap = $compareDate - time();
-		if($actualGap <= 60 || $actualGap < 0)
-		{
-			continue;
-		}
 
-		sendNotification($options->notifications, $compareDate, $lastdayData);
+ 		if($actualGap <= $neededMaxGap+120 && $actualGap >= $neededMaxGap)
+ 		{
+			sendNotification($options->notifications, $compareDate, $lastdayData);
+		}
 	}
 
 }
@@ -57,6 +61,11 @@ function sendNotification($notification, $end, $lastday)
 	switch ($notification->how)
 	{
 		case 'mail':
+			if(! isset($notification->target) || empty($notification->target))
+			{
+				writeLog("Cannot send mail. Target ist missing.");
+				break;
+			}
 			mail($notification->target, "Bald ist Ende", $text);
 			writeLog("Mail sent to '" . $notification->target . "'");
 			break;
