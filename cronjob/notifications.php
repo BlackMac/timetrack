@@ -2,29 +2,47 @@
 <?php
 include "../TimeTrack.class.php";
 $dir = dirname(dirname(__FILE__));
-$files = glob($dir.'/logs/*/options.ini');
+$files = glob($dir . '/logs/*/options.ini');
 $core = new TimeTrack();
 $core->setMonth(date("Ym"));
 
-foreach($files as $optionFileName) {
+foreach ($files as $optionFileName)
+{
 	$options = json_decode(file_get_contents($optionFileName));
 	$hash = basename(dirname($optionFileName));
-	if(isset($options->notifications)) {
-		writeLog("Found notification for '".$hash."'");
+	if(isset($options->notifications))
+	{
+		writeLog("'$hash': Found notification");
+
+		if(! isset($options->notifications->when) || ! isset($options->notifications->what) || ! isset($options->notifications->how))
+		{
+			writeLog("'$hash': Notification settings are incomplete. Skipping.");
+			continue;
+		}
+
+		if(! isset($options->notifications->enabled) || $options->notifications->enabled == false)
+		{
+			writeLog("'$hash': Notification is disabled. Skipping.");
+			continue;
+		}
+
 		$core->login(null, null, $hash);
 		$core->parseData();
 		$lastdayData = $core->getLastDay();
-		if(date('Y-m-d') != $lastdayData['date']) {
+		if(date('Y-m-d') != $lastdayData['date'])
+		{
 			writeLog('Last day is not today, skipping');
 			continue;
 		}
 		$compareDate = $core->getNormalDayEnd();
-		if($options->notifications->what == "earliest") {
+		if($options->notifications->what == "earliest")
+		{
 			$compareDate = $core->getEarliestDayEnd();
 		}
-		$neededMaxGap = $options->notifications->when*60;
+		$neededMaxGap = $options->notifications->when * 60;
 		$actualGap = $compareDate - time();
-		if($actualGap <= 60 || $actualGap < 0) {
+		if($actualGap <= 60 || $actualGap < 0)
+		{
 			continue;
 		}
 
@@ -36,10 +54,11 @@ foreach($files as $optionFileName) {
 function sendNotification($notification, $end, $lastday)
 {
 	$text = getMessageText($notification->how, $notification->what, $notification->when, $end);
-	switch ($notification->how) {
+	switch ($notification->how)
+	{
 		case 'mail':
 			mail($notification->target, "Bald ist Ende", $text);
-			writeLog("Mail sent to '".$notification->target."'");
+			writeLog("Mail sent to '" . $notification->target . "'");
 			break;
 		case 'sms':
 			;
@@ -48,7 +67,7 @@ function sendNotification($notification, $end, $lastday)
 			;
 			break;
 		default:
-			writeLog("Found unsupported notification type '".$notification->how."'. Exiting...");
+			writeLog("Found unsupported notification type '" . $notification->how . "'. Exiting...");
 			return;
 	}
 }
@@ -56,14 +75,20 @@ function sendNotification($notification, $end, $lastday)
 function getMessageText($how, $what, $when, $end)
 {
 	$type = "normaler";
-	if($when == "earliest") {
+	if($when == "earliest")
+	{
 		$type = "frühestmöglicher";
 	}
-	if($how == "mail") {
-		return sprintf("In %s Minuten ist dein %s Feierabend. Packe um %s deine Sachen und geh.", $when, $type, date("G:i:s", $end));		
-	} elseif($how == "sms") {
+	if($how == "mail")
+	{
 		return sprintf("In %s Minuten ist dein %s Feierabend. Packe um %s deine Sachen und geh.", $when, $type, date("G:i:s", $end));
-	} elseif($how == "iphone") {
+	}
+	elseif($how == "sms")
+	{
+		return sprintf("In %s Minuten ist dein %s Feierabend. Packe um %s deine Sachen und geh.", $when, $type, date("G:i:s", $end));
+	}
+	elseif($how == "iphone")
+	{
 		return sprintf("In %s Minuten ist dein %s Feierabend. Packe um %s deine Sachen und geh.", $when, $type, date("G:i:s", $end));
 	}
 	return "";
