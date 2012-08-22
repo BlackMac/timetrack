@@ -9,7 +9,7 @@ class TTDropbox
     private $oauthParams = array();
     private $queryParams = array();
     private $headers = array();
-	private $baseUrl = 'https://api-content.dropbox.com/0/files/sandbox';
+	private $baseUrl = 'https://api-content.dropbox.com/1/files/sandbox';
 
 	public function __construct($consumerKey, $consumerSecret, $token, $tokenSecret) {
 		$this->consumerKey = $consumerKey;

@@ -34,10 +34,10 @@ $options = $timetrack->getOptions();
 $consumerKey = "v7o88y5e7ue41gz";
 $consumerSecret = "pctm137te23evi3";
 
-$requestTokenURL = "https://api.dropbox.com/0/oauth/request_token";
-$getTokenURL = "https://api.dropbox.com/0/oauth/access_token";
-$authorizationTokenURL = "https://www.dropbox.com/0/oauth/authorize";
-$fileURL = "https://api-content.dropbox.com/0/files/sandbox";
+$requestTokenURL = "https://api.dropbox.com/1/oauth/request_token";
+$getTokenURL = "https://api.dropbox.com/1/oauth/access_token";
+$authorizationTokenURL = "https://www.dropbox.com/1/oauth/authorize";
+$fileURL = "https://api-content.dropbox.com/1/files/sandbox";
 $callbackURL = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/show.php?response=yes&dropbox=1';
 
 if(!isset($options['dropbox']))
