@@ -15,6 +15,7 @@
 session_start();
 include "TimeTrack.class.php";
 $timetrack = new TimeTrack();
+setlocale(LC_ALL, "de_DE");
 
 $loggedin=false;
 $loggedin = $timetrack->login($_POST['u'], $_POST['p'], $_GET['h']);
@@ -30,6 +31,9 @@ if (!$loggedin) {
 }
 
 $year = date("Y");
+if(isset($_GET['y']) && is_numeric($_GET['y']) && strlen($_GET['y']) == 4) {
+	$year = $_GET['y'];
+}
 $holidays = $timetrack->getHolidays($year);
 $subjects = $timetrack->getDaySubjectsForYear($year);
 

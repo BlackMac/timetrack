@@ -68,43 +68,48 @@
 	<div id="current_month"><?php echo formatmonth($this->curmonth); ?></div>
 
 </div>
-
-<?php if ($this->curmonth==date('Ym') && count($this->day) > 0) : ?>
+<?php if(count($this->data['days']) < 1) : ?>
+	<div id="overview" style="text-align: center;">
+		<p>Für diesen Monat liegen keine Daten vor.</p>
+	</div>
+<?php else: ?>
 <div id="overview">
-	<div class="day_data">
-		<span class="diff_label">Ankunft:</span><br>
-		<?php echo date("G:i:s", $this->day['startstamp']) ?>
-	</div>
-
-	<div class="day_data">
-		<span class="diff_label">Pause:</span><br>
-		<?php echo gmdate("G:i:s", $this->day['pause']) ?>
-	</div>
-
-	<div class="day_data">
-		<span class="diff_label">Feierabend:</span><br>
-		<?php echo date("G:i:s", $this->normalEnd) ?>
-	</div>
-
-    <div id="day_diff_earliest" class="" style="height:48px;">
-    	<?php $countdownParam = http_build_query(array('std'=>date("G",$this->earliestEnd),'min'=>date("i",$this->earliestEnd),'sec'=>date("s",$this->earliestEnd)));?>
-    	<a href="#" onclick="javascript:window.open('countdown.php?<?php echo $countdownParam; ?>','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;" style="font-size:10px;">
-			<span class="diff_label">Fr&uuml;hestes Ende:</span>
-		</a>
-		<br>
-		<?php echo date("G:i:s", $this->earliestEnd); ?>
-	</div>
-
-	<?php if ($this->day['diff']>0): ?>
-		<div id="day_diff">
-			<span class="diff_label">Differenz:</span><br>
-			<span class="day_diff_hour"><?php echo gmdate("G", $this->day['diff']) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $this->day['diff']) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $this->day['diff']) ?></span>
+	<?php if ($this->curmonth==date('Ym') && count($this->day) > 0) : ?>
+		<div class="day_data">
+			<span class="diff_label">Ankunft:</span><br>
+			<?php echo date("G:i:s", $this->day['startstamp']) ?>
 		</div>
-	<?php else:?>
-		<div id="day_diff" class="negative">
-			<span class="diff_label">Differenz heute:</span><br>
-			<span class="day_diff_minus">-</span><span class="day_diff_hour"><?php echo gmdate("G", $this->day['diff']*-1) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $this->day['diff']*-1) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $this->day['diff']*-1) ?></span>
+
+		<div class="day_data">
+			<span class="diff_label">Pause:</span><br>
+			<?php echo gmdate("G:i:s", $this->day['pause']) ?>
 		</div>
+
+		<div class="day_data">
+			<span class="diff_label">Feierabend:</span><br>
+			<?php echo date("G:i:s", $this->normalEnd) ?>
+		</div>
+
+	    <div id="day_diff_earliest" class="" style="height:48px;">
+	    	<?php $countdownParam = http_build_query(array('std'=>date("G",$this->earliestEnd),'min'=>date("i",$this->earliestEnd),'sec'=>date("s",$this->earliestEnd)));?>
+	    	<a href="#" onclick="javascript:window.open('countdown.php?<?php echo $countdownParam; ?>','countdownwindow','innerHeight=100px,innerWidth=300px,dependent=no,resizable=no,scrollbars=no,status=no,toolbar=no,hotkeys=nolocation=no');return false;" style="font-size:10px;">
+				<span class="diff_label">Fr&uuml;hestes Ende:</span>
+			</a>
+			<br>
+			<?php echo date("G:i:s", $this->earliestEnd); ?>
+		</div>
+
+		<?php if ($this->day['diff']>0): ?>
+			<div id="day_diff">
+				<span class="diff_label">Differenz:</span><br>
+				<span class="day_diff_hour"><?php echo gmdate("G", $this->day['diff']) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $this->day['diff']) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $this->day['diff']) ?></span>
+			</div>
+		<?php else:?>
+			<div id="day_diff" class="negative">
+				<span class="diff_label">Differenz heute:</span><br>
+				<span class="day_diff_minus">-</span><span class="day_diff_hour"><?php echo gmdate("G", $this->day['diff']*-1) ?></span>:<span class="day_diff_minute"><?php echo gmdate("i", $this->day['diff']*-1) ?></span>:<span class="day_diff_seconds"><?php echo gmdate("s", $this->day['diff']*-1) ?></span>
+			</div>
+		<?php endif; ?>
 	<?php endif; ?>
 
 	<?php if ($this->data['months'][$this->curmonth]>0): ?>
@@ -135,19 +140,13 @@
 	</div>
 
 	<div class="day_subdata" id="action_field">
-		<a href="calendar.php?m=<?php echo $this->curmonth ?>" class="editorLink" rel="{handler:'iframe'}">Jahreskalender anzeigen</a> |
+		<a href="calendar.php?y=<?php echo substr($this->curmonth, 0, 4) ?>" class="editorLink" rel="{handler:'iframe'}">Jahreskalender anzeigen</a> |
 		<a href="download.php?h=<?php echo $this->hash ?>">Daemon downloaden</a> |
 		<a href="index.php">Ausloggen</a>
 	</div>
 </div>
-<?php endif; ?>
 
 <div style="overflow:hidden" id="content_wrapper">
-<?php if(count($this->data['days']) < 1) : ?>
-	<div id="overview" style="text-align: center;">
-		<p>Für diesen Monat liegen keine Daten vor.</p>
-	</div>
-<?php else: ?>
 	<div class="leftColumn">
 	<table>
 		<thead>

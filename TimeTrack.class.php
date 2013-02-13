@@ -562,7 +562,10 @@ class TimeTrack
 			'cht' => 'lc',
 			'chm' => 'r,CAE8EA,0,0.49,0.51',
 			'chds' => $min/3600-0.01 . ',' .$max/3600,
-			'chd' => 't:' . join(',', $vals)
+			'chd' => 't:' . join(',', $vals),
+			'chf' => 'bg,s,414E55',
+			'chxs' => '0,FFFFFF,11.5,0,l,FFFFFF|1,FFFFFF,11.5,1,l,FFFFFF',
+			'chts' => 'FFFFFF'
 		);
 
 
@@ -609,7 +612,10 @@ class TimeTrack
 			'cht' => 'bvs',
 			'chp' => '0.5',
 			'chds' => '-3,3',
-			'chd' => 't:' . join(',', $valsdif)
+			'chd' => 't:' . join(',', $valsdif),
+			'chf' => 'bg,s,414E55',
+			'chxs' => '0,FFFFFF,11.5,0,l,FFFFFF|1,FFFFFF,11.5,1,l,FFFFFF',
+			'chts' => 'FFFFFF'
 		);
 
 		return $baseUrl . '?' . http_build_query($data);

@@ -47,10 +47,7 @@ class Timetrack_View_Show extends Timetrack_View
 		$this->view->holidays = $this->core->getHolidays($curyear);
 		$this->view->subjects = $this->core->getDaySubjectsForYear($curyear);
 
-		if ($curmonth==date('Ym') && count($this->view->day) > 0)
-		{
-			$this->view->subjectSum = $this->calculateSubjectDays($this->view->subjects);
-		}
+		$this->view->subjectSum = $this->calculateSubjectDays($this->view->subjects);
 
 		$this->setViewScript('show');
 		$this->view->mobiledevice = $this->detectMobileDevices();
