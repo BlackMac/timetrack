@@ -83,7 +83,7 @@ window.addEvent('domready', function() {
 	}.bindWithEvent());
 	SqueezeBox.assign($$('a.correctionLink'), {
 		classWindow: 'correctionLightbox',
-		size: {x: 600, y: 105}
+		size: {x: 600, y: 130}
 	});
 
 	if($('day_diff'))

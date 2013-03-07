@@ -37,7 +37,6 @@ $consumerSecret = "pctm137te23evi3";
 $requestTokenURL = "https://api.dropbox.com/1/oauth/request_token";
 $getTokenURL = "https://api.dropbox.com/1/oauth/access_token";
 $authorizationTokenURL = "https://www.dropbox.com/1/oauth/authorize";
-$fileURL = "https://api-content.dropbox.com/1/files/sandbox";
 $callbackURL = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/show.php?response=yes&dropbox=1';
 
 if(!isset($options['dropbox']))
@@ -109,24 +108,55 @@ if(!isset($options['dropbox']))
 	}
 }
 
-	include "views/dropbox.phtml";
+include "views/dropbox.phtml";
 
-	ob_implicit_flush(true);
-	ob_end_flush();
+ob_implicit_flush(true);
+ob_end_flush();
 
-	$dropbox = new TTDropbox($consumerKey, $consumerSecret, $options['dropbox']['oauth_token'], $options['dropbox']['oauth_token_secret']);
+$dropbox = new TTDropbox($consumerKey, $consumerSecret, $options['dropbox']['oauth_token'], $options['dropbox']['oauth_token_secret']);
 
-	echo "<ul>";
-	foreach($timetrack->getAllDataFiles() as $file)
+$dropboxFiles = getDropboxFiles();
+
+$filesToUpload = array();	// Dateien, die hochgeladen werden müssen
+$newDropboxFiles = array();	// Inhalt der neuen dropbox.ini
+foreach ($timetrack->getAllDataFilesWithHash() as $absname => $fileInfo)
+{
+	if(!isset($dropboxFiles[$fileInfo['basename']]) || $dropboxFiles[$fileInfo['basename']] != $fileInfo['hash'])
 	{
-		$success = $dropbox->uploadFile($file);
-		if($success === false) {
-			echo "<li>error while uploading '" . basename($file) . "' <br><b>I've got to stop all following operations!</b></li>";
-			break;
-		} else {
-			echo "<li>upload of '" . basename($file) . "' <b>succeeded</b> with '".$success."'</li>";
-		}
-
+		$filesToUpload[] = $absname;
 	}
-	echo "<li>Done!</li>";
-	echo "</ul>";
+	$newDropboxFiles[$fileInfo['basename']] = $fileInfo['hash'];
+}
+$dropbox->uploadFileFromString('dropbox.ini', json_encode($newDropboxFiles));
+
+echo "<ul>";
+foreach($filesToUpload as $file)
+{
+	$success = $dropbox->uploadFile($file);
+	if($success === false) {
+		echo "<li>'".basename($file)."': Fehler beim Hochladen!</li>";
+		echo "<li><b>Der Vorgang wird komplett abgebrochen!</b></li>";
+		break;
+	} else {
+		echo "<li>'".basename($file)."': Hochladen <b>erfolgreich</b>. Rückgabe: '<pre>".$success."</pre>'</li>";
+	}
+
+}
+echo "<li>Fertig!</li>";
+echo "</ul>";
+
+
+function getDropboxFiles()
+{
+	$decodedDropboxFiles = array();
+	$dropboxFiles = $dropbox->getFile('dropbox.ini');
+	if($dropboxFiles !== false) {
+		$decodedDropboxFiles = json_decode($dropboxFiles, true);
+		if($decodedDropboxFiles === null) {
+			echo "<b>dropbox.ini ist unbrauchbar</b><br>";
+		}
+	} else {
+		echo "<b>Die Datei dropbox.ini kann nicht herunterladen werden.</b><br>";
+	}
+	return $decodedDropboxFiles;
+}

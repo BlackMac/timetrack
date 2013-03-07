@@ -9,7 +9,14 @@ class TTDropbox
     private $oauthParams = array();
     private $queryParams = array();
     private $headers = array();
-	private $baseUrl = 'https://api-content.dropbox.com/1/files/sandbox';
+	private $baseUrl = '';
+	private $method = "";
+
+	private $urls = array(
+		'fileupload' => 'https://api-content.dropbox.com/1/files/sandbox',
+		'filedownload' => 'https://api-content.dropbox.com/1/files/sandbox',
+		'metadata' => 'https://api.dropbox.com/1/metadata/sandbox'
+	);
 
 	public function __construct($consumerKey, $consumerSecret, $token, $tokenSecret) {
 		$this->consumerKey = $consumerKey;
@@ -22,7 +29,35 @@ class TTDropbox
 		$filename = basename($file);
 		$this->queryParams['file'] = $filename;
 		$this->fileContent = file_get_contents($file);
+		$this->baseUrl = $this->urls['fileupload'];
+		$this->method = "POST";
 		return $this->_sendFile();
+	}
+
+	public function uploadFileFromString($filename, $content) {
+		$this->queryParams['file'] = $filename;
+		$this->fileContent = $content;
+		$this->baseUrl = $this->urls['fileupload'];
+		$this->method = "POST";
+		return $this->_sendFile();
+	}
+
+	public function getMetadata()
+	{
+		$this->queryParams = array();
+		$this->baseUrl = $this->urls['metadata'];
+		$this->method = "GET";
+		$ch = $this->_buildPreparedCurl();
+		return curl_exec($ch);
+	}
+
+	public function getFile($file)
+	{
+		$this->queryParams = array();
+		$this->baseUrl = $this->urls['filedownload'] . '/' . $file;
+		$this->method = "GET";
+		$ch = $this->_buildPreparedCurl();
+		return curl_exec($ch);
 	}
 
 	private function _buildOAuthParams() {
@@ -39,7 +74,7 @@ class TTDropbox
 
 	private function _buildBaseString() {
 		$this->basestring = join('&', array(
-			'POST',
+			$this->method,
 			urlencode($this->baseUrl),
 			urlencode(http_build_query($this->queryParams + $this->oauthParams))
 		));
@@ -78,15 +113,24 @@ class TTDropbox
         return $body;
 	}
 
-	private function _sendFile()
+	private function _buildPreparedCurl()
 	{
 		$this->_buildOAuthParams();
 		$this->_buildBaseString();
 		$this->_sign();
- 		$ch = curl_init($this->baseUrl . '?' . http_build_query($this->queryParams) );
+		$ch = curl_init($this->baseUrl . '?' . http_build_query($this->queryParams) );
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->_buildHeaders());
-		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		if($this->method == "POST")
+		{
+			curl_setopt($ch, CURLOPT_POST, true);
+		}
+		return $ch;
+	}
+
+	private function _sendFile()
+	{
+		$ch = $this->_buildPreparedCurl();
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_buildBody());
 		return curl_exec($ch);
 	}

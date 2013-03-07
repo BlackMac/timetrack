@@ -373,6 +373,20 @@ class TimeTrack
 		return glob($dir . '/*');
 	}
 
+	public function getAllDataFilesWithHash()
+	{
+		$response = array();
+		$filenames = $this->getAllDataFiles();
+		foreach ($filenames as $filename)
+		{
+			$response[$filename] = array(
+				'basename' => basename($filename),
+				'hash' => md5_file($filename)
+			);
+		}
+		return $response;
+	}
+
 	public function findAllMonths()
 	{
 		if(!is_dir($this->file))
