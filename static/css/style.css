@@ -201,6 +201,26 @@ span.negative_value
 	margin: 0;
 }
 
+#month_navigator ul li.navigation_year {
+	font-weight: bold;
+}
+
+#month_navigator ul li.navigation_year ul {
+	font-weight: normal;
+	-webkit-transition: all 200ms ease;
+	overflow: hidden;
+	height: 0;
+	opacity: 0;
+}
+
+#month_navigator ul li.navigation_year:hover ul {
+	height: auto;
+	overflow: hidden;
+	opacity: 1;
+	-webkit-transition: all 200ms ease;
+}
+
+
 #month_navigator ul li {
 	background: #92b361 url(../img/navigator_buttons.gif) no-repeat left top;
 	float: left;

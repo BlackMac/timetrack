@@ -35,7 +35,14 @@ class Timetrack_View_Show extends Timetrack_View
 		$this->view->hash = $this->core->hash;
 		$this->view->isWritable = $this->core->isWritable();
 
-		$this->view->data = $this->core->parseData();
+		$data = $this->core->parseData();
+		$this->view->data = $data;
+
+		foreach(array_keys($data['months']) as $month)
+		{
+			$monthNavigation[substr($month, 0, 4)][] = $month;
+		}
+		$this->view->monthNavigation = $monthNavigation;
 		$this->view->day = $this->core->getLastDay();
 		$this->view->alt = true;
 		$this->view->presenceGraphUrl = $this->core->generatePresenceGraphUrl($curmonth, 'Anwesenheit in Stunden');

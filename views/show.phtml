@@ -48,9 +48,15 @@
 
 	<div id="additional_months" class="hidden">
 		<ul>
-			<?php foreach($this->data['months'] as $month=>$time): ?>
-				<li>
-					<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$this->curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
+			<?php foreach($this->monthNavigation as $year => $months) : ?>
+				<li class="navigation_year"><?php echo $year; ?>
+				<ul>
+				<?php foreach($months as $month): ?>
+					<li>
+						<a href="<?php echo $_SERVER["SCRIPT_NAME"] ?>?m=<?php echo $month ?>" class="<?php echo ($month==$this->curmonth ? 'active' : '') ?>"><?php echo formatmonth($month) ?></a>
+					</li>
+				<?php endforeach; ?>
+				</ul>
 				</li>
 			<?php endforeach; ?>
 		</ul>
