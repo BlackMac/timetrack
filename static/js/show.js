@@ -1,8 +1,9 @@
+/*
 $('correct_action_link').addEvent('click', function() {
 		$('correct_widow').toggleClass('visible');
 		$('correction_value').focus();
 });
-
+*/
 $('changeuserdata_action_link').addEvent('click', function() {
 		$('changeuserdata_widow').toggleClass('visible');
 		$('changeuserdata_pass').focus();
@@ -85,6 +86,7 @@ window.addEvent('domready', function() {
 		size: {x: 600, y: 105}
 	});
 
+	if($('day_diff'))
 	countdownTimer = countdownDayDiff.periodical(1000);
 
 	var options = {
@@ -182,6 +184,7 @@ window.addEvent('domready', function() {
 		}		
 	});
 	
+	if($('notificationEnabled'))
 	$('notificationEnabled').addEvent('change', function(e) {
 		var params = {
 				id: $time(),

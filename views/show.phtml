@@ -22,7 +22,7 @@
 			</form>
 		</div>
 		</li>
-
+<!--
 		<li>
 		<a href="#" id="correct_action_link">Korrigieren</a>
 		<div id="correct_widow" class="settings_popdown">
@@ -36,6 +36,7 @@
 			</form>
 		</div>
 		</li>
+		 -->
 		<li>
 			<a href="dropbox.php" id="dropBoxLink" rel="{handler:'iframe'}" style="height: 36px; width: 50px;">
 				<div style="background: url(static/img/dropbox-backup.png) no-repeat center center; height: 36px;"></div>
@@ -298,8 +299,8 @@
 </div>
 <script type="text/javascript">
 <!--
-var day_diff = <?php echo $this->normalEnd; ?>;
-var earliest_diff = <?php echo $this->earliestEnd; ?>;
+var day_diff = <?php echo isset($this->normalEnd) ? $this->normalEnd : 0; ?>;
+var earliest_diff = <?php echo isset($this->earliestEnd) ? $this->earliestEnd : 0; ?>;
 var laststateIn = "<?php echo $this->day['laststateIn']?>";
 var hash = "<?php echo $this->hash ?>";
 -->
