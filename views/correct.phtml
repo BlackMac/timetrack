@@ -34,6 +34,22 @@
 	<input type="submit" name="submit" value="Aktualisieren">
 </form>
 
+<div style="margin-top: 15px;" id="change_dailyworktime">
+	<?php $halfday = ($day['dailyWorkTime'] == 4.41666); ?>
+	<form id="form_dailyworktime"  action="correct.php" method="post">
+		<?php if($halfday) : ?>
+			Halber Arbeitstag (4:25h)
+			<input type="submit" name="submit" value="Als vollen Tag berechnen (8:45h)">
+			<input type="hidden" name="daysize" value="wholeday">
+		<?php else: ?>
+			Voller Arbeitstag (8:45h)
+			<input type="submit" name="submit" value="Als halben Tag berechnen (4:25h)">
+			<input type="hidden" name="daysize" value="halfday">
+		<?php endif; ?>
+		<input type="hidden" name="date" value="<?php echo $curdate ?>">
+	</form>
+</div>
+
 <script type="text/javascript">
 	var starttimestamp = <?php echo $day['startstamp'] ?>;
 	var endtimestamp = <?php echo $day['endstamp'] ?>;

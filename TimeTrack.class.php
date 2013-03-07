@@ -251,6 +251,21 @@ class TimeTrack
 
 	public function logFile($direction = null, $logtime = null, $message = null)
 	{
+		$logline = $this->generateLogLine($direction, $logtime, $message);
+
+		$file = fopen($this->file, 'a');
+		fputs($file, $logline);
+		fclose($file);
+
+		return array(
+			'action' => $action,
+			'time' => $logtime,
+			'message' => $message
+		);
+	}
+
+	protected function generateLogLine($direction = null, $logtime = null, $message = null)
+	{
 		if(! isset($logtime) || empty($logtime))
 		{
 			$logtime = date("Y-m-d\TH:i:s");
@@ -262,23 +277,16 @@ class TimeTrack
 			$action = "+";
 		if($direction == "out")
 			$action = "-";
+		if($direction == "worktime")
+			$action = "W";
 
 		if(! isset($message) || empty($message))
 		{
-			$message = $direction;
+			$message = "***" . $direction . "***";
 		}
 
-		$logline = $action . '[' . $logtime . '] ***' . $message . '***' . "\r\n";
-
-		$file = fopen($this->file, 'a');
-		fputs($file, $logline);
-		fclose($file);
-
-		return array(
-			'action' => $action,
-			'time' => $logtime,
-			'message' => $message
-		);
+		$logline = $action . '[' . $logtime . '] ' . $message . "\r\n";
+		return $logline;
 	}
 
 	public function updateFile($oldtimestamp, $newtimestamp)
@@ -303,6 +311,62 @@ class TimeTrack
 			}
 		}
 		$this->parseData();
+
+		return $this->writeFile(join("\r\n", $this->rawData), $month);
+	}
+
+	public function changeDailyWorkingTimeForADay($date, $daySize)
+	{
+		$dateSplitted = array();
+		if(!isset($date, $daySize)
+			|| !in_array($daySize, array('wholeday', 'halfday'))
+			|| !preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $date, $dateSplitted)
+		)
+		{
+			return false;
+		}
+
+		$month = $dateSplitted[1] . $dateSplitted[2];
+		$this->setMonth($month);
+
+		if(! $this->loadedData)
+		{
+			if(! $this->loadFile())
+				return;
+		}
+
+		$foundDate = false;
+		$offset = null;
+		foreach ($this->rawData as $key => $line)
+		{
+			if(strpos($line, $date) !== false) {
+				if($daySize == "wholeday" && strpos($line, 'W') !== false) {
+					$offset = $key;
+					break;
+				}
+				$foundDate = true;
+			} else {
+				if($foundDate) {
+					$offset = $key;
+					break;
+				}
+			}
+		}
+
+		if($daySize == "halfday")
+		{
+			if($foundDate && $offset != null)
+			{
+				array_splice($this->rawData, $offset, 0, $this->generateLogLine('worktime', $date . 'T23:59:59' , 4.41666));
+			} else {
+				$this->rawData[] = $this->generateLogLine('worktime', $date . 'T23:59:59' , 4.41666);
+			}
+		}
+
+		if($daySize == "wholeday" && $foundDate && $offset != null)
+		{
+			array_splice($this->rawData, $offset, 1);
+		}
 
 		return $this->writeFile(join("\r\n", $this->rawData), $month);
 	}
@@ -423,13 +487,14 @@ class TimeTrack
 		foreach ($this->rawData as $line_num => $line)
 		{
 			$matches = array();
-			if(!preg_match("/^([-\+#])\[(\d{4}-\d{2}-\d{2}\w\d{2}:\d{2}:\d{2})\]\s(.*)/", $line, $matches))
+			if(!preg_match("/^([-\+#CW])\[(\d{4}-\d{2}-\d{2}\w\d{2}:\d{2}:\d{2})\]\s(.*)/", $line, $matches))
 				continue;
 			list ($match, $status, $datetime, $comment) = $matches;
 
 			if($status == "#")
 				continue;
 			$coming = ($status == "+");
+			$going = ($status == "-");
 
 			$datetime = strtotime($datetime);
 			$monthy = date("Ym", $datetime);
@@ -443,48 +508,62 @@ class TimeTrack
 			if(! isset($this->data['days'][$date]))
 			{
 				$pausestart = 0;
-				$this->data['days'][$date] = array(
+				$this->data['days'][$date] = array();
+			}
+
+			if($coming && $pausestart == 0)
+			{
+				$pausestart = 0;
+				$this->data['days'][$date] = array_merge(array(
 					'month' => $monthy,
 					'date' => $date,
 					'datestamp' => strtotime($date),
 					'start' => date('G:i:s', $datetime),
 					'startstamp' => $datetime,
-					'laststateIn' => (int)$coming,
-					'pause' => 0
-				);
+					'pause' => 0,
+					'dailyWorkTime' => $this->dailyWorkTime,
+				), $this->data['days'][$date]);
+			}
+			elseif($status == "W")
+			{
+				$this->data['days'][$date]['dailyWorkTime'] = (float)$comment;
 			}
 			elseif($status == "C")
 			{
-				echo "C" . $this->data['days'][$date]['start'];
-				$this->data['days'][$date]['startstamp'] -= substr($line, 22);
-				continue;
+				$this->data['days'][$date]['dailyWorkTime'] -= $comment/60;
 			}
-			elseif(! $coming)
+			elseif($going)
 			{
-				$this->data['days'][$date]['laststateIn'] = $coming;
 				$pausestart = $datetime;
 			}
 			else
 			{
 				$this->data['days'][$date]['pause'] += ($datetime - $pausestart);
 			}
-			$this->data['days'][$date]['laststateIn'] = $coming;
-			if($coming && $date == date("Y-m-d"))
-				$datetime = time();
 
-			$this->data['days'][$date]['end'] = date('h:i:s', $datetime);
-			$this->data['days'][$date]['endstamp'] = $datetime;
+			if($coming || $going)
+			{
+				if($coming)
+					$this->data['days'][$date]['laststateIn'] = 1;
+				if($going)
+					$this->data['days'][$date]['laststateIn'] = 0;
 
-			$worktime = $datetime - $this->data['days'][$date]['startstamp'];
-			$this->data['days'][$date]['worktime'] = $worktime;
-			$solldiff = 60 * 525;
-			$this->data['days'][$date]['diff'] = $worktime - $solldiff;
+				if($coming && $date == date("Y-m-d"))
+					$datetime = time();
+
+				$this->data['days'][$date]['end'] = date('h:i:s', $datetime);
+				$this->data['days'][$date]['endstamp'] = $datetime;
+
+				$this->data['days'][$date]['worktime'] = $datetime - $this->data['days'][$date]['startstamp'];
+			}
 
 			$olddate = $date;
 		}
 
 		foreach ($this->data['days'] as &$day)
 		{
+			$day['diff'] = $day['worktime'] - (60*60* $day['dailyWorkTime']);
+
 			$this->data['months'][$day['month']] += $day['diff'] - $day['pause'];
 			$day['monthdiff'] = $this->data['months'][$day['month']];
 			$day['diff'] = $day['diff'] - $day['pause'];
@@ -527,7 +606,7 @@ class TimeTrack
 		}
 		$yesterdaydiff = $yesterday['monthdiff'];
 		$end = $lastDay['startstamp'] + $lastDay['pause'] - $yesterdaydiff + 60*60 * $this->dailyWorkTime;
-    return $end;
+		return $end;
 	}
 
 	public function generatePresenceGraphUrl($month, $title = 'Anwesenheit in Stunden')

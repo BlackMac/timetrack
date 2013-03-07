@@ -32,6 +32,8 @@ if (!$loggedin) {
 	}
 }
 
+$forward = false;
+
 $formsend = $_POST['submit'];
 $newstart = $_POST['newstart'];
 $newend = $_POST['newend'];
@@ -53,9 +55,21 @@ if(isset($formsend, $newstart, $newend, $oldstart, $oldend)) {
 	if(!$success) {
 		die("Update not successful");
 	} else {
-		$month = date("Ym", $oldstart);
-		header('Location: show.php?m=' . $month);
+		$forward = true;
 	}
+}
+
+if(isset($_POST['daysize']) && isset($_POST['date']))
+{
+	$timetrack->changeDailyWorkingTimeForADay($_POST['date'], $_POST['daysize']);
+	$oldstart = strtotime($_POST['date']);
+	$forward = true;
+}
+
+if($forward === true)
+{
+	$month = date("Ym", $oldstart);
+	header('Location: show.php?m=' . $month);
 }
 
 $timetrack->setMonth(date("Ym",strtotime($curdate)));
