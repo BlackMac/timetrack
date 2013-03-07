@@ -9,7 +9,10 @@ if(empty($id)) {
 }
 
 $loggedin=false;
-$loggedin = $timetrack->login($_POST['u'], $_POST['p'], $_GET['h']);
+$u = isset($_POST['u']) ? $_POST['u'] : null;
+$p = isset($_POST['p']) ? $_POST['p'] : null;
+$h = isset($_GET['h']) ? $_GET['h'] : null;
+$loggedin = $timetrack->login($u, $p, $h);
 $hash = $timetrack->hash;
 
 if(!$loggedin) {
@@ -115,7 +118,7 @@ ob_end_flush();
 
 $dropbox = new TTDropbox($consumerKey, $consumerSecret, $options['dropbox']['oauth_token'], $options['dropbox']['oauth_token_secret']);
 
-$dropboxFiles = getDropboxFiles();
+$dropboxFiles = getDropboxFiles($dropbox);
 
 $filesToUpload = array();	// Dateien, die hochgeladen werden müssen
 $newDropboxFiles = array();	// Inhalt der neuen dropbox.ini
@@ -146,7 +149,7 @@ echo "<li>Fertig!</li>";
 echo "</ul>";
 
 
-function getDropboxFiles()
+function getDropboxFiles($dropbox)
 {
 	$decodedDropboxFiles = array();
 	$dropboxFiles = $dropbox->getFile('dropbox.ini');

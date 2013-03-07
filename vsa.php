@@ -6,18 +6,18 @@ function getTimes($tt) {
 	$tt->parseData();
 	$ld=$tt->getLastDay();
 	//print_r($ld);
-	echo($ld['diff']."\n");
-	echo($ld['monthdiff']."\n");
-	echo((int)$ld['laststateIn']."\n");
-	echo($ld['start']."\n");
-	echo($ld['pause']."\n");
+	echo((isset($ld['diff']) ? $ld['diff'] : 0)."\n");
+	echo((isset($ld['monthdiff']) ? $ld['monthdiff'] : 0)."\n");
+	echo((isset($ld['laststateIn']) ? (int)$ld['laststateIn'] : 0)."\n");
+	echo((isset($ld['start']) ? $ld['start'] : 0) ."\n");
+	echo((isset($ld['pause']) ? $ld['pause'] : 0) ."\n");
 }
 
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-$action=$_GET['a'];
-$hash=$_GET['h'];
+$action=isset($_GET['a']) ? $_GET['a'] : '';
+$hash=isset($_GET['h']) ? $_GET['h'] : '';
 
 if (!$tt->login(null, null, $hash)) {
 	die('INVALID LOGIN');
