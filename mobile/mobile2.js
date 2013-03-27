@@ -92,7 +92,7 @@ $(function(){
 				return;
 			}
 			
-			if(data.result.laststateIn === true) {
+			if(data.result.laststateIn == true) {
 				$('#change_button').attr({
 					'value':'out',
 					'class':'go'
