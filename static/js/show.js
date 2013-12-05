@@ -258,6 +258,10 @@ window.addEvent('domready', function() {
 		{
 			subject = "vacation";
 		}
+		else if(clickedOn.hasClass("unavail_training"))
+		{
+			subject = "training";
+		}
 		
 		var params = {
 			id: $time(),
