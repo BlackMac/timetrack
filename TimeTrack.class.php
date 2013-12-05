@@ -893,7 +893,7 @@ class TimeTrack
 	{
 		$dateSplitted = array();
 		if(!isset($date, $subject)
-			|| !in_array($subject, array('illness', 'vacation'))
+			|| !in_array($subject, array('illness', 'vacation', 'training'))
 			|| !preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $date, $dateSplitted)
 		)
 		{
